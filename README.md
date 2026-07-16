@@ -36,6 +36,20 @@ apple-touch-icon) и `service worker` (офлайн-старт оболочки)
   По локальному IP на `http://` установка полноценно не сработает — деплойте прод-сборку
   (`npm run build` → `dist/`) на HTTPS-хостинг.
 
+## Деплой на GitHub Pages
+
+В репозитории есть workflow `.github/workflows/deploy.yml`: при push в `main` он собирает
+проект и публикует на Pages. `base` подставляется автоматически как `/<repo>/`, поэтому
+проект работает по адресу `https://<user>.github.io/<repo>/`.
+
+1. Создайте репозиторий на GitHub и запушьте ветку `main`.
+2. **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+3. Дождитесь workflow «Deploy to GitHub Pages» — в конце будет ссылка на сайт.
+
+> ⚠️ Pages из **приватного** репозитория доступен только на платных планах
+> (GitHub Pro/Team/Enterprise). На бесплатном плане репозиторий должен быть публичным.
+> Для корневого домена или страницы `<user>.github.io` оставьте `base` = `/`.
+
 ## Соответствие ТЗ
 
 | Пункт ТЗ | Реализация |
