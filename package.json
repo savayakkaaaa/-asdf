@@ -1,0 +1,21 @@
+{
+  "name": "kaspi-web-superapp",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Демо веб-версия Kaspi Super App (mobile-first). Учебный прототип по ТЗ. Данные фейковые.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11"
+  }
+}
