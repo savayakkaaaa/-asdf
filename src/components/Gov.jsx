@@ -5,12 +5,9 @@ import { fmt, makeQR } from '../utils.js'
 import { govServices } from '../data.js'
 
 /* Заставка eGov + Kaspi: показывается при загрузке документа и исчезает сама */
-function EgovSplash({ onClose }) {
+function EgovSplash() {
   return (
     <div className="egov-splash">
-      <div className="egov-top">
-        <button className="egov-x" onClick={onClose} aria-label="Закрыть">×</button>
-      </div>
       <div className="egov-center">
         <div>
           <div className="egov-logos">
@@ -162,7 +159,7 @@ export default function Gov({ documents, addDocument, updateDocument }) {
     }, 1600)
   }
 
-  if (loadingDoc) return <EgovSplash onClose={() => setLoadingDoc(null)} />
+  if (loadingDoc) return <EgovSplash />
   if (detail) {
     const doc = documents.find((d) => d.id === detail) || detail
     return <DocDetail doc={doc} onClose={() => setDetail(null)} onSave={(patch) => updateDocument(doc.id, patch)} />

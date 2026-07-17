@@ -50,7 +50,9 @@ export default function Home({ onNavigate }) {
       <div className="shortcuts">
         {productShortcuts.map((s) => (
           <button className="shortcut" key={s.id} onClick={() => onNavigate('bank')}>
-            <span className="sc-badge" style={{ background: s.badgeBg, color: s.badgeColor }}>{s.badge}</span>
+            <span className="sc-badge" style={{ background: s.badgeBg, color: s.badgeColor }}>
+              {s.badgeIcon ? <Icon name={s.badge} size={28} stroke={2} /> : s.badge}
+            </span>
             <span className="sc-meta">
               <span className="sc-name">{s.name}</span>
               {s.sub && <span className="sc-sub">{s.sub}</span>}
