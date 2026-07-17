@@ -121,7 +121,7 @@ const IDB_STORE = 'files'
 
 const openIdb = () =>
   new Promise((resolve, reject) => {
-    const req = indexedDB.open(IDB_NAME, 1)
+    const req = indexedDB.open(IDB_NAME, 2)
     req.onupgradeneeded = () => {
       if (!req.result.objectStoreNames.contains(IDB_STORE)) req.result.createObjectStore(IDB_STORE)
     }
@@ -129,7 +129,63 @@ const openIdb = () =>
     req.onerror = () => reject(req.error)
   })
 
-/** Надёжное хранение PDF/фото (IndexedDB + sessionStorage fallback) */
+/** Сохранить File/Blob документа в IndexedDB (надёжнее dataURL на iOS). */
+export const stashDocBlob = async (id, file) => {
+  if (!id || !file) return false
+  const mime = file.type || (isPdfFile(file) ? 'application/pdf' : 'application/octet-stream')
+  const rec = { name: file.name || 'document', mime, blob: file instanceof Blob ? file : new Blob([file], { type: mime }) }
+  try {
+    const db = await openIdb()
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction(IDB_STORE, 'readwrite')
+      tx.objectStore(IDB_STORE).put(rec, id)
+      tx.oncomplete = () => resolve()
+      tx.onerror = () => reject(tx.error)
+    })
+    return true
+  } catch {
+    return false
+  }
+}
+
+/** Загрузить документ: { name, mime, kind, url } */
+export const loadDocBlob = async (id) => {
+  if (!id) return null
+  try {
+    const db = await openIdb()
+    const rec = await new Promise((resolve) => {
+      const tx = db.transaction(IDB_STORE, 'readonly')
+      const req = tx.objectStore(IDB_STORE).get(id)
+      req.onsuccess = () => resolve(req.result || null)
+      req.onerror = () => resolve(null)
+    })
+    if (!rec) {
+      const legacy = loadDocPreview(id)
+      if (!legacy) return null
+      return {
+        name: '',
+        mime: isPdfData(legacy) ? 'application/pdf' : 'image/jpeg',
+        kind: isPdfData(legacy) ? 'pdf' : 'image',
+        url: legacy.startsWith('data:') ? dataUrlToObjectUrl(legacy) : legacy,
+      }
+    }
+    if (typeof rec === 'string') {
+      return {
+        name: '',
+        mime: isPdfData(rec) ? 'application/pdf' : 'image/jpeg',
+        kind: isPdfData(rec) ? 'pdf' : 'image',
+        url: rec.startsWith('data:') ? dataUrlToObjectUrl(rec) : rec,
+      }
+    }
+    const url = URL.createObjectURL(rec.blob)
+    const kind = /pdf/i.test(rec.mime) || /\.pdf$/i.test(rec.name || '') ? 'pdf' : 'image'
+    return { name: rec.name, mime: rec.mime, kind, url }
+  } catch {
+    return null
+  }
+}
+
+/** Надёжное хранение PDF/фото (IndexedDB + sessionStorage fallback) — legacy dataURL */
 export const stashDocPreview = async (id, dataUrl) => {
   if (!id || !dataUrl) return
   try { sessionStorage.setItem(NS + 'preview_' + id, dataUrl) } catch { /* ignore */ }
@@ -150,18 +206,6 @@ export const loadDocPreview = (id) => {
 }
 
 export const loadDocPreviewAsync = async (id) => {
-  if (!id) return ''
-  const fromSession = loadDocPreview(id)
-  if (fromSession) return fromSession
-  try {
-    const db = await openIdb()
-    return await new Promise((resolve) => {
-      const tx = db.transaction(IDB_STORE, 'readonly')
-      const req = tx.objectStore(IDB_STORE).get(id)
-      req.onsuccess = () => resolve(req.result || '')
-      req.onerror = () => resolve('')
-    })
-  } catch {
-    return ''
-  }
+  const blob = await loadDocBlob(id)
+  return blob?.url || ''
 }

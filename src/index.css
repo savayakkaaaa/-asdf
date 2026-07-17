@@ -340,9 +340,11 @@ svg { display: block; }
 .doc-head { display: flex; align-items: center; justify-content: space-between; padding: 2px 0 14px; }
 .doc-back { display: flex; color: var(--ink); }
 .doc-title { font-weight: 700; font-size: 16px; }
-.segmented { display: flex; background: var(--inset); border-radius: 12px; padding: 3px; margin-bottom: 20px; }
-.segmented button { flex: 1; padding: 9px; border-radius: 9px; font-weight: 600; font-size: 14px; color: var(--muted); }
+.segmented { display: flex; background: var(--inset); border-radius: 10px; padding: 2px; margin-bottom: 14px; }
+.segmented button { flex: 1; padding: 7px 6px; border-radius: 8px; font-weight: 600; font-size: 12.5px; color: var(--muted); }
 .segmented button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.segmented.sm { max-width: 240px; margin-left: auto; margin-right: auto; }
+.segmented.sm button { font-size: 12px; padding: 6px 4px; }
 .doc-body { padding-bottom: 10px; }
 /* Outlined-поле: подпись сидит на рамке (как в видео) */
 .outl { position: relative; margin-bottom: 18px; }
@@ -389,13 +391,27 @@ svg { display: block; }
   border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
   background: var(--inset); margin-bottom: 14px; min-height: 180px;
 }
+.doc-preview.only { margin-bottom: 16px; }
 .doc-preview img { display: block; width: 100%; max-height: 420px; object-fit: contain; background: #fff; }
 .doc-preview.pdf { display: flex; flex-direction: column; background: #fff; min-height: 320px; }
-.doc-preview.pdf iframe { width: 100%; height: 360px; border: 0; background: #fff; }
-.doc-open {
-  display: block; text-align: center; padding: 12px; font-weight: 600; font-size: 14px;
-  color: #2B7DE9; border-top: 1px solid var(--line); text-decoration: none;
+.doc-preview.pdf iframe { width: 100%; height: 420px; border: 0; background: #fff; flex: 1; }
+.doc-upload {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 36px 16px; border: 1.5px dashed #C9CBD0; border-radius: 16px;
+  background: var(--inset); color: var(--ink); margin-bottom: 8px; position: relative;
 }
+.doc-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.doc-upload .l1 { font-weight: 700; margin-top: 8px; }
+.doc-upload .l2 { font-size: 13px; color: var(--muted); }
+.doc-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.btn-doc {
+  width: 100%; padding: 14px 16px; border-radius: 14px; font-weight: 700; font-size: 15px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.btn-doc.primary { background: var(--red); color: #fff; }
+.btn-doc.primary:active { background: var(--red-press); }
+.btn-doc.secondary { background: #F2F3F5; color: var(--ink); }
+.btn-doc.secondary:active { background: #E8E9EB; }
 .doc-file-card {
   display: flex; align-items: center; gap: 12px; padding: 14px;
   border: 1px solid var(--line); border-radius: 14px; margin-bottom: 14px; background: #fff;
