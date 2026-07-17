@@ -51,6 +51,11 @@ export default function App() {
 
   const isBottom = BOTTOM.some((b) => b.key === view)
   const showBack = !isBottom
+  const [headerOverride, setHeaderOverride] = useState(null)
+
+  useEffect(() => {
+    if (view !== 'gov') setHeaderOverride(null)
+  }, [view])
 
   return (
     <div className="app">
@@ -67,12 +72,16 @@ export default function App() {
           </nav>
 
           <div>
-            {showBack && (
+            {showBack && !headerOverride?.hidden && (
               <header className="topbar">
-                <button className="back-btn" onClick={() => setView('home')} aria-label="Назад">
+                <button
+                  className="back-btn"
+                  onClick={() => (headerOverride?.onBack ? headerOverride.onBack() : setView('home'))}
+                  aria-label="Назад"
+                >
                   <Icon name="chevron" size={22} style={{ transform: 'scaleX(-1)' }} />
                 </button>
-                <div className="topbar-title">{TITLES[view] || ''}</div>
+                <div className="topbar-title">{headerOverride?.title || TITLES[view] || ''}</div>
                 <div className="topbar-actions" />
               </header>
             )}
@@ -80,7 +89,14 @@ export default function App() {
             <main className={'content' + (isBottom ? '' : ' no-nav')}>
               {view === 'home' && <Home onNavigate={setView} />}
               {view === 'bank' && <Bank accounts={accounts} transactions={transactions} updateAccount={updateAccount} />}
-              {view === 'gov' && <Gov documents={documents} addDocument={addDocument} updateDocument={updateDocument} />}
+              {view === 'gov' && (
+                <Gov
+                  documents={documents}
+                  addDocument={addDocument}
+                  updateDocument={updateDocument}
+                  onHeaderOverride={setHeaderOverride}
+                />
+              )}
               {view === 'transfers' && <Transfers requisites={requisites} setRequisites={setRequisites} />}
               {view === 'payments' && <Payments onQR={() => setView('qr')} />}
               {view === 'qr' && <QRScreen />}

@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Sheet from './Sheet.jsx'
 import Icon from './Icon.jsx'
-import { fmt } from '../utils.js'
+import {
+  fmt, isImageFile, isPdfFile, isPdfData, compressImageFile, readFileAsDataURL,
+  stashDocPreview, loadDocPreview, loadDocPreviewAsync, dataUrlToObjectUrl,
+} from '../utils.js'
 import { govServices, govCategories } from '../data.js'
 
 /* Заставка eGov + Kaspi: показывается при загрузке документа и исчезает сама */
@@ -35,47 +38,91 @@ const REQ_FIELDS = [
 ]
 
 function DocDetail({ doc, onClose, onSave }) {
-  const [tab, setTab] = useState(doc.fileData || doc.file ? 'doc' : 'req')
+  const initialPreview = doc.fileData || loadDocPreview(doc.id) || ''
+  const [tab, setTab] = useState(initialPreview || doc.file ? 'doc' : 'req')
   const [file, setFile] = useState(doc.file || '')
-  const [fileData, setFileData] = useState(doc.fileData || '')
+  const [fileData, setFileData] = useState(initialPreview)
+  const [fileKind, setFileKind] = useState(isPdfData(initialPreview, doc.file) ? 'pdf' : (initialPreview ? 'image' : ''))
   const [f, setF] = useState(doc.req || { fio: '', iin: '', birth: '', num: '', issued: '', expires: '' })
   const hasData = Object.values(doc.req || {}).some((v) => v)
   const [editing, setEditing] = useState(!hasData)
   const [copied, setCopied] = useState('')
   const [savedOk, setSavedOk] = useState(false)
   const [reading, setReading] = useState(false)
+  const [pdfViewUrl, setPdfViewUrl] = useState('')
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value })
 
-  const onPickFile = (e) => {
+  useEffect(() => {
+    let alive = true
+    loadDocPreviewAsync(doc.id).then((stored) => {
+      if (!alive || !stored) return
+      setFileData((prev) => prev || stored)
+      setFileKind((prev) => prev || (isPdfData(stored, doc.file) ? 'pdf' : 'image'))
+      if (stored || doc.file) setTab('doc')
+    })
+    return () => { alive = false }
+  }, [doc.id])
+
+  useEffect(() => {
+    if (doc.fileData) {
+      setFileData(doc.fileData)
+      setFileKind(isPdfData(doc.fileData, doc.file) ? 'pdf' : 'image')
+    }
+    if (doc.file) setFile(doc.file)
+  }, [doc.fileData, doc.file])
+
+  const onPickFile = async (e) => {
     const picked = e.target.files?.[0]
+    e.target.value = ''
     if (!picked) return
     setFile(picked.name)
     setSavedOk(false)
-    if (picked.type.startsWith('image/')) {
-      setReading(true)
-      const reader = new FileReader()
-      reader.onload = () => {
-        setFileData(String(reader.result || ''))
-        setReading(false)
-      }
-      reader.onerror = () => {
+    setTab('doc')
+    setReading(true)
+
+    try {
+      if (isPdfFile(picked)) {
+        const dataUrl = await readFileAsDataURL(picked)
+        setFileKind('pdf')
+        setFileData(dataUrl)
+        await stashDocPreview(doc.id, dataUrl)
+      } else if (isImageFile(picked)) {
+        setFileKind('image')
+        const blobUrl = URL.createObjectURL(picked)
+        setFileData(blobUrl)
+        try {
+          const compressed = await compressImageFile(picked)
+          URL.revokeObjectURL(blobUrl)
+          if (compressed) {
+            setFileData(compressed)
+            await stashDocPreview(doc.id, compressed)
+          }
+        } catch { /* blobUrl на сессию */ }
+      } else {
+        setFileKind('')
         setFileData('')
-        setReading(false)
       }
-      reader.readAsDataURL(picked)
-    } else {
+    } catch {
       setFileData('')
+      setFileKind('')
+    } finally {
       setReading(false)
     }
   }
 
-  const save = () => {
+  const save = async () => {
+    let preview = fileData
+    if (preview && preview.startsWith('blob:')) preview = doc.fileData || loadDocPreview(doc.id) || ''
+    if (preview && preview.startsWith('data:')) await stashDocPreview(doc.id, preview)
     onSave({
       file,
-      fileData: fileData || undefined,
+      fileData: preview && preview.startsWith('data:') ? preview : undefined,
+      fileKind: fileKind || (isPdfData(preview, file) ? 'pdf' : preview ? 'image' : undefined),
       req: f,
-      status: file || hasData || Object.values(f).some(Boolean) ? 'На проверке' : doc.status,
+      status: file || preview || hasData || Object.values(f).some(Boolean) ? 'На проверке' : doc.status,
     })
+    if (preview && preview.startsWith('data:')) setFileData(preview)
+    setTab('doc')
     setEditing(false)
     setSavedOk(true)
   }
@@ -94,14 +141,19 @@ function DocDetail({ doc, onClose, onSave }) {
     else { navigator.clipboard?.writeText(text).catch(() => {}); alert('Реквизиты скопированы (демо)') }
   }
 
+  const previewSrc = fileData || loadDocPreview(doc.id)
+  const pdf = fileKind === 'pdf' || isPdfData(previewSrc, file)
+
+  useEffect(() => {
+    if (!pdf || !previewSrc) { setPdfViewUrl(''); return }
+    if (previewSrc.startsWith('blob:')) { setPdfViewUrl(previewSrc); return }
+    const url = dataUrlToObjectUrl(previewSrc)
+    setPdfViewUrl(url)
+    return () => { if (url && url.startsWith('blob:') && url !== previewSrc) URL.revokeObjectURL(url) }
+  }, [pdf, previewSrc])
+
   return (
     <div className="doc-screen">
-      <div className="doc-head">
-        <button className="doc-back" onClick={onClose} aria-label="Назад"><Icon name="chevron" size={22} style={{ transform: 'scaleX(-1)' }} /></button>
-        <div className="doc-title">{doc.title}</div>
-        <span style={{ width: 22 }} />
-      </div>
-
       <div className="segmented">
         <button type="button" className={tab === 'doc' ? 'on' : ''} onClick={() => setTab('doc')}>Документ</button>
         <button type="button" className={tab === 'req' ? 'on' : ''} onClick={() => setTab('req')}>Реквизиты</button>
@@ -109,30 +161,50 @@ function DocDetail({ doc, onClose, onSave }) {
 
       {tab === 'doc' ? (
         <div className="doc-body">
-          {fileData ? (
+          {previewSrc && pdf ? (
+            <div className="doc-preview pdf">
+              <div className="doc-file-card" style={{ margin: 0, border: 0, borderRadius: 0, borderBottom: '1px solid var(--line)' }}>
+                <Icon name="doc" size={28} />
+                <div>
+                  <div className="l1">{file || 'document.pdf'}</div>
+                  <div className="l2">PDF документ</div>
+                </div>
+              </div>
+              {pdfViewUrl && <iframe title={file || 'PDF'} src={pdfViewUrl} />}
+              <a className="doc-open" href={pdfViewUrl || previewSrc} target="_blank" rel="noreferrer">Открыть PDF</a>
+            </div>
+          ) : previewSrc ? (
             <div className="doc-preview">
-              <img src={fileData} alt={file || 'Документ'} />
+              <img src={previewSrc} alt={file || 'Документ'} />
             </div>
           ) : file ? (
             <div className="doc-file-card">
               <Icon name="doc" size={28} />
               <div>
                 <div className="l1">{file}</div>
-                <div className="l2">Файл выбран</div>
+                <div className="l2">{reading ? 'Читаем файл…' : 'Файл выбран'}</div>
               </div>
             </div>
-          ) : null}
+          ) : (
+            <div className="doc-file-card muted-card">
+              <Icon name="id" size={28} />
+              <div>
+                <div className="l1">Документ не загружен</div>
+                <div className="l2">Выберите PDF или фото</div>
+              </div>
+            </div>
+          )}
 
           <label className="filepick">
-            <span className="choose">{file ? 'Заменить файл' : 'Выбрать файл'}</span>
-            <span className="fname">{file || 'файл не выбран'}</span>
-            <input type="file" accept="image/*,.pdf" onChange={onPickFile} />
+            <span className="choose">{file || previewSrc ? 'Заменить файл' : 'Выбрать файл'}</span>
+            <span className="fname">{file || (previewSrc ? (pdf ? 'PDF сохранён' : 'фото сохранено') : 'файл не выбран')}</span>
+            <input type="file" accept="application/pdf,.pdf,image/*,.jpg,.jpeg,.png,.heic,.webp" onChange={onPickFile} />
           </label>
-          <div className="hint mt16">Демо: файл хранится только в этом браузере.</div>
-          <button type="button" className="btn-black mt16" onClick={save} disabled={reading || (!file && !fileData)}>
-            {reading ? 'Загрузка…' : <>Сохранить <Icon name="check" size={16} /></>}
+          <div className="hint mt16">Демо: PDF хранится в этом браузере.</div>
+          <button type="button" className="btn-black mt16" onClick={save} disabled={reading || (!file && !previewSrc)}>
+            {reading ? 'Загрузка файла…' : <>Сохранить <Icon name="check" size={16} /></>}
           </button>
-          {savedOk && <div className="hint mt12" style={{ color: 'var(--green)' }}>Сохранено</div>}
+          {savedOk && <div className="hint mt12" style={{ color: 'var(--green)' }}>Сохранено — документ отображается выше</div>}
         </div>
       ) : editing ? (
         <div className="doc-body">
@@ -182,7 +254,7 @@ function DocDetail({ doc, onClose, onSave }) {
   )
 }
 
-export default function Gov({ documents, addDocument, updateDocument }) {
+export default function Gov({ documents, addDocument, updateDocument, onHeaderOverride }) {
   const [loadingDoc, setLoadingDoc] = useState(null)
   const [detail, setDetail] = useState(null)
   const [service, setService] = useState(null)
@@ -192,6 +264,27 @@ export default function Gov({ documents, addDocument, updateDocument }) {
   const [cat, setCat] = useState('popular')
   const [q, setQ] = useState('')
   const [allDocs, setAllDocs] = useState(false)
+
+  useEffect(() => {
+    if (!onHeaderOverride) return undefined
+    if (loadingDoc) {
+      onHeaderOverride({ hidden: true })
+    } else if (detail) {
+      const doc = documents.find((d) => d.id === detail)
+      onHeaderOverride({
+        title: doc?.title || 'Документ',
+        onBack: () => setDetail(null),
+      })
+    } else if (allDocs) {
+      onHeaderOverride({
+        title: 'Все документы',
+        onBack: () => setAllDocs(false),
+      })
+    } else {
+      onHeaderOverride(null)
+    }
+    return () => onHeaderOverride(null)
+  }, [loadingDoc, detail, allDocs, documents, onHeaderOverride])
 
   const openDoc = (id) => {
     setLoadingDoc(id)
@@ -218,11 +311,7 @@ export default function Gov({ documents, addDocument, updateDocument }) {
   if (allDocs) {
     return (
       <div className="gov-page">
-        <button type="button" className="gov-linkback" onClick={() => setAllDocs(false)}>
-          <Icon name="chevron" size={18} style={{ transform: 'scaleX(-1)' }} /> К госуслугам
-        </button>
-        <div className="section-title" style={{ marginTop: 8 }}>Все документы</div>
-        <div className="rows pad mt12">
+        <div className="rows pad" style={{ marginTop: 8 }}>
           {documents.map((d) => (
             <div className="rowi" key={d.id} onClick={() => openDoc(d.id)}>
               <span className="ic" style={{ background: d.color, color: d.accent || '#fff' }}><Icon name={d.icon} size={20} /></span>
@@ -287,12 +376,20 @@ export default function Gov({ documents, addDocument, updateDocument }) {
           </div>
 
           <div className="gov-docs-scroll">
-            {carousel.map((d) => (
-              <button type="button" className="gov-doc-card" key={d.id} style={{ background: d.color, color: d.accent || '#fff' }} onClick={() => openDoc(d.id)}>
-                <span className="gdc-icon"><Icon name={d.icon} size={34} stroke={1.6} /></span>
-                <span className="gdc-title">{d.title}</span>
-              </button>
-            ))}
+            {carousel.map((d) => {
+              const thumb = d.fileData || loadDocPreview(d.id)
+              const pdfThumb = d.fileKind === 'pdf' || isPdfData(thumb, d.file)
+              return (
+                <button type="button" className={'gov-doc-card' + (thumb && !pdfThumb ? ' has-thumb' : '')} key={d.id} style={{ background: thumb && !pdfThumb ? '#111' : d.color, color: thumb && !pdfThumb ? '#fff' : (d.accent || '#fff') }} onClick={() => openDoc(d.id)}>
+                  {thumb && !pdfThumb ? (
+                    <img className="gdc-thumb" src={thumb} alt="" />
+                  ) : (
+                    <span className="gdc-icon"><Icon name={pdfThumb ? 'doc' : d.icon} size={34} stroke={1.6} /></span>
+                  )}
+                  <span className="gdc-title">{d.title}{pdfThumb ? ' · PDF' : ''}</span>
+                </button>
+              )
+            })}
           </div>
           <button type="button" className="gov-all-docs" onClick={() => setAllDocs(true)}>
             Все документы <Icon name="chevron" size={16} />
