@@ -399,11 +399,23 @@ svg { display: block; }
 .doc-preview img { display: block; width: 100%; max-height: 420px; object-fit: contain; background: #fff; }
 .doc-preview.pdf {
   position: relative; flex: 1 1 auto; min-height: 0; height: auto;
-  background: #fff; margin: 0 -16px 12px; border: none; border-radius: 0; overflow: hidden;
+  background: #F4F5F7; margin: 0 -16px 12px; border: none; border-radius: 0; overflow: hidden;
 }
-.doc-preview.pdf iframe {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  border: 0; background: #fff;
+.pdf-viewer {
+  position: absolute; inset: 0; overflow: auto; -webkit-overflow-scrolling: touch;
+  background: #F4F5F7;
+}
+.pdf-viewer-pages { min-height: 100%; }
+.pdf-viewer .pdf-page,
+.pdf-viewer canvas.pdf-page {
+  display: block; width: 100%; height: auto; background: #fff;
+  margin: 0 0 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.pdf-viewer .pdf-page:last-child,
+.pdf-viewer canvas.pdf-page:last-child { margin-bottom: 0; }
+.pdf-viewer-status {
+  min-height: 180px; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 10px; color: var(--muted); font-size: 14px;
 }
 .doc-upload {
   display: flex; flex-direction: column; align-items: center; gap: 6px;

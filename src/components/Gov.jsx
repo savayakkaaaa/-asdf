@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Sheet from './Sheet.jsx'
 import Icon from './Icon.jsx'
+import PdfViewer from './PdfViewer.jsx'
 import {
   fmt, isImageFile, isPdfFile, isPdfData, compressImageFile,
   stashDocBlob, loadDocBlob, makeQR,
@@ -168,9 +169,6 @@ function DocDetail({ doc, onClose, onSave }) {
   }
 
   const pdf = fileKind === 'pdf' || isPdfData(viewUrl, file)
-  const pdfSrc = viewUrl
-    ? `${viewUrl.split('#')[0]}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&zoom=page-width`
-    : ''
   const fillPdf = tab === 'doc' && Boolean(viewUrl) && pdf && !reading
 
   return (
@@ -191,7 +189,7 @@ function DocDetail({ doc, onClose, onSave }) {
 
           {!reading && viewUrl && pdf && (
             <div className="doc-preview pdf only">
-              <iframe title={file || 'PDF'} src={pdfSrc} />
+              <PdfViewer url={viewUrl} />
             </div>
           )}
 
