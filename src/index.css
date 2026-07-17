@@ -258,20 +258,20 @@ svg { display: block; }
 .mb-cat { font-size: 8.5px; font-weight: 700; color: rgba(0,0,0,0.55); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mb-chip { align-self: flex-start; background: #fff; border-radius: 5px; font-size: 10px; font-weight: 800; color: #C21807; padding: 1px 5px; }
 
-.grid8 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px 4px; margin-top: 6px; }
-.grid-tile { display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 12px 2px; color: var(--ink); }
-.gt-icon { position: relative; width: 54px; height: 54px; border-radius: 12px; color: var(--red); display: flex; align-items: center; justify-content: center; }
+.grid8 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px 4px; margin-top: 10px; }
+.grid-tile { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 2px; color: var(--ink); }
+.gt-icon { position: relative; width: 60px; height: 60px; border-radius: 12px; color: var(--red); display: flex; align-items: center; justify-content: center; }
 .grid-tile:active .gt-icon { background: #FDECEA; }
-.gt-label { font-size: 15px; font-weight: 500; color: #1F2124; letter-spacing: -0.2px; }
+.gt-label { font-size: 16px; font-weight: 500; color: #1F2124; letter-spacing: -0.2px; }
 .gt-badge {
-  position: absolute; top: -5px; right: -14px;
-  background: #FFC508; color: #1F2124; font-size: 10.5px; font-weight: 800;
-  border-radius: 6px; padding: 2px 6px; letter-spacing: 0.3px; border: 1.5px solid #fff;
+  position: absolute; top: -4px; right: -12px;
+  background: #FFC508; color: #1F2124; font-size: 11px; font-weight: 800;
+  border-radius: 6px; padding: 2.5px 6px; letter-spacing: 0.3px; border: 2px solid #fff;
 }
 .magnum-m {
-  width: 40px; height: 40px; border-radius: 10px; background: #E0223C; color: #fff;
+  width: 46px; height: 46px; border-radius: 11px; background: #E0223C; color: #fff;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 25px; font-family: Georgia, serif; line-height: 1;
+  font-weight: 800; font-size: 29px; font-family: Georgia, serif; line-height: 1;
 }
 
 /* ---- Быстрые продукты (2 колонки) ---- */

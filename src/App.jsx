@@ -102,7 +102,7 @@ export default function App() {
             const active = view === n.key || (n.key === 'home' && showBack)
             return (
               <button key={n.key} className={active ? 'active' : ''} onClick={() => setView(n.key)}>
-                <Icon name={n.icon} size={24} stroke={active ? 2 : 1.7} /> {n.label}
+                <Icon name={n.icon} size={26} stroke={active ? 2.1 : 1.8} /> {n.label}
               </button>
             )
           })}

@@ -38,7 +38,7 @@ export default function Home({ onNavigate }) {
             <span className="gt-icon">
               {g.icon === 'magnum'
                 ? <span className="magnum-m">m</span>
-                : <Icon name={g.icon} size={34} stroke={1.6} />}
+                : <Icon name={g.icon} size={40} stroke={2} />}
               {g.badge && <span className="gt-badge">{g.badge}</span>}
             </span>
             <span className="gt-label">{g.label}</span>
