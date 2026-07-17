@@ -336,14 +336,14 @@ svg { display: block; }
 .egov-foot { text-align: center; color: var(--muted); font-size: 12px; padding: 0 0 28px; line-height: 1.5; }
 
 /* ---- Document detail: segmented tabs + underline form ---- */
-.doc-screen { min-height: 60vh; }
+.doc-screen { min-height: 60vh; display: flex; flex-direction: column; }
 .doc-head { display: flex; align-items: center; justify-content: space-between; padding: 2px 0 14px; }
 .doc-back { display: flex; color: var(--ink); }
 .doc-title { font-weight: 700; font-size: 16px; }
-.segmented { display: flex; background: var(--inset); border-radius: 10px; padding: 2px; margin-bottom: 14px; width: 100%; }
+.segmented { display: flex; background: var(--inset); border-radius: 10px; padding: 2px; margin-bottom: 14px; width: 100%; flex-shrink: 0; }
 .segmented button { flex: 1; padding: 8px 6px; border-radius: 8px; font-weight: 600; font-size: 13px; color: var(--muted); }
 .segmented button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-.doc-body { padding-bottom: 10px; }
+.doc-body { padding-bottom: 10px; display: flex; flex-direction: column; flex: 1; min-height: 0; }
 /* Outlined-поле: подпись сидит на рамке (как в видео) */
 .outl { position: relative; margin-bottom: 18px; }
 .outl label {
@@ -391,8 +391,12 @@ svg { display: block; }
 }
 .doc-preview.only { margin-bottom: 16px; }
 .doc-preview img { display: block; width: 100%; max-height: 420px; object-fit: contain; background: #fff; }
-.doc-preview.pdf { display: flex; flex-direction: column; background: #fff; min-height: 320px; }
-.doc-preview.pdf iframe { width: 100%; height: 420px; border: 0; background: #fff; flex: 1; }
+.doc-preview.pdf {
+  display: flex; flex-direction: column; background: #fff;
+  flex: 1; min-height: calc(100dvh - 280px);
+  margin: 0 -16px 16px; border: none; border-radius: 0;
+}
+.doc-preview.pdf iframe { width: 100%; height: 100%; min-height: calc(100dvh - 280px); border: 0; background: #fff; flex: 1; }
 .doc-upload {
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   padding: 36px 16px; border: 1.5px dashed #C9CBD0; border-radius: 16px;
@@ -401,9 +405,9 @@ svg { display: block; }
 .doc-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 .doc-upload .l1 { font-weight: 700; margin-top: 8px; }
 .doc-upload .l2 { font-size: 13px; color: var(--muted); }
-.doc-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.doc-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; flex-shrink: 0; }
 .btn-doc {
-  width: 100%; padding: 14px 16px; border-radius: 14px; font-weight: 700; font-size: 15px;
+  width: 100%; padding: 14px 16px; border-radius: 14px; font-weight: 500; font-size: 15px;
   display: flex; align-items: center; justify-content: center; gap: 10px;
 }
 .btn-doc.primary { background: #2B7DE9; color: #fff; border: none; }
@@ -412,11 +416,12 @@ svg { display: block; }
 .btn-doc.secondary:active { background: #F3F7FD; }
 
 .present-doc { text-align: center; padding-bottom: 8px; }
-.present-title { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; margin-bottom: 14px; }
-.present-hint { font-size: 15px; color: var(--ink); margin-top: 14px; font-weight: 500; }
-.present-or { font-size: 14px; color: var(--muted); margin-top: 18px; }
+.present-hint { font-size: 13px; color: var(--ink); margin-bottom: 10px; font-weight: 400; }
+.present-doc .qr-box { padding: 0 0 4px; }
+.present-doc .qr-box img { width: 148px; height: 148px; border-radius: 10px; }
+.present-or { font-size: 13px; color: var(--ink); margin-top: 12px; font-weight: 400; }
 .present-code {
-  margin-top: 8px; font-size: 32px; font-weight: 800; letter-spacing: 4px;
+  margin-top: 6px; font-size: 24px; font-weight: 700; letter-spacing: 3px;
   font-variant-numeric: tabular-nums; color: var(--ink);
 }
 .doc-file-card {

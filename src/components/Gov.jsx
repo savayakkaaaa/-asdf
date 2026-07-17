@@ -218,11 +218,10 @@ function DocDetail({ doc, onClose, onSave }) {
           )}
 
           {showQr && (
-            <Sheet title="Предъявить документ" onClose={() => setShowQr(false)}>
+            <Sheet title={doc.title} onClose={() => setShowQr(false)}>
               <div className="present-doc">
-                <div className="present-title">{doc.title}</div>
-                <div className="qr-box">{qr ? <img src={qr} alt="QR" /> : <div className="muted">Генерация…</div>}</div>
                 <div className="present-hint">Покажите QR-код сотруднику</div>
+                <div className="qr-box">{qr ? <img src={qr} alt="QR" /> : <div className="muted">Генерация…</div>}</div>
                 <div className="present-or">или скажите код</div>
                 <div className="present-code">{speakCode}</div>
               </div>
