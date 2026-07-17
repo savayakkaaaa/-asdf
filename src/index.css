@@ -11,8 +11,8 @@
   --muted: #9A9DA3;
   --line: #EDEEF0;
   --green: #33B36B;
-  --radius: 20px;
-  --radius-sm: 14px;
+  --radius: 12px;
+  --radius-sm: 10px;
   --shadow: 0 1px 2px rgba(16, 18, 20, 0.04), 0 6px 20px rgba(16, 18, 20, 0.05);
   --nav-h: 68px;
   --maxw: 440px;
@@ -24,7 +24,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Roboto, Arial, sans-serif;
   background: var(--bg);
   color: var(--ink);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.42;
   -webkit-font-smoothing: antialiased;
 }
@@ -59,7 +59,7 @@ svg { display: block; }
   display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px;
 }
 
-.section-title { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; margin: 20px 2px 12px; }
+.section-title { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; margin: 22px 2px 12px; }
 .section-title.small { font-size: 13px; color: var(--muted); font-weight: 600; letter-spacing: 0; margin-bottom: 6px; }
 .row-between { display: flex; align-items: center; justify-content: space-between; }
 
@@ -173,7 +173,7 @@ svg { display: block; }
   border-top: 1px solid var(--line); display: flex; align-items: center; z-index: 30;
   padding-bottom: env(safe-area-inset-bottom);
 }
-.bottom-nav button { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #9A9DA3; font-size: 10.5px; font-weight: 600; height: 100%; }
+.bottom-nav button { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #9A9DA3; font-size: 12px; font-weight: 500; height: 100%; }
 .bottom-nav button.active { color: var(--red); }
 
 /* ---------- Sheet ---------- */
@@ -236,9 +236,9 @@ svg { display: block; }
 .home { padding-top: 4px; }
 /* ---- Поиск (как в приложении) ---- */
 .search-bar {
-  display: flex; align-items: center; gap: 9px;
-  background: #F1F2F4; border-radius: 12px; padding: 11px 13px;
-  color: var(--muted); font-size: 15px; margin: 4px 0 12px;
+  display: flex; align-items: center; gap: 10px;
+  background: #F1F2F4; border-radius: 10px; padding: 13px 14px;
+  color: var(--muted); font-size: 16px; margin: 4px 0 14px;
 }
 .search-bar .sb-ph { flex: 1; }
 .search-bar .sb-actions { display: flex; align-items: center; gap: 14px; color: #6E7076; }
@@ -247,7 +247,7 @@ svg { display: block; }
 .magnum-banner {
   display: flex; gap: 10px; align-items: stretch;
   background: linear-gradient(105deg, #F6F3A8 0%, #EAF2B4 55%, #DDEDC0 100%);
-  border-radius: 16px; padding: 12px; min-height: 128px; overflow: hidden;
+  border-radius: 12px; padding: 13px; min-height: 136px; overflow: hidden;
 }
 .mb-left { flex: 0 0 44%; display: flex; flex-direction: column; justify-content: center; }
 .mb-logo { font-weight: 800; font-size: 21px; letter-spacing: -0.5px; color: #C21807; }
@@ -260,50 +260,41 @@ svg { display: block; }
 
 .grid8 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px 4px; margin-top: 6px; }
 .grid-tile { display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 12px 2px; color: var(--ink); }
-.gt-icon { position: relative; width: 46px; height: 46px; border-radius: 14px; color: var(--red); display: flex; align-items: center; justify-content: center; }
+.gt-icon { position: relative; width: 54px; height: 54px; border-radius: 12px; color: var(--red); display: flex; align-items: center; justify-content: center; }
 .grid-tile:active .gt-icon { background: #FDECEA; }
-.gt-label { font-size: 13px; font-weight: 500; color: #2A2C30; }
+.gt-label { font-size: 15px; font-weight: 500; color: #1F2124; letter-spacing: -0.2px; }
 .gt-badge {
-  position: absolute; top: -4px; right: -12px;
-  background: #FFC508; color: #1F2124; font-size: 9px; font-weight: 800;
-  border-radius: 6px; padding: 2px 5px; letter-spacing: 0.3px; border: 1.5px solid #fff;
+  position: absolute; top: -5px; right: -14px;
+  background: #FFC508; color: #1F2124; font-size: 10.5px; font-weight: 800;
+  border-radius: 6px; padding: 2px 6px; letter-spacing: 0.3px; border: 1.5px solid #fff;
 }
 .magnum-m {
-  width: 34px; height: 34px; border-radius: 9px; background: #E0223C; color: #fff;
+  width: 40px; height: 40px; border-radius: 10px; background: #E0223C; color: #fff;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 21px; font-family: Georgia, serif; line-height: 1;
+  font-weight: 800; font-size: 25px; font-family: Georgia, serif; line-height: 1;
 }
 
 /* ---- Быстрые продукты (2 колонки) ---- */
-.shortcuts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 10px; margin-top: 18px; }
-.shortcut { display: flex; align-items: center; gap: 10px; text-align: left; padding: 0; }
+.shortcuts { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 10px; margin-top: 22px; }
+.shortcut { display: flex; align-items: center; gap: 12px; text-align: left; padding: 0; }
 .sc-badge {
-  flex: 0 0 46px; height: 46px; border-radius: 12px;
+  flex: 0 0 54px; height: 54px; border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 13px; letter-spacing: -0.2px;
+  font-weight: 800; font-size: 14.5px; letter-spacing: -0.2px;
 }
 .sc-meta { min-width: 0; display: flex; flex-direction: column; }
-.sc-name { font-weight: 600; font-size: 14.5px; letter-spacing: -0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sc-sub { font-size: 11.5px; color: var(--muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sc-name { font-weight: 600; font-size: 16px; letter-spacing: -0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sc-sub { font-size: 12.5px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* ---- Вы недавно смотрели ---- */
-.recent-scroll { display: flex; gap: 12px; overflow-x: auto; margin: 0 -16px; padding: 2px 16px 10px; }
-.recent-scroll::-webkit-scrollbar { display: none; }
-.recent-card { flex: 0 0 128px; cursor: pointer; }
-.rc-photo {
-  position: relative; height: 118px; border-radius: 14px;
-  display: flex; align-items: center; justify-content: center; overflow: hidden;
+/* ---- Спиннер загрузки (eGov) ---- */
+.spinner {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 3px solid #E9EAEC; border-top-color: var(--red);
+  animation: spin 0.8s linear infinite; margin: 26px auto 0;
 }
-.rc-bonus {
-  position: absolute; left: 6px; bottom: 6px;
-  background: #DFF3DC; color: #2E7D32; font-size: 10.5px; font-weight: 700;
-  border-radius: 7px; padding: 2px 6px;
-}
-.rc-price { font-weight: 800; font-size: 15.5px; margin-top: 7px; letter-spacing: -0.2px; }
-.rc-name { font-size: 12px; color: #4A4D52; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.stars { display: inline-flex; align-items: center; gap: 3px; margin-top: 3px; }
-.stars-num { font-size: 12px; font-weight: 700; }
-.stars-votes { font-size: 11.5px; color: var(--muted); }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2s; } }
+.egov-loadcap { text-align: center; color: var(--muted); font-size: 13.5px; margin-top: 12px; }
 
 .merchant { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding: 12px 14px; border-radius: 16px; box-shadow: var(--shadow); }
 .merchant-logo { width: 42px; height: 42px; border-radius: 50%; background: var(--red); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; }

@@ -4,7 +4,7 @@ import Icon from './Icon.jsx'
 import { fmt, makeQR } from '../utils.js'
 import { govServices } from '../data.js'
 
-/* Заставка eGov + Kaspi (как в приложении) */
+/* Заставка eGov + Kaspi: показывается при загрузке документа и исчезает сама */
 function EgovSplash({ onClose }) {
   return (
     <div className="egov-splash">
@@ -12,10 +12,14 @@ function EgovSplash({ onClose }) {
         <button className="egov-x" onClick={onClose} aria-label="Закрыть">×</button>
       </div>
       <div className="egov-center">
-        <div className="egov-logos">
-          <span className="egov-logo">e<b>Gov</b></span>
-          <span className="egov-plus">+</span>
-          <span className="kaspi-mark"><Icon name="user" size={30} stroke={2} /></span>
+        <div>
+          <div className="egov-logos">
+            <span className="egov-logo">e<b>Gov</b></span>
+            <span className="egov-plus">+</span>
+            <span className="kaspi-mark"><Icon name="user" size={30} stroke={2} /></span>
+          </div>
+          <div className="spinner" />
+          <div className="egov-loadcap">Загружаем документ…</div>
         </div>
       </div>
       <div className="egov-foot">При поддержке Министерства<br />цифрового развития</div>
@@ -142,14 +146,23 @@ function DocQR({ doc, onClose }) {
 }
 
 export default function Gov({ documents, addDocument, updateDocument }) {
-  const [splash, setSplash] = useState(true)
+  const [loadingDoc, setLoadingDoc] = useState(null) // id документа, который «грузится» через eGov
   const [detail, setDetail] = useState(null)
   const [qrDoc, setQrDoc] = useState(null)
   const [service, setService] = useState(null)
   const [addOpen, setAddOpen] = useState(false)
   const [newTitle, setNewTitle] = useState('')
 
-  if (splash) return <EgovSplash onClose={() => setSplash(false)} />
+  // Выбор документа: заставка eGov со спиннером ~1.6с, затем сам документ
+  const openDoc = (id) => {
+    setLoadingDoc(id)
+    setTimeout(() => {
+      setLoadingDoc(null)
+      setDetail(id)
+    }, 1600)
+  }
+
+  if (loadingDoc) return <EgovSplash onClose={() => setLoadingDoc(null)} />
   if (detail) {
     const doc = documents.find((d) => d.id === detail) || detail
     return <DocDetail doc={doc} onClose={() => setDetail(null)} onSave={(patch) => updateDocument(doc.id, patch)} />
@@ -161,7 +174,7 @@ export default function Gov({ documents, addDocument, updateDocument }) {
     addDocument({ id, title: newTitle.trim(), subtitle: 'Загружено пользователем', icon: 'doc', status: 'Нет данных', color: '#7B61FF', added: new Date().toISOString().slice(0, 10) })
     setNewTitle('')
     setAddOpen(false)
-    setDetail(id)
+    openDoc(id)
   }
 
   return (
@@ -171,7 +184,7 @@ export default function Gov({ documents, addDocument, updateDocument }) {
           <span className="egov-badge"><Icon name="shield" size={14} /> eGov + Kaspi</span>
           <div className="muted mt8" style={{ fontSize: 13 }}>Государственные услуги прямо в приложении</div>
         </div>
-        <button className="btn ghost small" onClick={() => setSplash(true)}>Заставка</button>
+        <span style={{ color: '#2B7DE9' }}><Icon name="gov" size={30} stroke={1.6} /></span>
       </div>
 
       <div className="row-between" style={{ marginTop: 22 }}>
@@ -180,7 +193,7 @@ export default function Gov({ documents, addDocument, updateDocument }) {
       </div>
       <div className="doc-grid mt12">
         {documents.map((d) => (
-          <div className="doc-card" style={{ background: d.color }} key={d.id} onClick={() => setDetail(d.id)}>
+          <div className="doc-card" style={{ background: d.color }} key={d.id} onClick={() => openDoc(d.id)}>
             <div className="dc-top">
               <Icon name={d.icon} size={24} stroke={1.7} />
               <span className="dc-status">{d.status}</span>

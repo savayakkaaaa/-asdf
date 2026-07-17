@@ -122,14 +122,6 @@ export const productShortcuts = [
   { id: 's4', badge: '₸', badgeBg: '#42B657', badgeColor: '#fff', name: 'Кредит', sub: 'до 5 млн ₸' },
 ]
 
-// «Вы недавно смотрели»
-export const recentItems = [
-  { id: 'v1', name: 'Веер ручной, розовый', price: 650, bonus: 71, rating: 4.4, votes: 5, art: 'fan', tint: '#F7D9E4' },
-  { id: 'v2', name: 'NG Веер деревянный', price: 999, bonus: 0, rating: 4.8, votes: 17, art: 'fan', tint: '#CBDDF3' },
-  { id: 'v3', name: '714337 веер 1 шт', price: 795, bonus: 0, rating: 5.0, votes: 6, art: 'fan', tint: '#EFE9DC' },
-  { id: 'v4', name: 'Huawei Watch Fit', price: 16890, bonus: 506, rating: 5.0, votes: 214, art: 'watch', tint: '#DDE4EC' },
-]
-
 export const initialRequisites = [
   {
     id: 'r1',
