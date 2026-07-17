@@ -28,7 +28,14 @@ export default function App() {
 
   const [accounts, setAccounts] = useState(() => load('accounts', initialAccounts))
   const [transactions] = useState(() => load('transactions', initialTransactions))
-  const [documents, setDocuments] = useState(() => load('documents', initialDocuments))
+  const [documents, setDocuments] = useState(() => {
+    const ver = load('documents_ver', 0)
+    if (ver < 2) {
+      save('documents_ver', 2)
+      return initialDocuments
+    }
+    return load('documents', initialDocuments)
+  })
   const [requisites, setRequisites] = useState(() => load('requisites', initialRequisites))
 
   useEffect(() => save('authed', authed), [authed])

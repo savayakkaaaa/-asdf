@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Sheet from './Sheet.jsx'
 import Icon from './Icon.jsx'
-import { fmt, makeQR } from '../utils.js'
-import { govServices } from '../data.js'
+import { fmt } from '../utils.js'
+import { govServices, govCategories } from '../data.js'
 
 /* Заставка eGov + Kaspi: показывается при загрузке документа и исчезает сама */
 function EgovSplash() {
@@ -182,27 +182,17 @@ function DocDetail({ doc, onClose, onSave }) {
   )
 }
 
-function DocQR({ doc, onClose }) {
-  const [qr, setQr] = useState('')
-  useEffect(() => { makeQR(`kaspi-demo://document/${doc.id}`).then(setQr) }, [doc])
-  return (
-    <Sheet title={doc.title} onClose={onClose}>
-      <div className="qr-box">{qr ? <img src={qr} alt="QR" /> : <div className="muted">Генерация…</div>}</div>
-      <div className="hint">Покажите QR для подтверждения документа</div>
-      <div className="hint mt12">Демо-документ. Не является действительным удостоверением.</div>
-    </Sheet>
-  )
-}
-
 export default function Gov({ documents, addDocument, updateDocument }) {
-  const [loadingDoc, setLoadingDoc] = useState(null) // id документа, который «грузится» через eGov
+  const [loadingDoc, setLoadingDoc] = useState(null)
   const [detail, setDetail] = useState(null)
-  const [qrDoc, setQrDoc] = useState(null)
   const [service, setService] = useState(null)
   const [addOpen, setAddOpen] = useState(false)
   const [newTitle, setNewTitle] = useState('')
+  const [mainTab, setMainTab] = useState('all') // all | apps
+  const [cat, setCat] = useState('popular')
+  const [q, setQ] = useState('')
+  const [allDocs, setAllDocs] = useState(false)
 
-  // Выбор документа: заставка eGov со спиннером ~1.6с, затем сам документ
   const openDoc = (id) => {
     setLoadingDoc(id)
     setTimeout(() => {
@@ -225,76 +215,130 @@ export default function Gov({ documents, addDocument, updateDocument }) {
     )
   }
 
-  const submitDoc = () => {
-    if (!newTitle.trim()) return
-    const id = 'd' + Date.now()
-    addDocument({ id, title: newTitle.trim(), subtitle: 'Загружено пользователем', icon: 'doc', status: 'Нет данных', color: '#7B61FF', added: new Date().toISOString().slice(0, 10) })
-    setNewTitle('')
-    setAddOpen(false)
-    openDoc(id)
+  if (allDocs) {
+    return (
+      <div className="gov-page">
+        <button type="button" className="gov-linkback" onClick={() => setAllDocs(false)}>
+          <Icon name="chevron" size={18} style={{ transform: 'scaleX(-1)' }} /> К госуслугам
+        </button>
+        <div className="section-title" style={{ marginTop: 8 }}>Все документы</div>
+        <div className="rows pad mt12">
+          {documents.map((d) => (
+            <div className="rowi" key={d.id} onClick={() => openDoc(d.id)}>
+              <span className="ic" style={{ background: d.color, color: d.accent || '#fff' }}><Icon name={d.icon} size={20} /></span>
+              <div className="meta"><div className="l1">{d.title}</div><div className="l2">{d.subtitle}</div></div>
+              <span className="chev"><Icon name="chevron" size={18} /></span>
+            </div>
+          ))}
+        </div>
+        <button type="button" className="btn secondary mt16" onClick={() => setAddOpen(true)}>＋ Добавить документ</button>
+        {addOpen && (
+          <Sheet title="Новый документ" onClose={() => setAddOpen(false)}>
+            <div className="field">
+              <label>Название документа</label>
+              <input value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Напр. Диплом об образовании" />
+            </div>
+            <button className="btn mt12" onClick={() => {
+              if (!newTitle.trim()) return
+              const id = 'd' + Date.now()
+              addDocument({ id, title: newTitle.trim(), subtitle: 'Загружено пользователем', icon: 'doc', status: 'Нет данных', color: '#7B61FF', accent: '#fff', added: new Date().toISOString().slice(0, 10) })
+              setNewTitle('')
+              setAddOpen(false)
+              openDoc(id)
+            }}>Продолжить</button>
+          </Sheet>
+        )}
+      </div>
+    )
   }
 
+  const filtered = govServices.filter((s) => {
+    const inCat = (s.cats || [s.cat]).includes(cat)
+    const qq = q.trim().toLowerCase()
+    const inQ = !qq || s.title.toLowerCase().includes(qq) || (s.subtitle || '').toLowerCase().includes(qq)
+    return inCat && inQ
+  })
+
+  const carousel = documents.slice(0, 3)
+
   return (
-    <div>
-      <div className="card row-between" style={{ marginTop: 8 }}>
-        <div>
-          <span className="egov-badge"><Icon name="shield" size={14} /> eGov + Kaspi</span>
-          <div className="muted mt8" style={{ fontSize: 13 }}>Государственные услуги прямо в приложении</div>
+    <div className="gov-page">
+      <div className="gov-tabs">
+        <button type="button" className={mainTab === 'all' ? 'on' : ''} onClick={() => setMainTab('all')}>Все услуги</button>
+        <button type="button" className={mainTab === 'apps' ? 'on' : ''} onClick={() => setMainTab('apps')}>Мои заявки</button>
+      </div>
+
+      {mainTab === 'apps' ? (
+        <div className="gov-empty">
+          <span className="gov-empty-ic"><Icon name="doc" size={32} /></span>
+          <div className="stub-title" style={{ fontSize: 17 }}>Заявок пока нет</div>
+          <div className="muted" style={{ textAlign: 'center' }}>Здесь появятся ваши обращения в госуслуги</div>
         </div>
-        <span style={{ color: '#2B7DE9' }}><Icon name="gov" size={30} stroke={1.6} /></span>
-      </div>
-
-      <div className="row-between" style={{ marginTop: 22 }}>
-        <div className="section-title" style={{ margin: 0 }}>Цифровые документы</div>
-        <button className="btn secondary small" onClick={() => setAddOpen(true)}>＋ Добавить</button>
-      </div>
-      <div className="doc-grid mt12">
-        {documents.map((d) => (
-          <div className="doc-card" style={{ background: d.color }} key={d.id} onClick={() => openDoc(d.id)}>
-            <div className="dc-top">
-              <Icon name={d.icon} size={24} stroke={1.7} />
-              <span className="dc-status">{d.status}</span>
-            </div>
-            <div>
-              <div style={{ fontWeight: 700, fontSize: 13.5, lineHeight: 1.25 }}>{d.title}</div>
-              <div style={{ fontSize: 11, opacity: 0.9, marginTop: 2 }}>{d.subtitle}</div>
-            </div>
+      ) : (
+        <>
+          <div className="gov-search" role="search">
+            <Icon name="search" size={18} />
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="Поиск по Госуслугам"
+              aria-label="Поиск по Госуслугам"
+            />
           </div>
-        ))}
-      </div>
 
-      <div className="section-title">Услуги и пошлины</div>
-      <div className="rows pad">
-        {govServices.map((s) => (
-          <div className="rowi" key={s.id} onClick={() => setService(s)}>
-            <span className="ic" style={{ background: '#F4F5F7', color: s.color }}><Icon name={s.icon} size={20} /></span>
-            <div className="meta"><div className="l1">{s.title}</div><div className="l2">{s.subtitle}</div></div>
-            <span className="fee" style={{ color: s.fee > 0 ? 'var(--ink)' : 'var(--green)' }}>{s.fee > 0 ? fmt(s.fee) + ' ₸' : 'Бесплатно'}</span>
-            <span className="chev"><Icon name="chevron" size={18} /></span>
+          <div className="gov-docs-scroll">
+            {carousel.map((d) => (
+              <button type="button" className="gov-doc-card" key={d.id} style={{ background: d.color, color: d.accent || '#fff' }} onClick={() => openDoc(d.id)}>
+                <span className="gdc-icon"><Icon name={d.icon} size={34} stroke={1.6} /></span>
+                <span className="gdc-title">{d.title}</span>
+              </button>
+            ))}
           </div>
-        ))}
-      </div>
+          <button type="button" className="gov-all-docs" onClick={() => setAllDocs(true)}>
+            Все документы <Icon name="chevron" size={16} />
+          </button>
 
-      {qrDoc && <DocQR doc={qrDoc} onClose={() => setQrDoc(null)} />}
-
-      {addOpen && (
-        <Sheet title="Новый документ" onClose={() => setAddOpen(false)}>
-          <div className="field">
-            <label>Название документа</label>
-            <input value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Напр. Диплом об образовании" />
+          <div className="gov-cats">
+            {govCategories.map((c) => (
+              <button type="button" key={c.id} className={'gov-cat' + (cat === c.id ? ' on' : '')} onClick={() => setCat(c.id)}>
+                <span className="gc-ic" style={{ color: c.color }}><Icon name={c.icon} size={26} stroke={1.7} /></span>
+                <span className="gc-label">{c.label}</span>
+              </button>
+            ))}
           </div>
-          <button className="btn mt12" onClick={submitDoc}>Продолжить</button>
-        </Sheet>
+
+          <div className="section-title" style={{ marginTop: 18 }}>
+            {cat === 'popular' ? 'Популярные и новые' : govCategories.find((c) => c.id === cat)?.label}
+          </div>
+          <div className="gov-list">
+            {filtered.length === 0 && <div className="hint mt16">Ничего не найдено</div>}
+            {filtered.map((s) => (
+              <button type="button" className="gov-row" key={s.id} onClick={() => setService(s)}>
+                <span className="gr-ic" style={{ color: s.color }}><Icon name={s.icon} size={24} stroke={1.7} /></span>
+                <span className="gr-meta">
+                  <span className="gr-title">
+                    {s.title}
+                    {s.badge && <span className="gr-new">{s.badge}</span>}
+                  </span>
+                  {s.subtitle && <span className="gr-sub">{s.subtitle}</span>}
+                </span>
+                <span className="chev"><Icon name="chevron" size={18} /></span>
+              </button>
+            ))}
+          </div>
+        </>
       )}
 
       {service && (
         <Sheet title={service.title} onClose={() => setService(null)}>
           <div className="rowi" style={{ borderBottom: 'none' }}>
-            <span className="ic" style={{ background: '#F4F5F7', color: service.color }}><Icon name={service.icon} size={20} /></span>
-            <div className="meta"><div className="l1">{service.title}</div><div className="l2">{service.subtitle}</div></div>
+            <span className="ic" style={{ background: '#FDECEA', color: service.color }}><Icon name={service.icon} size={20} /></span>
+            <div className="meta"><div className="l1">{service.title}</div>{service.subtitle && <div className="l2">{service.subtitle}</div>}</div>
           </div>
-          <div className="req-line mt12"><span className="k">{service.fee > 0 ? 'Госпошлина' : 'Стоимость'}</span>
-            <span className="v">{service.fee > 0 ? fmt(service.fee) + ' ₸' : 'Бесплатно'}</span></div>
+          <div className="req-line mt12">
+            <span className="k">{service.fee > 0 ? 'Госпошлина' : 'Стоимость'}</span>
+            <span className="v">{service.fee > 0 ? fmt(service.fee) + ' ₸' : 'Бесплатно'}</span>
+          </div>
           <button className="btn mt16" onClick={() => { alert('Демо: заявление подано (имитация)'); setService(null) }}>
             {service.fee > 0 ? 'Оплатить и подать' : 'Подать заявление'}
           </button>

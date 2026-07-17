@@ -44,6 +44,11 @@ const P = {
   travelbag: <><rect x="6" y="6.5" width="12" height="12.5" rx="2"/><path d="M9.5 6.5V4.8A1.8 1.8 0 0 1 11.3 3h1.4a1.8 1.8 0 0 1 1.8 1.8v1.7"/><path d="M9.7 6.5V19M14.3 6.5V19"/><circle cx="9" cy="20.8" r="1.1"/><circle cx="15" cy="20.8" r="1.1"/></>,
   work: <><rect x="3" y="6.5" width="18" height="12.5" rx="2"/><path d="M8.5 6.5V5A1.5 1.5 0 0 1 10 3.5h4A1.5 1.5 0 0 1 15.5 5v1.5"/><circle cx="13.5" cy="12" r="3"/><path d="M15.7 14.2l3 3"/></>,
   atm: <><path d="M6 3h12a1 1 0 0 1 1 1v16.5l-2.2-1.6-2.3 1.6-2.5-1.6-2.5 1.6-2.3-1.6L5 20.5V4a1 1 0 0 1 1-1z"/><path d="M9 8.5h6M9 12.5h6"/></>,
+  megaphone: <><path d="M4 14v-4l12-5v14L4 14z"/><path d="M8 14v4.5a1.5 1.5 0 0 0 2.7 0.9"/><path d="M16 9.5v5"/></>,
+  doccheck: <><path d="M7 3.5h7.5L18 7v13.5H7z"/><path d="M14.5 3.5V7H18"/><path d="M9.5 13.5l2 2 4-4"/></>,
+  stroller: <><circle cx="9" cy="18" r="2"/><circle cx="16" cy="18" r="2"/><path d="M5 8h7l3 7H8.5z"/><path d="M12 8V5.5A2.5 2.5 0 0 1 14.5 3"/><path d="M5 8l-1.5 3"/></>,
+  selfemp: <><circle cx="9" cy="8" r="2.8"/><path d="M4.5 18c0-2.8 2-4.5 4.5-4.5"/><rect x="12" y="11" width="8.5" height="7" rx="1.5"/><path d="M12 13.5h8.5"/><circle cx="17.5" cy="16" r="0.9"/></>,
+  homesearch: <><path d="M3.5 11l7-5.5 7 5.5"/><path d="M5.5 10v8h5"/><circle cx="15.5" cy="15.5" r="3"/><path d="M17.7 17.7L20.2 20.2"/></>,
 }
 
 export default function Icon({ name, size = 22, stroke = 1.8, className = '', style }) {

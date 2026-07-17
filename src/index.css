@@ -400,6 +400,88 @@ svg { display: block; }
 .btn-black { width: 100%; padding: 15px; border-radius: 14px; font-weight: 700; font-size: 15px; background: #1B1C1E; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .btn-black:active { background: #000; }
 
+/* ---- Госуслуги (как в приложении Kaspi) ---- */
+.gov-page { padding-top: 2px; }
+.gov-tabs {
+  display: flex; background: #F1F2F4; border-radius: 12px; padding: 3px; margin-bottom: 14px;
+}
+.gov-tabs button {
+  flex: 1; padding: 10px 8px; border-radius: 10px; font-weight: 600; font-size: 14.5px; color: #6E7076;
+}
+.gov-tabs button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.gov-search {
+  display: flex; align-items: center; gap: 10px;
+  background: #F1F2F4; border-radius: 12px; padding: 12px 14px; color: var(--muted); margin-bottom: 16px;
+}
+.gov-search input {
+  flex: 1; border: none; outline: none; background: transparent; font-size: 15.5px; color: var(--ink);
+}
+.gov-search input::placeholder { color: #9A9DA3; }
+
+.gov-docs-scroll {
+  display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
+  margin: 0 -16px; padding: 0 16px 4px; -webkit-overflow-scrolling: touch;
+}
+.gov-docs-scroll::-webkit-scrollbar { display: none; }
+.gov-doc-card {
+  flex: 0 0 132px; scroll-snap-align: start;
+  height: 148px; border-radius: 16px; padding: 14px 12px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  text-align: left; box-shadow: var(--shadow);
+}
+.gdc-icon { display: flex; }
+.gdc-title { font-size: 13px; font-weight: 700; line-height: 1.25; letter-spacing: -0.2px; }
+
+.gov-all-docs {
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  width: 100%; margin-top: 12px; padding: 8px; font-weight: 600; font-size: 15px; color: var(--ink);
+}
+.gov-linkback {
+  display: inline-flex; align-items: center; gap: 4px; color: var(--muted); font-weight: 600; font-size: 14px;
+}
+
+.gov-cats {
+  display: flex; gap: 4px; overflow-x: auto; margin: 18px -16px 0; padding: 0 16px 2px;
+}
+.gov-cats::-webkit-scrollbar { display: none; }
+.gov-cat {
+  flex: 0 0 auto; min-width: 72px; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 4px 6px 8px; color: var(--ink);
+}
+.gov-cat .gc-ic {
+  width: 52px; height: 52px; border-radius: 50%; background: #F4F5F7;
+  display: flex; align-items: center; justify-content: center;
+}
+.gov-cat .gc-label { font-size: 12px; font-weight: 600; white-space: nowrap; }
+.gov-cat.on .gc-label { color: var(--red); }
+.gov-cat.on { border-bottom: 2px solid var(--red); border-radius: 0; }
+
+.gov-list { margin-top: 4px; }
+.gov-row {
+  width: 100%; display: flex; align-items: center; gap: 14px;
+  padding: 14px 0; border-bottom: 1px solid var(--line); text-align: left; color: var(--ink);
+}
+.gov-row:last-child { border-bottom: none; }
+.gr-ic { flex: 0 0 auto; display: flex; }
+.gr-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.gr-title { font-weight: 600; font-size: 15.5px; letter-spacing: -0.2px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.gr-sub { font-size: 12.5px; color: var(--muted); line-height: 1.3; }
+.gr-new {
+  display: inline-block; background: var(--red); color: #fff;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.4px;
+  padding: 2px 6px; border-radius: 5px; line-height: 1.2;
+}
+
+.gov-empty {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: 56px 20px 40px;
+}
+.gov-empty-ic {
+  width: 72px; height: 72px; border-radius: 22px; background: var(--inset);
+  color: var(--muted); display: flex; align-items: center; justify-content: center;
+}
+
 /* ---- QR screen ---- */
 .qr-screen { display: flex; flex-direction: column; align-items: center; padding-top: 24px; }
 .qr-frame { width: 240px; height: 240px; border-radius: 20px; border: 2px solid var(--red); padding: 12px; display: flex; align-items: center; justify-content: center; }

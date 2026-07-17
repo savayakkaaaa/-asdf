@@ -78,18 +78,30 @@ export const budgetCategories = [
 ]
 
 export const initialDocuments = [
-  { id: 'd1', title: 'Удостоверение личности', subtitle: 'ИИН 000000000000', icon: 'id', status: 'Действителен', color: '#2B7DE9', added: '2026-05-01' },
-  { id: 'd2', title: 'Водительское удостоверение', subtitle: 'Категория B', icon: 'car', status: 'Действителен', color: '#33B36B', added: '2026-05-01' },
-  { id: 'd3', title: 'Свидетельство о браке', subtitle: '№ AB-1122', icon: 'marriage', status: 'Действителен', color: '#E84393', added: '2026-06-10' },
+  { id: 'd1', title: 'Удостоверение личности', subtitle: 'ИИН 000000000000', icon: 'id', status: 'Действителен', color: '#F4F5F7', accent: '#1F2124', added: '2026-05-01' },
+  { id: 'd2', title: 'Паспорт гражданина РК', subtitle: 'Серия N 0000000', icon: 'passport', status: 'Действителен', color: '#1E4FA3', accent: '#fff', added: '2026-05-01' },
+  { id: 'd3', title: 'Социальный кошелёк', subtitle: 'Цифровая карта', icon: 'wallet', status: 'Действителен', color: '#F5C518', accent: '#1F2124', added: '2026-06-10' },
+  { id: 'd4', title: 'Водительское удостоверение', subtitle: 'Категория B', icon: 'car', status: 'Действителен', color: '#33B36B', accent: '#fff', added: '2026-05-01' },
+]
+
+export const govCategories = [
+  { id: 'popular', label: 'Популярные', icon: 'megaphone', color: '#F14635' },
+  { id: 'certs', label: 'Справки', icon: 'doccheck', color: '#33B36B' },
+  { id: 'auto', label: 'Авто', icon: 'car', color: '#F14635' },
+  { id: 'home', label: 'Жилье', icon: 'home', color: '#2B7DE9' },
+  { id: 'family', label: 'Семья', icon: 'stroller', color: '#2B7DE9' },
 ]
 
 export const govServices = [
-  { id: 'g1', title: 'Справка о несудимости', subtitle: 'Готовность: 15 минут', fee: 0, icon: 'doc', color: '#2B7DE9' },
-  { id: 'g2', title: 'Адресная справка', subtitle: 'Готовность: мгновенно', fee: 0, icon: 'home', color: '#33B36B' },
-  { id: 'g3', title: 'Регистрация ИП', subtitle: 'Госпошлина', fee: 0, icon: 'briefcase', color: '#7B61FF' },
-  { id: 'g4', title: 'Замена водительского удостоверения', subtitle: 'Госпошлина', fee: 12604, icon: 'car', color: '#FF8A00' },
-  { id: 'g5', title: 'Оформление загранпаспорта', subtitle: 'Госпошлина', fee: 22344, icon: 'passport', color: '#F14635' },
-  { id: 'g6', title: 'Пособие на ребёнка', subtitle: 'Подача заявления', fee: 0, icon: 'baby', color: '#E84393' },
+  { id: 'g1', title: 'Стать самозанятым', subtitle: 'Открыть счет и начать принимать оплату в Kaspi.kz', fee: 0, icon: 'selfemp', color: '#F14635', cat: 'popular' },
+  { id: 'g2', title: 'Переоформление автомобиля', subtitle: '', fee: 0, icon: 'car', color: '#F14635', cat: 'popular', cats: ['popular', 'auto'] },
+  { id: 'g3', title: 'Проверка прописки', subtitle: '', fee: 0, icon: 'homesearch', color: '#F14635', cat: 'popular', cats: ['popular', 'home'], badge: 'NEW' },
+  { id: 'g4', title: 'Прописка', subtitle: '', fee: 0, icon: 'home', color: '#F14635', cat: 'popular', cats: ['popular', 'home'] },
+  { id: 'g5', title: 'Справка о несудимости', subtitle: 'Готовность: 15 минут', fee: 0, icon: 'doccheck', color: '#33B36B', cat: 'certs' },
+  { id: 'g6', title: 'Адресная справка', subtitle: 'Готовность: мгновенно', fee: 0, icon: 'doc', color: '#33B36B', cat: 'certs' },
+  { id: 'g7', title: 'Замена водительского удостоверения', subtitle: 'Госпошлина', fee: 12604, icon: 'car', color: '#F14635', cat: 'auto' },
+  { id: 'g8', title: 'Пособие на ребёнка', subtitle: 'Подача заявления', fee: 0, icon: 'baby', color: '#2B7DE9', cat: 'family' },
+  { id: 'g9', title: 'Свидетельство о браке', subtitle: 'Цифровая копия', fee: 0, icon: 'marriage', color: '#2B7DE9', cat: 'family' },
 ]
 
 // Плитки лаунчера на главной (как в приложении Kaspi)
