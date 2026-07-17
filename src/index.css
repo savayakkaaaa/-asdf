@@ -35,21 +35,18 @@ svg { display: block; }
 /* ---------- Shell ---------- */
 .app { min-height: 100vh; display: flex; justify-content: center; }
 .shell {
-  width: 100%; max-width: var(--maxw); min-height: 100vh;
+  width: 100%; max-width: var(--maxw); min-height: 100vh; min-height: 100dvh;
   background: var(--bg); position: relative; display: flex; flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px);
 }
-.demo-banner {
-  background: #2B2D31; color: #D6D8DC; font-size: 11px; letter-spacing: 0.1px;
-  text-align: center; padding: 5px 12px;
-}
-.content { flex: 1; padding: 6px 16px calc(var(--nav-h) + 28px); }
+.content { flex: 1; padding: 6px 16px calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 28px); }
 .content.no-nav { padding-bottom: 28px; }
 
 /* ---------- Top bar ---------- */
-.topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 6px; }
+.topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 6px; gap: 8px; }
 .topbar .hi { font-size: 13px; color: var(--muted); }
 .topbar .name { font-size: 19px; font-weight: 700; letter-spacing: -0.2px; }
-.topbar-actions { display: flex; align-items: center; gap: 8px; }
+.topbar-actions { display: flex; align-items: center; gap: 8px; min-width: 36px; }
 .icon-btn {
   width: 40px; height: 40px; border-radius: 50%; background: var(--surface);
   display: flex; align-items: center; justify-content: center; color: var(--ink); box-shadow: var(--shadow);
@@ -169,12 +166,16 @@ svg { display: block; }
 /* ---------- Bottom nav (Kaspi-style, center QR) ---------- */
 .bottom-nav {
   position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-  width: 100%; max-width: var(--maxw); height: var(--nav-h);
+  width: 100%; max-width: var(--maxw);
+  height: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
   background: rgba(255,255,255,0.94); backdrop-filter: blur(12px);
-  border-top: 1px solid var(--line); display: flex; align-items: center; z-index: 30;
-  padding-bottom: env(safe-area-inset-bottom);
+  border-top: 1px solid var(--line); display: flex; align-items: flex-start; z-index: 30;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-.bottom-nav button { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #9A9DA3; font-size: 12px; font-weight: 500; height: 100%; }
+.bottom-nav button {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; color: #9A9DA3; font-size: 12px; font-weight: 500; height: var(--nav-h); flex-shrink: 0;
+}
 .bottom-nav button.active { color: var(--red); }
 
 /* ---------- Sheet ---------- */
@@ -228,7 +229,7 @@ svg { display: block; }
 
 /* Top bar refinements */
 .topbar { padding: 12px 14px 8px; min-height: 56px; }
-.topbar-title { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; }
+.topbar-title { flex: 1; text-align: center; font-size: 17px; font-weight: 700; letter-spacing: -0.2px; }
 .brand { display: flex; align-items: center; }
 .kaspi-logo { width: 36px; height: 36px; border-radius: 50%; background: var(--red); color: #fff; display: flex; align-items: center; justify-content: center; }
 .back-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--ink); }

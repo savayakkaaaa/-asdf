@@ -44,13 +44,10 @@ export default function App() {
 
   const isBottom = BOTTOM.some((b) => b.key === view)
   const showBack = !isBottom
-  const initials = demoUser.name.split(' ').map((s) => s[0]).slice(0, 2).join('')
 
   return (
     <div className="app">
       <div className="shell">
-        <div className="demo-banner">Демо-прототип по ТЗ · не связан с Kaspi Bank · данные вымышленные</div>
-
         <div className="with-sidebar">
           {/* Desktop sidebar */}
           <nav className="sidebar">
@@ -63,21 +60,15 @@ export default function App() {
           </nav>
 
           <div>
-            {/* Top bar */}
-            <header className="topbar">
-              {showBack ? (
+            {showBack && (
+              <header className="topbar">
                 <button className="back-btn" onClick={() => setView('home')} aria-label="Назад">
                   <Icon name="chevron" size={22} style={{ transform: 'scaleX(-1)' }} />
                 </button>
-              ) : (
-                <div className="brand"><span className="kaspi-logo"><Icon name="user" size={20} stroke={2} /></span></div>
-              )}
-              <div className="topbar-title">{showBack ? TITLES[view] || '' : ''}</div>
-              <div className="topbar-actions">
-                {!showBack && <button className="icon-btn" aria-label="Уведомления"><Icon name="bell" size={20} /></button>}
-                <div className="avatar" onClick={() => setView('services')}>{initials}</div>
-              </div>
-            </header>
+                <div className="topbar-title">{TITLES[view] || ''}</div>
+                <div className="topbar-actions" />
+              </header>
+            )}
 
             <main className={'content' + (isBottom ? '' : ' no-nav')}>
               {view === 'home' && <Home onNavigate={setView} />}
