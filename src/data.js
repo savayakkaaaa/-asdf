@@ -96,7 +96,7 @@ export const govServices = [
 export const homeGrid = [
   { key: 'shop', label: 'Магазин', icon: 'cart', badge: '0·0·24' },
   { key: 'bank', label: 'Мой Банк', icon: 'bank' },
-  { key: 'payments', label: 'Платежи', icon: 'payments' },
+  { key: 'payments', label: 'Платежи', icon: 'atm' },
   { key: 'transfers', label: 'Переводы', icon: 'transfer' },
   { key: 'magnum', label: 'Magnum', icon: 'magnum' },
   { key: 'travel', label: 'Travel', icon: 'travelbag', badge: '0·0·24' },
@@ -119,7 +119,7 @@ export const productShortcuts = [
   { id: 's1', badge: '0·0·24', badgeBg: '#FFC508', badgeColor: '#1F2124', name: 'Рассрочка 0-0-24', sub: '' },
   { id: 's2', badge: '0·0·12', badgeBg: '#FFC508', badgeColor: '#1F2124', name: 'Рассрочка 0-0-12', sub: '' },
   { id: 's3', badge: 'Red+', badgeBg: '#F14635', badgeColor: '#fff', name: 'Kaspi Red+', sub: 'Рассрочка до 500 000 ₸' },
-  { id: 's4', badge: 'credit', badgeBg: '#42B657', badgeColor: '#fff', name: 'Кредит', sub: 'до 5 млн ₸', badgeIcon: true },
+  { id: 's4', badge: '₸', badgeBg: '#42B657', badgeColor: '#fff', name: 'Кредит', sub: 'до 5 млн ₸' },
 ]
 
 export const initialRequisites = [

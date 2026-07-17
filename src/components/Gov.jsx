@@ -35,20 +35,53 @@ const REQ_FIELDS = [
 ]
 
 function DocDetail({ doc, onClose, onSave }) {
-  const [tab, setTab] = useState('req')
+  const [tab, setTab] = useState(doc.fileData || doc.file ? 'doc' : 'req')
   const [file, setFile] = useState(doc.file || '')
+  const [fileData, setFileData] = useState(doc.fileData || '')
   const [f, setF] = useState(doc.req || { fio: '', iin: '', birth: '', num: '', issued: '', expires: '' })
   const hasData = Object.values(doc.req || {}).some((v) => v)
   const [editing, setEditing] = useState(!hasData)
   const [copied, setCopied] = useState('')
+  const [savedOk, setSavedOk] = useState(false)
+  const [reading, setReading] = useState(false)
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value })
 
+  const onPickFile = (e) => {
+    const picked = e.target.files?.[0]
+    if (!picked) return
+    setFile(picked.name)
+    setSavedOk(false)
+    if (picked.type.startsWith('image/')) {
+      setReading(true)
+      const reader = new FileReader()
+      reader.onload = () => {
+        setFileData(String(reader.result || ''))
+        setReading(false)
+      }
+      reader.onerror = () => {
+        setFileData('')
+        setReading(false)
+      }
+      reader.readAsDataURL(picked)
+    } else {
+      setFileData('')
+      setReading(false)
+    }
+  }
+
   const save = () => {
-    onSave({ file, req: f, status: 'На проверке' })
+    onSave({
+      file,
+      fileData: fileData || undefined,
+      req: f,
+      status: file || hasData || Object.values(f).some(Boolean) ? 'На проверке' : doc.status,
+    })
     setEditing(false)
+    setSavedOk(true)
   }
 
   const copy = (k, v) => {
+    if (!v) return
     navigator.clipboard?.writeText(v).then(() => {
       setCopied(k)
       setTimeout(() => setCopied(''), 1200)
@@ -70,19 +103,36 @@ function DocDetail({ doc, onClose, onSave }) {
       </div>
 
       <div className="segmented">
-        <button className={tab === 'doc' ? 'on' : ''} onClick={() => setTab('doc')}>Документ</button>
-        <button className={tab === 'req' ? 'on' : ''} onClick={() => setTab('req')}>Реквизиты</button>
+        <button type="button" className={tab === 'doc' ? 'on' : ''} onClick={() => setTab('doc')}>Документ</button>
+        <button type="button" className={tab === 'req' ? 'on' : ''} onClick={() => setTab('req')}>Реквизиты</button>
       </div>
 
       {tab === 'doc' ? (
         <div className="doc-body">
+          {fileData ? (
+            <div className="doc-preview">
+              <img src={fileData} alt={file || 'Документ'} />
+            </div>
+          ) : file ? (
+            <div className="doc-file-card">
+              <Icon name="doc" size={28} />
+              <div>
+                <div className="l1">{file}</div>
+                <div className="l2">Файл выбран</div>
+              </div>
+            </div>
+          ) : null}
+
           <label className="filepick">
-            <span className="choose">Choose File</span>
-            <span className="fname">{file || 'no file selected'}</span>
-            <input type="file" onChange={(e) => setFile(e.target.files?.[0]?.name || '')} />
+            <span className="choose">{file ? 'Заменить файл' : 'Выбрать файл'}</span>
+            <span className="fname">{file || 'файл не выбран'}</span>
+            <input type="file" accept="image/*,.pdf" onChange={onPickFile} />
           </label>
-          <div className="hint mt16">Демо: файл не загружается на сервер.</div>
-          <button className="btn-black mt16" onClick={save}>Сохранить <Icon name="check" size={16} /></button>
+          <div className="hint mt16">Демо: файл хранится только в этом браузере.</div>
+          <button type="button" className="btn-black mt16" onClick={save} disabled={reading || (!file && !fileData)}>
+            {reading ? 'Загрузка…' : <>Сохранить <Icon name="check" size={16} /></>}
+          </button>
+          {savedOk && <div className="hint mt12" style={{ color: 'var(--green)' }}>Сохранено</div>}
         </div>
       ) : editing ? (
         <div className="doc-body">
@@ -99,7 +149,8 @@ function DocDetail({ doc, onClose, onSave }) {
               </div>
             )
           )}
-          <button className="btn-black mt16" onClick={save}>Сохранить <span style={{ fontSize: 17 }}>→</span></button>
+          <button type="button" className="btn-black mt16" onClick={save}>Сохранить <span style={{ fontSize: 17 }}>→</span></button>
+          {savedOk && <div className="hint mt12" style={{ color: 'var(--green)' }}>Сохранено</div>}
         </div>
       ) : (
         <div className="doc-body">
@@ -110,6 +161,7 @@ function DocDetail({ doc, onClose, onSave }) {
                 <div className="rv-v">{f[k] || '—'}</div>
               </div>
               <button
+                type="button"
                 className={'rv-copy' + (copied === k ? ' done' : '')}
                 onClick={() => copy(k, f[k])}
                 aria-label={'Копировать: ' + label}
@@ -118,9 +170,9 @@ function DocDetail({ doc, onClose, onSave }) {
               </button>
             </div>
           ))}
-          <button className="btn ghost small mt12" onClick={() => setEditing(true)}>Изменить</button>
+          <button type="button" className="btn ghost small mt12" onClick={() => setEditing(true)}>Изменить</button>
           <div className="doc-foot">
-            <button className="btn-blue" onClick={shareAll}>
+            <button type="button" className="btn-blue" onClick={shareAll}>
               <Icon name="share" size={18} /> Отправить реквизиты
             </button>
           </div>
@@ -161,8 +213,16 @@ export default function Gov({ documents, addDocument, updateDocument }) {
 
   if (loadingDoc) return <EgovSplash />
   if (detail) {
-    const doc = documents.find((d) => d.id === detail) || detail
-    return <DocDetail doc={doc} onClose={() => setDetail(null)} onSave={(patch) => updateDocument(doc.id, patch)} />
+    const doc = documents.find((d) => d.id === detail)
+    if (!doc) return null
+    return (
+      <DocDetail
+        key={doc.id}
+        doc={doc}
+        onClose={() => setDetail(null)}
+        onSave={(patch) => updateDocument(doc.id, patch)}
+      />
+    )
   }
 
   const submitDoc = () => {

@@ -25,7 +25,15 @@ export const save = (key, value) => {
   try {
     localStorage.setItem(NS + key, JSON.stringify(value))
   } catch {
-    /* ignore quota / private mode */
+    // Часто падает из‑за больших фото в документах — сохраняем без fileData
+    try {
+      if (key === 'documents' && Array.isArray(value)) {
+        const slim = value.map(({ fileData, ...rest }) => rest)
+        localStorage.setItem(NS + key, JSON.stringify(slim))
+      }
+    } catch {
+      /* ignore quota / private mode */
+    }
   }
 }
 
