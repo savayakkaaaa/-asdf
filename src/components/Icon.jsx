@@ -40,6 +40,9 @@ const P = {
   card: <><rect x="2.5" y="6" width="19" height="13" rx="2.5"/><path d="M2.5 10h19"/></>,
   search: <><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></>,
   share: <><path d="M12 15V4M12 4l-4 4M12 4l4 4"/><path d="M5 12v7a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 19v-7"/></>,
+  camera: <><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8 7l1.4-2.4A1.3 1.3 0 0 1 10.5 4h3a1.3 1.3 0 0 1 1.1.6L16 7"/><circle cx="12" cy="13" r="3.5"/></>,
+  travelbag: <><rect x="4" y="8" width="16" height="12" rx="2.5"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/><path d="M4 13h16"/></>,
+  work: <><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7"/><circle cx="14.5" cy="13" r="2.6"/><path d="M16.4 14.9L19 17.5"/></>,
   atm: <><rect x="4" y="3" width="16" height="18" rx="2"/><rect x="7" y="6" width="10" height="5" rx="1"/><path d="M8 15h3M8 18h3M15 15h1M15 18h1"/></>,
 }
 

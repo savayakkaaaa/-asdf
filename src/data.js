@@ -94,26 +94,40 @@ export const govServices = [
 
 // Плитки лаунчера на главной (как в приложении Kaspi)
 export const homeGrid = [
-  { key: 'qr', label: 'Kaspi QR', icon: 'qr' },
+  { key: 'shop', label: 'Магазин', icon: 'cart', badge: '0·0·24' },
   { key: 'bank', label: 'Мой Банк', icon: 'bank' },
   { key: 'payments', label: 'Платежи', icon: 'atm' },
   { key: 'transfers', label: 'Переводы', icon: 'transfer' },
-  { key: 'shop', label: 'Магазин', icon: 'cart' },
-  { key: 'travel', label: 'Travel', icon: 'plane' },
+  { key: 'magnum', label: 'Magnum', icon: 'magnum' },
+  { key: 'travel', label: 'Travel', icon: 'travelbag', badge: '0·0·24' },
   { key: 'gov', label: 'Госуслуги', icon: 'gov' },
-  { key: 'ads', label: 'Объявления', icon: 'ads' },
+  { key: 'jobs', label: 'Работа', icon: 'work' },
 ]
 
-export const promoBanners = [
-  { id: 'p1', title: 'Мебель', terms: '0·0·12', sub: 'с 13 по 30 июля на Kaspi.kz и с Kaspi QR', bg: '#F4EDE3' },
-  { id: 'p2', title: 'Техника', terms: '0·0·24', sub: 'с 10 по 31 июля на Kaspi.kz и с Kaspi QR', bg: '#E7EEF5' },
-  { id: 'p3', title: 'Аптеки', terms: '0·0·6', sub: 'на всё для здоровья с Kaspi Red', bg: '#EAF3EC' },
+// Мини-плитки внутри баннера Magnum (категория + скидка + цвет фона)
+export const magnumTiles = [
+  { cat: 'Напитки', off: '−35%', bg: '#CDEB8B' },
+  { cat: 'Красота', off: '−52%', bg: '#F6C8DF' },
+  { cat: 'Химия', off: '−45%', bg: '#BFE3F2' },
+  { cat: 'Сладости', off: '−31%', bg: '#F8E3A0' },
+  { cat: 'Соусы', off: '−42%', bg: '#F5C9A8' },
+  { cat: 'Детство', off: '−48%', bg: '#CBD8F6' },
 ]
 
-export const productCards = [
-  { id: 'pr1', badge: 'RED', name: 'Kaspi Red', sub: 'Рассрочка 0%', variant: 'white' },
-  { id: 'pr2', name: 'Kaspi Депозит', sub: 'Эффективная ставка 14%', variant: 'gold' },
-  { id: 'pr3', name: 'Kaspi Gold', sub: 'Дебетовая карта', variant: 'gold' },
+// Быстрые продукты (2 колонки, как в приложении)
+export const productShortcuts = [
+  { id: 's1', badge: '0·0·24', badgeBg: '#FFC508', badgeColor: '#1F2124', name: 'Рассрочка 0-0-24', sub: '' },
+  { id: 's2', badge: '0·0·12', badgeBg: '#FFC508', badgeColor: '#1F2124', name: 'Рассрочка 0-0-12', sub: '' },
+  { id: 's3', badge: 'Red+', badgeBg: '#F14635', badgeColor: '#fff', name: 'Kaspi Red+', sub: 'Рассрочка до 500 000 ₸' },
+  { id: 's4', badge: '₸', badgeBg: '#42B657', badgeColor: '#fff', name: 'Кредит', sub: 'до 5 млн ₸' },
+]
+
+// «Вы недавно смотрели»
+export const recentItems = [
+  { id: 'v1', name: 'Веер ручной, розовый', price: 650, bonus: 71, rating: 4.4, votes: 5, art: 'fan', tint: '#F7D9E4' },
+  { id: 'v2', name: 'NG Веер деревянный', price: 999, bonus: 0, rating: 4.8, votes: 17, art: 'fan', tint: '#CBDDF3' },
+  { id: 'v3', name: '714337 веер 1 шт', price: 795, bonus: 0, rating: 5.0, votes: 6, art: 'fan', tint: '#EFE9DC' },
+  { id: 'v4', name: 'Huawei Watch Fit', price: 16890, bonus: 506, rating: 5.0, votes: 214, art: 'watch', tint: '#DDE4EC' },
 ]
 
 export const initialRequisites = [

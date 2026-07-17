@@ -19,7 +19,7 @@ const BOTTOM = [
 ]
 const TITLES = {
   bank: 'Мой Банк', gov: 'Госуслуги', payments: 'Платежи', transfers: 'Переводы',
-  shop: 'Магазин', travel: 'Kaspi Travel', ads: 'Объявления',
+  shop: 'Магазин', travel: 'Kaspi Travel', ads: 'Объявления', magnum: 'Magnum', jobs: 'Работа',
 }
 
 export default function App() {
@@ -91,6 +91,8 @@ export default function App() {
               {view === 'shop' && <Stub icon="cart" title="Магазин" text="Каталог товаров в рассрочку 0-0-24 (демо)." />}
               {view === 'travel' && <Stub icon="plane" title="Kaspi Travel" text="Авиабилеты, ЖД и отели (демо)." />}
               {view === 'ads' && <Stub icon="ads" title="Объявления" text="Частные объявления Kaspi (демо)." />}
+              {view === 'magnum' && <Stub icon="cart" title="Magnum" text="Продукты питания со скидками до −48% и бесплатной доставкой (демо)." />}
+              {view === 'jobs' && <Stub icon="work" title="Работа" text="Поиск вакансий рядом с вами (демо)." />}
             </main>
           </div>
         </div>
