@@ -49,6 +49,7 @@ function DocDetail({ doc, onClose, onSave }) {
   const [reading, setReading] = useState(false)
   const [showQr, setShowQr] = useState(false)
   const [qr, setQr] = useState('')
+  const [speakCode, setSpeakCode] = useState('')
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value })
 
   const hasDoc = Boolean(viewUrl)
@@ -72,7 +73,9 @@ function DocDetail({ doc, onClose, onSave }) {
 
   useEffect(() => {
     if (!showQr) return
-    makeQR(`kaspi-demo://document/${doc.id}`).then(setQr)
+    const code = String(Math.floor(100000 + Math.random() * 900000))
+    setSpeakCode(code)
+    makeQR(`kaspi-demo://document/${doc.id}?code=${code}`).then(setQr)
   }, [showQr, doc.id])
 
   const persistMeta = (name, kind) => {
@@ -168,7 +171,7 @@ function DocDetail({ doc, onClose, onSave }) {
 
   return (
     <div className="doc-screen">
-      <div className="segmented sm">
+      <div className="segmented">
         <button type="button" className={tab === 'doc' ? 'on' : ''} onClick={() => setTab('doc')}>Документ</button>
         <button type="button" className={tab === 'req' ? 'on' : ''} onClick={() => setTab('req')}>Реквизиты</button>
       </div>
@@ -216,9 +219,13 @@ function DocDetail({ doc, onClose, onSave }) {
 
           {showQr && (
             <Sheet title="Предъявить документ" onClose={() => setShowQr(false)}>
-              <div className="qr-box">{qr ? <img src={qr} alt="QR" /> : <div className="muted">Генерация…</div>}</div>
-              <div className="hint">Покажите QR для подтверждения документа</div>
-              <div className="hint mt12">Демо-документ. Не является действительным удостоверением.</div>
+              <div className="present-doc">
+                <div className="present-title">{doc.title}</div>
+                <div className="qr-box">{qr ? <img src={qr} alt="QR" /> : <div className="muted">Генерация…</div>}</div>
+                <div className="present-hint">Покажите QR-код сотруднику</div>
+                <div className="present-or">или скажите код</div>
+                <div className="present-code">{speakCode}</div>
+              </div>
             </Sheet>
           )}
         </div>
