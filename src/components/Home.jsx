@@ -4,12 +4,18 @@ import { homeGrid, promoBanners, productCards } from '../data.js'
 export default function Home({ onNavigate }) {
   return (
     <div className="home">
+      {/* Поиск */}
+      <div className="search-bar" role="search">
+        <Icon name="search" size={18} />
+        <span>Поиск по Kaspi.kz</span>
+      </div>
+
       {/* Промо-баннеры (рассрочка) */}
       <div className="promo-scroll">
         {promoBanners.map((b) => (
           <div className="promo" key={b.id} style={{ background: b.bg }}>
-            <div className="promo-terms">{b.terms}</div>
             <div className="promo-title">{b.title}</div>
+            <div className="promo-terms">{b.terms}</div>
             <div className="promo-sub">{b.sub}</div>
           </div>
         ))}

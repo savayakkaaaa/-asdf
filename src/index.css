@@ -234,18 +234,29 @@ svg { display: block; }
 
 /* ---- Home launcher ---- */
 .home { padding-top: 4px; }
+/* ---- Поиск (как в приложении) ---- */
+.search-bar {
+  display: flex; align-items: center; gap: 9px;
+  background: #F1F2F4; border-radius: 12px; padding: 11px 13px;
+  color: var(--muted); font-size: 15px; margin: 4px 0 12px;
+}
+
 .promo-scroll { display: flex; gap: 10px; overflow-x: auto; margin: 0 -16px; padding: 4px 16px 10px; scroll-snap-type: x mandatory; }
 .promo-scroll::-webkit-scrollbar { display: none; }
-.promo { flex: 0 0 46%; scroll-snap-align: start; border-radius: 16px; padding: 12px 14px; min-height: 92px; display: flex; flex-direction: column; justify-content: flex-end; }
-.promo-terms { font-size: 20px; font-weight: 800; color: var(--red); letter-spacing: -0.5px; }
-.promo-title { font-weight: 700; font-size: 14px; margin-top: 2px; }
-.promo-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.promo { flex: 0 0 46%; scroll-snap-align: start; border-radius: 16px; padding: 12px 14px; min-height: 108px; display: flex; flex-direction: column; align-items: flex-start; }
+.promo-title { font-weight: 700; font-size: 14px; }
+.promo-terms {
+  font-size: 17px; font-weight: 800; color: var(--red); letter-spacing: 0.5px;
+  background: #fff; border-radius: 8px; padding: 3px 9px; margin-top: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+}
+.promo-sub { font-size: 10.5px; color: #6E7076; margin-top: 7px; line-height: 1.35; }
 
 .grid8 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px 4px; margin-top: 6px; }
 .grid-tile { display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 12px 2px; color: var(--ink); }
-.gt-icon { width: 50px; height: 50px; border-radius: 16px; background: var(--inset); color: var(--red); display: flex; align-items: center; justify-content: center; }
+.gt-icon { width: 44px; height: 44px; border-radius: 14px; color: var(--red); display: flex; align-items: center; justify-content: center; }
 .grid-tile:active .gt-icon { background: #FDECEA; }
-.gt-label { font-size: 11.5px; font-weight: 600; }
+.gt-label { font-size: 12px; font-weight: 500; color: #2A2C30; }
 
 .merchant { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding: 12px 14px; border-radius: 16px; box-shadow: var(--shadow); }
 .merchant-logo { width: 42px; height: 42px; border-radius: 50%; background: var(--red); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; }
@@ -291,10 +302,43 @@ svg { display: block; }
 .segmented button { flex: 1; padding: 9px; border-radius: 9px; font-weight: 600; font-size: 14px; color: var(--muted); }
 .segmented button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 .doc-body { padding-bottom: 10px; }
-.uline { margin-bottom: 20px; }
-.uline label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-.uline input { width: 100%; border: none; border-bottom: 1.5px solid var(--line); padding: 6px 0; font-size: 16px; outline: none; background: transparent; }
-.uline input:focus { border-bottom-color: var(--ink); }
+/* Outlined-поле: подпись сидит на рамке (как в видео) */
+.outl { position: relative; margin-bottom: 18px; }
+.outl label {
+  position: absolute; top: -7px; left: 12px; background: #fff; padding: 0 5px;
+  font-size: 11.5px; color: #4A4D52; z-index: 1;
+}
+.outl input {
+  width: 100%; border: 1.5px solid #C9CBD0; border-radius: 10px;
+  padding: 13px 12px; font-size: 16px; outline: none; background: #fff; color: var(--ink);
+}
+.outl input:focus { border-color: var(--ink); }
+
+/* Дата как в видео: подпись + значение текстом, редактируется по тапу */
+.dateline { margin-bottom: 18px; }
+.dateline label { display: block; font-size: 14.5px; color: var(--ink); font-weight: 600; }
+.dateline input {
+  border: none; outline: none; background: transparent; padding: 2px 0 0;
+  font-size: 15.5px; color: var(--ink); width: 100%;
+}
+.dateline input::placeholder { color: #6E7076; }
+
+/* Просмотр реквизитов: подпись/значение + копирование */
+.req-view-row { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; }
+.req-view-row .rv-meta { flex: 1; min-width: 0; }
+.req-view-row .rv-k { font-size: 12.5px; color: var(--muted); }
+.req-view-row .rv-v { font-size: 16px; margin-top: 2px; word-break: break-word; }
+.req-view-row .rv-copy { color: #B9BBc0; padding: 6px; margin-top: 4px; border-radius: 8px; }
+.req-view-row .rv-copy:active { background: var(--inset); color: var(--ink); }
+.req-view-row .rv-copy.done { color: var(--green); }
+
+.btn-blue {
+  width: 100%; padding: 14px; border-radius: 14px; font-weight: 600; font-size: 15.5px;
+  background: #fff; color: #2B7DE9; border: 1.5px solid #D7DCE3;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-blue:active { background: #F3F7FD; }
+.doc-foot { position: sticky; bottom: calc(var(--nav-h) + 8px); padding-top: 14px; background: linear-gradient(#ffffff00, #fff 35%); }
 .filepick { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
 .filepick .choose { background: var(--inset); border: 1px solid #DADCE0; border-radius: 8px; padding: 7px 12px; font-size: 13px; color: #2B7DE9; }
 .filepick .fname { color: var(--muted); font-size: 13px; }

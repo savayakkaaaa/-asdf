@@ -38,6 +38,8 @@ const P = {
   chat: <><path d="M20 12a7 7 0 0 1-9.5 6.5L4 20l1.5-5A7 7 0 1 1 20 12z"/><path d="M9 11h6M9 14h4"/></>,
   menu: <><path d="M4 7h16M4 12h16M4 17h16"/></>,
   card: <><rect x="2.5" y="6" width="19" height="13" rx="2.5"/><path d="M2.5 10h19"/></>,
+  search: <><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></>,
+  share: <><path d="M12 15V4M12 4l-4 4M12 4l4 4"/><path d="M5 12v7a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 19v-7"/></>,
   atm: <><rect x="4" y="3" width="16" height="18" rx="2"/><rect x="7" y="6" width="10" height="5" rx="1"/><path d="M8 15h3M8 18h3M15 15h1M15 18h1"/></>,
 }
 

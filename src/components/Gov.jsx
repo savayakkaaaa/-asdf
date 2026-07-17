@@ -23,14 +23,42 @@ function EgovSplash({ onClose }) {
   )
 }
 
-/* Документ: вкладки Документ / Реквизиты */
+/* Документ: вкладки Документ / Реквизиты (как в видео) */
+const REQ_FIELDS = [
+  { k: 'fio', label: 'ФИО', kind: 'text' },
+  { k: 'iin', label: 'ИИН', kind: 'text', numeric: true },
+  { k: 'birth', label: 'Дата рождения', kind: 'date' },
+  { k: 'num', label: 'Номер документа', kind: 'text' },
+  { k: 'issued', label: 'Дата выдачи', kind: 'date' },
+  { k: 'expires', label: 'Срок действия', kind: 'date' },
+]
+
 function DocDetail({ doc, onClose, onSave }) {
   const [tab, setTab] = useState('req')
   const [file, setFile] = useState(doc.file || '')
   const [f, setF] = useState(doc.req || { fio: '', iin: '', birth: '', num: '', issued: '', expires: '' })
+  const hasData = Object.values(doc.req || {}).some((v) => v)
+  const [editing, setEditing] = useState(!hasData)
+  const [copied, setCopied] = useState('')
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value })
 
-  const save = () => { onSave({ file, req: f, status: 'На проверке' }); onClose() }
+  const save = () => {
+    onSave({ file, req: f, status: 'На проверке' })
+    setEditing(false)
+  }
+
+  const copy = (k, v) => {
+    navigator.clipboard?.writeText(v).then(() => {
+      setCopied(k)
+      setTimeout(() => setCopied(''), 1200)
+    }).catch(() => {})
+  }
+
+  const shareAll = () => {
+    const text = REQ_FIELDS.filter(({ k }) => f[k]).map(({ k, label }) => `${label}: ${f[k]}`).join('\n')
+    if (navigator.share) navigator.share({ title: doc.title, text }).catch(() => {})
+    else { navigator.clipboard?.writeText(text).catch(() => {}); alert('Реквизиты скопированы (демо)') }
+  }
 
   return (
     <div className="doc-screen">
@@ -55,15 +83,46 @@ function DocDetail({ doc, onClose, onSave }) {
           <div className="hint mt16">Демо: файл не загружается на сервер.</div>
           <button className="btn-black mt16" onClick={save}>Сохранить <Icon name="check" size={16} /></button>
         </div>
+      ) : editing ? (
+        <div className="doc-body">
+          {REQ_FIELDS.map(({ k, label, kind, numeric }) =>
+            kind === 'date' ? (
+              <div className="dateline" key={k}>
+                <label>{label}</label>
+                <input value={f[k]} onChange={set(k)} placeholder="dd/mm/yyyy" inputMode="numeric" />
+              </div>
+            ) : (
+              <div className="outl" key={k}>
+                <label>{label}</label>
+                <input value={f[k]} onChange={set(k)} inputMode={numeric ? 'numeric' : undefined} />
+              </div>
+            )
+          )}
+          <button className="btn-black mt16" onClick={save}>Сохранить <span style={{ fontSize: 17 }}>→</span></button>
+        </div>
       ) : (
         <div className="doc-body">
-          <div className="uline"><label>ФИО</label><input value={f.fio} onChange={set('fio')} /></div>
-          <div className="uline"><label>ИИН</label><input value={f.iin} onChange={set('iin')} inputMode="numeric" /></div>
-          <div className="uline"><label>Дата рождения</label><input value={f.birth} onChange={set('birth')} placeholder="dd/mm/yyyy" /></div>
-          <div className="uline"><label>Номер документа</label><input value={f.num} onChange={set('num')} /></div>
-          <div className="uline"><label>Дата выдачи</label><input value={f.issued} onChange={set('issued')} placeholder="dd/mm/yyyy" /></div>
-          <div className="uline"><label>Срок действия</label><input value={f.expires} onChange={set('expires')} placeholder="dd/mm/yyyy" /></div>
-          <button className="btn-black mt16" onClick={save}>Сохранить <span style={{ fontSize: 17 }}>→</span></button>
+          {REQ_FIELDS.map(({ k, label }) => (
+            <div className="req-view-row" key={k}>
+              <div className="rv-meta">
+                <div className="rv-k">{label}</div>
+                <div className="rv-v">{f[k] || '—'}</div>
+              </div>
+              <button
+                className={'rv-copy' + (copied === k ? ' done' : '')}
+                onClick={() => copy(k, f[k])}
+                aria-label={'Копировать: ' + label}
+              >
+                <Icon name={copied === k ? 'check' : 'copy'} size={19} />
+              </button>
+            </div>
+          ))}
+          <button className="btn ghost small mt12" onClick={() => setEditing(true)}>Изменить</button>
+          <div className="doc-foot">
+            <button className="btn-blue" onClick={shareAll}>
+              <Icon name="share" size={18} /> Отправить реквизиты
+            </button>
+          </div>
         </div>
       )}
     </div>

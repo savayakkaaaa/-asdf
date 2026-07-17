@@ -105,9 +105,9 @@ export const homeGrid = [
 ]
 
 export const promoBanners = [
-  { id: 'p1', title: 'Мебель', terms: '0·0·12', sub: 'до 24 мес на Kaspi Red', bg: '#F4EDE3' },
-  { id: 'p2', title: 'Техника', terms: '0·0·24', sub: 'рассрочка без переплаты', bg: '#E7EEF5' },
-  { id: 'p3', title: 'Аптеки', terms: '0·0·6', sub: 'на всё для здоровья', bg: '#EAF3EC' },
+  { id: 'p1', title: 'Мебель', terms: '0·0·12', sub: 'с 13 по 30 июля на Kaspi.kz и с Kaspi QR', bg: '#F4EDE3' },
+  { id: 'p2', title: 'Техника', terms: '0·0·24', sub: 'с 10 по 31 июля на Kaspi.kz и с Kaspi QR', bg: '#E7EEF5' },
+  { id: 'p3', title: 'Аптеки', terms: '0·0·6', sub: 'на всё для здоровья с Kaspi Red', bg: '#EAF3EC' },
 ]
 
 export const productCards = [
