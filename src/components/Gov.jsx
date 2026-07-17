@@ -168,16 +168,20 @@ function DocDetail({ doc, onClose, onSave }) {
   }
 
   const pdf = fileKind === 'pdf' || isPdfData(viewUrl, file)
+  const pdfSrc = viewUrl
+    ? `${viewUrl.split('#')[0]}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&zoom=page-width`
+    : ''
+  const fillPdf = tab === 'doc' && Boolean(viewUrl) && pdf && !reading
 
   return (
-    <div className="doc-screen">
+    <div className={'doc-screen' + (fillPdf ? ' has-pdf' : '')}>
       <div className="segmented">
         <button type="button" className={tab === 'doc' ? 'on' : ''} onClick={() => setTab('doc')}>Документ</button>
         <button type="button" className={tab === 'req' ? 'on' : ''} onClick={() => setTab('req')}>Реквизиты</button>
       </div>
 
       {tab === 'doc' ? (
-        <div className="doc-body">
+        <div className={'doc-body' + (fillPdf ? ' has-pdf' : '')}>
           {reading && (
             <div className="doc-file-card muted-card">
               <div className="spinner" style={{ margin: 0 }} />
@@ -187,7 +191,7 @@ function DocDetail({ doc, onClose, onSave }) {
 
           {!reading && viewUrl && pdf && (
             <div className="doc-preview pdf only">
-              <iframe title={file || 'PDF'} src={viewUrl} />
+              <iframe title={file || 'PDF'} src={pdfSrc} />
             </div>
           )}
 
