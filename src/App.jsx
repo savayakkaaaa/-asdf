@@ -79,7 +79,7 @@ export default function App() {
               </div>
             </header>
 
-            <main className="content">
+            <main className={'content' + (isBottom ? '' : ' no-nav')}>
               {view === 'home' && <Home onNavigate={setView} />}
               {view === 'bank' && <Bank accounts={accounts} transactions={transactions} updateAccount={updateAccount} />}
               {view === 'gov' && <Gov documents={documents} addDocument={addDocument} updateDocument={updateDocument} />}
@@ -97,16 +97,15 @@ export default function App() {
           </div>
         </div>
 
-        <nav className="bottom-nav">
-          {BOTTOM.map((n) => {
-            const active = view === n.key || (n.key === 'home' && showBack)
-            return (
-              <button key={n.key} className={active ? 'active' : ''} onClick={() => setView(n.key)}>
-                <Icon name={n.icon} size={26} stroke={active ? 2.1 : 1.8} /> {n.label}
+        {isBottom && (
+          <nav className="bottom-nav">
+            {BOTTOM.map((n) => (
+              <button key={n.key} className={view === n.key ? 'active' : ''} onClick={() => setView(n.key)}>
+                <Icon name={n.icon} size={26} stroke={view === n.key ? 2 : 1.7} /> {n.label}
               </button>
-            )
-          })}
-        </nav>
+            ))}
+          </nav>
+        )}
       </div>
     </div>
   )

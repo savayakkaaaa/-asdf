@@ -43,6 +43,7 @@ svg { display: block; }
   text-align: center; padding: 5px 12px;
 }
 .content { flex: 1; padding: 6px 16px calc(var(--nav-h) + 28px); }
+.content.no-nav { padding-bottom: 28px; }
 
 /* ---------- Top bar ---------- */
 .topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 6px; }
@@ -376,7 +377,7 @@ svg { display: block; }
   display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 .btn-blue:active { background: #F3F7FD; }
-.doc-foot { position: sticky; bottom: calc(var(--nav-h) + 8px); padding-top: 14px; background: linear-gradient(#ffffff00, #fff 35%); }
+.doc-foot { position: sticky; bottom: 12px; padding-top: 14px; background: linear-gradient(#ffffff00, #fff 35%); }
 .filepick { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
 .filepick .choose { background: var(--inset); border: 1px solid #DADCE0; border-radius: 8px; padding: 7px 12px; font-size: 13px; color: #2B7DE9; }
 .filepick .fname { color: var(--muted); font-size: 13px; }
