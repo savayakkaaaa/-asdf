@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import Login from './components/Login.jsx'
 import Home from './components/Home.jsx'
 import Bank from './components/Bank.jsx'
 import Gov from './components/Gov.jsx'
@@ -23,8 +22,8 @@ const TITLES = {
 }
 
 export default function App() {
-  const [authed, setAuthed] = useState(() => load('authed', false))
   const [view, setView] = useState('home')
+  const [headerOverride, setHeaderOverride] = useState(null)
 
   const [accounts, setAccounts] = useState(() => load('accounts', initialAccounts))
   const [transactions] = useState(() => load('transactions', initialTransactions))
@@ -38,7 +37,6 @@ export default function App() {
   })
   const [requisites, setRequisites] = useState(() => load('requisites', initialRequisites))
 
-  useEffect(() => save('authed', authed), [authed])
   useEffect(() => save('accounts', accounts), [accounts])
   useEffect(() => save('documents', documents), [documents])
   useEffect(() => save('requisites', requisites), [requisites])
@@ -47,15 +45,12 @@ export default function App() {
   const addDocument = (doc) => setDocuments((p) => [doc, ...p])
   const updateDocument = (id, patch) => setDocuments((p) => p.map((d) => (d.id === id ? { ...d, ...patch } : d)))
 
-  if (!authed) return <Login onLogin={() => setAuthed(true)} />
-
-  const isBottom = BOTTOM.some((b) => b.key === view)
-  const showBack = !isBottom
-  const [headerOverride, setHeaderOverride] = useState(null)
-
   useEffect(() => {
     if (view !== 'gov') setHeaderOverride(null)
   }, [view])
+
+  const isBottom = BOTTOM.some((b) => b.key === view)
+  const showBack = !isBottom
 
   return (
     <div className="app">
@@ -101,7 +96,7 @@ export default function App() {
               {view === 'payments' && <Payments onQR={() => setView('qr')} />}
               {view === 'qr' && <QRScreen />}
               {view === 'messages' && <Stub icon="chat" title="Сообщения" text="Здесь появятся чаты с продавцами и поддержкой Kaspi." />}
-              {view === 'services' && <Services onLogout={() => { setAuthed(false); setView('home') }} onNavigate={setView} />}
+              {view === 'services' && <Services onNavigate={setView} />}
               {view === 'shop' && <Stub icon="cart" title="Магазин" text="Каталог товаров в рассрочку 0-0-24 (демо)." />}
               {view === 'travel' && <Stub icon="plane" title="Kaspi Travel" text="Авиабилеты, ЖД и отели (демо)." />}
               {view === 'ads' && <Stub icon="ads" title="Объявления" text="Частные объявления Kaspi (демо)." />}
@@ -177,7 +172,7 @@ function QRScreen() {
   )
 }
 
-function Services({ onLogout, onNavigate }) {
+function Services({ onNavigate }) {
   const rows = [
     { icon: 'user', label: 'Профиль', k: null }, { icon: 'gov', label: 'Госуслуги', k: 'gov' },
     { icon: 'plane', label: 'Kaspi Travel', k: 'travel' }, { icon: 'ads', label: 'Объявления', k: 'ads' },
@@ -199,7 +194,6 @@ function Services({ onLogout, onNavigate }) {
           </div>
         ))}
       </div>
-      <button className="btn ghost mt16" style={{ color: 'var(--red)' }} onClick={onLogout}>Выйти</button>
       <div className="hint mt16">Учебный демо-прототип · Версия 1.0</div>
     </div>
   )

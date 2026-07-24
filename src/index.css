@@ -199,14 +199,6 @@ svg { display: block; }
 .toggle.on::after { left: 23px; }
 .hint { font-size: 12px; color: var(--muted); text-align: center; }
 
-/* ---------- Login ---------- */
-.login { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 26px; background: linear-gradient(165deg, #FF5B45 0%, #F14635 45%, #D2372A 100%); color: #fff; }
-.login .logo { font-size: 40px; font-weight: 800; letter-spacing: -1.5px; }
-.login .sub { opacity: 0.92; margin-top: 2px; margin-bottom: 30px; font-size: 14px; }
-.login .card-login { background: #fff; color: var(--ink); border-radius: 22px; padding: 22px; box-shadow: 0 12px 40px rgba(0,0,0,0.18); }
-.login .otp { display: flex; gap: 10px; justify-content: space-between; }
-.login .otp input { width: 100%; text-align: center; font-size: 24px; font-weight: 700; padding: 14px 0; border-radius: var(--radius-sm); border: 1.5px solid var(--line); background: #FAFBFC; }
-.login .otp input:focus { border-color: var(--red); background: #fff; outline: none; }
 
 /* ---------- Desktop: sidebar ---------- */
 @media (min-width: 900px) {
