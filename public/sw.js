@@ -1,7 +1,7 @@
 // Минимальный service worker для установки PWA и офлайн-старта.
 // Кэширует оболочку приложения; демо-данные всё равно хранятся в localStorage.
 // Пути относительны области действия SW (scope), поэтому работают и на / и на /<repo>/.
-const CACHE = 'kaspi-demo-v1'
+const CACHE = 'kaspi-demo-v2'
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png']
 
 self.addEventListener('install', (e) => {
