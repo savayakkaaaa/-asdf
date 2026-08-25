@@ -4,13 +4,8 @@ import { homeGrid, magnumTiles, productShortcuts } from '../data.js'
 export default function Home({ onNavigate }) {
   return (
     <div className="home">
-      {/* Шапка: вордмарк слева, уведомления справа (на десктопе скрыта — там сайдбар) */}
-      <header className="home-head">
-        <span className="wordmark">Kaspi.kz</span>
-        <button className="head-act" aria-label="Уведомления"><Icon name="bell" size={22} /></button>
-      </header>
-
-      {/* Поиск: лупа слева, камера и корзина справа */}
+      {/* Поиск: лупа слева, камера и корзина справа. Никакой шапки над ним —
+          в приложении главная начинается сразу с поиска. */}
       <div className="search-bar" role="search">
         <Icon name="search" size={19} />
         <span className="sb-ph">Поиск по Kaspi.kz</span>

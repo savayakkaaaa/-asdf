@@ -77,11 +77,12 @@ export const budgetCategories = [
   { key: 'Прочее', color: '#8E8E93', limit: 50000 },
 ]
 
+// color — цвет иконки. Сама карточка светлая, как в приложении.
 export const initialDocuments = [
-  { id: 'd1', title: 'Удостоверение личности', subtitle: 'ИИН 000000000000', icon: 'id', status: 'Действителен', color: '#F4F5F7', accent: '#1F2124', added: '2026-05-01' },
-  { id: 'd2', title: 'Паспорт гражданина РК', subtitle: 'Серия N 0000000', icon: 'passport', status: 'Действителен', color: '#1E4FA3', accent: '#fff', added: '2026-05-01' },
-  { id: 'd3', title: 'Социальный кошелёк', subtitle: 'Цифровая карта', icon: 'wallet', status: 'Действителен', color: '#F5C518', accent: '#1F2124', added: '2026-06-10' },
-  { id: 'd4', title: 'Водительское удостоверение', subtitle: 'Категория B', icon: 'car', status: 'Действителен', color: '#33B36B', accent: '#fff', added: '2026-05-01' },
+  { id: 'd1', title: 'Удостоверение личности', subtitle: 'ИИН 000000000000', icon: 'id', status: 'Действителен', color: '#2FA36B', added: '2026-05-01' },
+  { id: 'd2', title: 'Паспорт гражданина РК', subtitle: 'Серия N 0000000', icon: 'passport', status: 'Действителен', color: '#00A3C4', added: '2026-05-01' },
+  { id: 'd3', title: 'Социальный кошелёк', subtitle: 'Цифровая карта', icon: 'wallet', status: 'Действителен', color: '#E8A317', added: '2026-06-10' },
+  { id: 'd4', title: 'Водительское удостоверение', subtitle: 'Категория B', icon: 'car', status: 'Действителен', color: '#F14635', added: '2026-05-01' },
 ]
 
 export const govCategories = [

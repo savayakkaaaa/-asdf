@@ -341,7 +341,7 @@ export default function Gov({ documents, addDocument, updateDocument, onHeaderOv
         <div className="rows mt8">
           {documents.map((d) => (
             <div className="rowi" key={d.id} onClick={() => openDoc(d.id)}>
-              <span className="ic" style={{ background: d.color, color: d.accent || '#fff' }}><Icon name={d.icon} size={20} /></span>
+              <span className="ic" style={{ background: 'var(--inset)', color: d.color }}><Icon name={d.icon} size={20} /></span>
               <div className="meta"><div className="l1">{d.title}</div><div className="l2">{d.subtitle}</div></div>
               <span className="chev"><Icon name="chevron" size={18} /></span>
             </div>
@@ -357,7 +357,7 @@ export default function Gov({ documents, addDocument, updateDocument, onHeaderOv
             <button className="btn mt12" onClick={() => {
               if (!newTitle.trim()) return
               const id = 'd' + Date.now()
-              addDocument({ id, title: newTitle.trim(), subtitle: 'Загружено пользователем', icon: 'doc', status: 'Нет данных', color: '#7B61FF', accent: '#fff', added: new Date().toISOString().slice(0, 10) })
+              addDocument({ id, title: newTitle.trim(), subtitle: 'Загружено пользователем', icon: 'doc', status: 'Нет данных', color: '#7B61FF', added: new Date().toISOString().slice(0, 10) })
               setNewTitle('')
               setAddOpen(false)
               openDoc(id)
@@ -404,14 +404,15 @@ export default function Gov({ documents, addDocument, updateDocument, onHeaderOv
 
           <div className="gov-docs-scroll">
             {carousel.map((d) => (
-              <button type="button" className="gov-doc-card" key={d.id} style={{ background: d.color, color: d.accent || '#fff' }} onClick={() => openDoc(d.id)}>
-                <span className="gdc-icon"><Icon name={d.fileKind === 'pdf' || /\.pdf$/i.test(d.file || '') ? 'doc' : d.icon} size={34} stroke={1.6} /></span>
+              <button type="button" className="gov-doc-card" key={d.id} onClick={() => openDoc(d.id)}>
+                <span className="gdc-icon" style={{ color: d.color }}><Icon name={d.fileKind === 'pdf' || /\.pdf$/i.test(d.file || '') ? 'doc' : d.icon} size={34} stroke={1.6} /></span>
                 <span className="gdc-title">{d.title}{d.file ? ' · файл' : ''}</span>
               </button>
             ))}
           </div>
           <button type="button" className="gov-all-docs" onClick={() => setAllDocs(true)}>
-            Все документы <Icon name="chevron" size={16} />
+            <span>Все документы</span>
+            <Icon name="chevron" size={18} />
           </button>
 
           <div className="gov-cats">

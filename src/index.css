@@ -9,7 +9,11 @@
   --red-press: #D8382A;
   --red-tint: #FDECEA;
   --green: #33B36B;
-  --blue: #2B7DE9;          /* только заставка eGov, где синий настоящий */
+  /* Синий — цвет eGov: заставка и кнопки на экране документа */
+  --blue: #2B7DE9;
+  --blue-press: #1F6AD0;
+  --blue-line: #C9DCF7;
+  --blue-tint: #F3F7FD;
   --gold-1: #FCD860;
   --gold-2: #EDAE3A;
   --gold-ink: #3A2A05;
@@ -160,19 +164,6 @@ svg { display: block; }
    ГЛАВНАЯ — лаунчер
    ============================================================ */
 .home { padding-top: var(--s1); }
-
-/* Шапка с вордмарком: логотип слева, колокольчик справа */
-.home-head {
-  display: flex; align-items: center; justify-content: space-between;
-  height: 48px; margin-bottom: var(--s2);
-}
-.wordmark {
-  font-size: 22px; font-weight: 700; letter-spacing: -1px; color: var(--red);
-}
-.head-act {
-  width: 40px; height: 40px; margin-right: calc(var(--s2) * -1);
-  display: flex; align-items: center; justify-content: center; color: var(--ink);
-}
 
 /* Поиск */
 .search-bar {
@@ -457,19 +448,22 @@ svg { display: block; }
   -webkit-overflow-scrolling: touch;
 }
 .gov-docs-scroll::-webkit-scrollbar { display: none; }
+/* Карточка светлая, цветная только иконка — как в приложении */
 .gov-doc-card {
   flex: 0 0 132px; scroll-snap-align: start; height: 148px;
   border-radius: var(--r-lg); padding: var(--s3);
+  background: var(--inset); color: var(--ink);
   display: flex; flex-direction: column; justify-content: space-between;
   text-align: left; overflow: hidden;
 }
 .gdc-icon { display: flex; }
 .gdc-title { font-size: 13px; font-weight: 600; line-height: 1.25; letter-spacing: -0.2px; }
 
+/* Синяя ссылка: текст слева, шеврон прижат вправо */
 .gov-all-docs {
-  display: flex; align-items: center; justify-content: center; gap: var(--s1);
-  width: 100%; margin-top: var(--s3); padding: var(--s2);
-  font-weight: 500; font-size: 15px; color: var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; margin-top: var(--s3); padding: var(--s2) 0;
+  font-weight: 500; font-size: 15px; color: var(--blue);
 }
 
 .gov-cats {
@@ -483,7 +477,7 @@ svg { display: block; }
   color: var(--ink); border-bottom: 2px solid transparent;
 }
 .gov-cat .gc-ic {
-  width: 52px; height: 52px; border-radius: 50%; background: var(--inset);
+  width: 52px; height: 52px; border-radius: var(--r-lg); background: var(--inset);
   display: flex; align-items: center; justify-content: center;
 }
 .gov-cat .gc-label { font-size: 12px; font-weight: 500; white-space: nowrap; }
@@ -606,10 +600,13 @@ svg { display: block; }
   display: flex; align-items: center; justify-content: center; gap: var(--s2);
   transition: background 0.12s;
 }
-.btn-doc.primary { background: var(--red); color: #fff; }
-.btn-doc.primary:active { background: var(--red-press); }
-.btn-doc.secondary, .btn-blue { background: var(--inset); color: var(--ink); }
-.btn-doc.secondary:active, .btn-blue:active { background: #E7E9EB; }
+/* Экран документа — территория eGov, там кнопки синие, а не фирменные красные */
+.btn-doc.primary { background: var(--blue); color: #fff; }
+.btn-doc.primary:active { background: var(--blue-press); }
+.btn-doc.secondary, .btn-blue {
+  background: var(--surface); color: var(--blue); border: 1.5px solid var(--blue-line);
+}
+.btn-doc.secondary:active, .btn-blue:active { background: var(--blue-tint); }
 .btn-black { background: #1B1C1E; color: #fff; font-weight: 700; }
 .btn-black:active { background: #000; }
 .btn-black:disabled { opacity: 0.4; }
@@ -709,7 +706,6 @@ svg { display: block; }
   .bottom-nav { display: none; }
   .content { padding: var(--s4) var(--gutter) var(--s6); max-width: 640px; }
   .cards-scroll > * { flex: 0 0 300px; }
-  .home-head { display: none; }
 }
 @media (max-width: 899px) {
   .sidebar { display: none; }
