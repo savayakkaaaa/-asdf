@@ -110,7 +110,7 @@ export default function App() {
           <nav className="bottom-nav">
             {BOTTOM.map((n) => (
               <button key={n.key} className={view === n.key ? 'active' : ''} onClick={() => setView(n.key)}>
-                <Icon name={n.icon} size={26} stroke={view === n.key ? 2 : 1.7} /> {n.label}
+                <Icon name={n.icon} size={24} stroke={view === n.key ? 2 : 1.7} /> {n.label}
               </button>
             ))}
           </nav>
@@ -129,7 +129,7 @@ function Transfers({ requisites, setRequisites }) {
   ]
   return (
     <div>
-      <div className="quick" style={{ marginTop: 8 }}>
+      <div className="quick">
         {quick.map((q) => (<button key={q.label}><span className="qi"><Icon name={q.icon} /></span>{q.label}</button>))}
       </div>
       <Requisites requisites={requisites} setRequisites={setRequisites} />
@@ -145,10 +145,10 @@ function Payments({ onQR }) {
   ]
   return (
     <div>
-      <div className="rows pad" style={{ marginTop: 8 }}>
+      <div className="rows mt8">
         {items.map((i) => (
           <div className="rowi" key={i.label} onClick={i.qr ? onQR : undefined}>
-            <span className="ic" style={{ background: '#FDECEA', color: 'var(--red)' }}><Icon name={i.icon} size={20} /></span>
+            <span className="ic" style={{ background: 'var(--red-tint)', color: 'var(--red)' }}><Icon name={i.icon} size={20} /></span>
             <div className="meta"><div className="l1">{i.label}</div></div>
             <span className="chev"><Icon name="chevron" size={18} /></span>
           </div>
@@ -180,12 +180,12 @@ function Services({ onNavigate }) {
   ]
   return (
     <div>
-      <div className="card" style={{ marginTop: 8 }}>
+      <div className="card mt8">
         <div className="req-line"><span className="k">Имя</span><span className="v">{demoUser.name}</span></div>
         <div className="req-line"><span className="k">Телефон</span><span className="v">{demoUser.phone}</span></div>
         <div className="req-line"><span className="k">ИИН</span><span className="v">{demoUser.iin}</span></div>
       </div>
-      <div className="rows pad mt12">
+      <div className="rows mt12">
         {rows.map((r) => (
           <div className="rowi" key={r.label} onClick={() => r.k && onNavigate(r.k)}>
             <span className="ic" style={{ background: '#F4F5F7', color: 'var(--ink)' }}><Icon name={r.icon} size={20} /></span>

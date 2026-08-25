@@ -1,21 +1,51 @@
+/* ============================================================
+   Kaspi Web — дизайн-система
+   Токены: цвет · радиус · отступ · типографика · подъём.
+   Правило: новых «магических» чисел не заводим — только токены.
+   ============================================================ */
 :root {
+  /* Бренд */
   --red: #F14635;
   --red-press: #D8382A;
-  --gold-1: #FBD24E;
-  --gold-2: #EBA834;
+  --red-tint: #FDECEA;
+  --green: #33B36B;
+  --blue: #2B7DE9;          /* только заставка eGov, где синий настоящий */
+  --gold-1: #FCD860;
+  --gold-2: #EDAE3A;
   --gold-ink: #3A2A05;
+
+  /* Поверхности */
   --bg: #FFFFFF;
   --surface: #FFFFFF;
-  --inset: #F4F5F7;
+  --inset: #F2F3F5;         /* серые поля, дорожки сегментов, полосы-разделители */
+  --line: #EBECEE;          /* хайрлайн */
+
+  /* Текст */
   --ink: #1F2124;
+  --ink-2: #6E7076;
   --muted: #9A9DA3;
-  --line: #EDEEF0;
-  --green: #33B36B;
-  --radius: 12px;
-  --radius-sm: 10px;
-  --shadow: 0 1px 2px rgba(16, 18, 20, 0.04), 0 6px 20px rgba(16, 18, 20, 0.05);
-  --nav-h: 68px;
+
+  /* Радиусы: 8 · 12 · 16 · 20 · пилюля */
+  --r-sm: 8px;
+  --r: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+  --r-pill: 999px;
+
+  /* Отступы */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+
+  /* Подъём: только карты счетов и нижняя шторка. Всё остальное — хайрлайн. */
+  --lift: 0 4px 14px rgba(20, 22, 24, 0.10);
+
+  --nav-h: 56px;
   --maxw: 440px;
+  --gutter: 16px;
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -25,528 +55,663 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-size: 16px;
-  line-height: 1.42;
+  font-weight: 400;
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
 }
 button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
-input, select, textarea { font-family: inherit; font-size: 15px; }
+input, select, textarea { font-family: inherit; font-size: 16px; }
 svg { display: block; }
 
-/* ---------- Shell ---------- */
+/* ---------- Оболочка ---------- */
 .app { min-height: 100vh; display: flex; justify-content: center; }
 .shell {
   width: 100%; max-width: var(--maxw); min-height: 100vh; min-height: 100dvh;
   background: var(--bg); position: relative; display: flex; flex-direction: column;
+  border-left: 1px solid var(--line); border-right: 1px solid var(--line);
   padding-top: env(safe-area-inset-top, 0px);
 }
-.content { flex: 1; padding: 6px 16px calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 28px); }
-.content.no-nav { padding-bottom: 28px; }
-
-/* ---------- Top bar ---------- */
-.topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 6px; gap: 8px; }
-.topbar .hi { font-size: 13px; color: var(--muted); }
-.topbar .name { font-size: 19px; font-weight: 700; letter-spacing: -0.2px; }
-.topbar-actions { display: flex; align-items: center; gap: 8px; min-width: 36px; }
-.icon-btn {
-  width: 40px; height: 40px; border-radius: 50%; background: var(--surface);
-  display: flex; align-items: center; justify-content: center; color: var(--ink); box-shadow: var(--shadow);
+.content {
+  flex: 1;
+  padding: var(--s1) var(--gutter) calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + var(--s5));
 }
-.avatar {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold-1), var(--gold-2)); color: var(--gold-ink);
-  display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px;
+.content.no-nav { padding-bottom: var(--s5); }
+
+/* ---------- Навигационная шапка ---------- */
+.topbar {
+  display: flex; align-items: center; gap: var(--s2);
+  height: 56px; padding: 0 var(--s2) 0 var(--s1); flex-shrink: 0;
+}
+.topbar-title {
+  flex: 1; text-align: center; font-size: 17px; font-weight: 600; letter-spacing: -0.2px;
+}
+.back-btn, .topbar-actions {
+  width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+  flex: 0 0 40px; color: var(--ink);
 }
 
-.section-title { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; margin: 22px 2px 12px; }
-.section-title.small { font-size: 13px; color: var(--muted); font-weight: 600; letter-spacing: 0; margin-bottom: 6px; }
+/* ---------- Типографика ---------- */
+.section-title {
+  font-size: 19px; font-weight: 700; letter-spacing: -0.3px;
+  margin: var(--s5) 0 var(--s3);
+}
+.section-title.small {
+  font-size: 13px; font-weight: 500; color: var(--muted);
+  letter-spacing: 0; margin-bottom: var(--s1);
+}
+.muted { color: var(--muted); }
+.hint { font-size: 13px; color: var(--muted); text-align: center; }
 .row-between { display: flex; align-items: center; justify-content: space-between; }
+.chev { color: #C7C9CE; display: flex; }
+.dot { width: 10px; height: 10px; border-radius: 3px; }
+.pill {
+  display: inline-block; font-size: 12px; font-weight: 500;
+  padding: 3px 10px; border-radius: var(--r-pill); background: var(--inset); color: var(--ink-2);
+}
+.mt8 { margin-top: var(--s2); }
+.mt12 { margin-top: var(--s3); }
+.mt16 { margin-top: var(--s4); }
 
-.card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; }
+/* Плоская белая карточка: рамка вместо тени */
+.card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-lg); padding: var(--s4);
+}
 
-/* ---------- Hero: Kaspi Gold-style card ---------- */
-.hero-balance { font-size: 34px; font-weight: 800; letter-spacing: -0.8px; margin: 2px 2px 2px; }
+/* ---------- Кнопки: одна система ---------- */
+.btn {
+  width: 100%; min-height: 52px; padding: 0 var(--s5);
+  border-radius: var(--r); font-weight: 600; font-size: 15px;
+  background: var(--red); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
+  transition: background 0.12s;
+}
+.btn:active { background: var(--red-press); }
+.btn:disabled { opacity: 0.4; }
+.btn.secondary, .btn.ghost { background: var(--inset); color: var(--ink); }
+.btn.secondary:active, .btn.ghost:active { background: #E7E9EB; }
+.btn.tinted { background: var(--red-tint); color: var(--red); }
+.btn.small {
+  width: auto; min-height: 36px; padding: 0 var(--s3);
+  font-size: 13px; border-radius: var(--r-sm);
+}
+
+/* ---------- Поля ввода ---------- */
+.field { margin-bottom: var(--s3); }
+.field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: var(--s1); }
+.field input, .field select, .field textarea {
+  width: 100%; min-height: 52px; padding: var(--s3) var(--s4);
+  border-radius: var(--r); border: 1px solid var(--line);
+  background: var(--inset); outline: none; color: var(--ink); transition: 0.15s;
+}
+.field textarea { min-height: 0; }
+.field input:focus, .field textarea:focus { border-color: var(--red); background: var(--surface); }
+
+/* ---------- Строки «ключ — значение» ---------- */
+.req-line {
+  display: flex; justify-content: space-between; gap: var(--s3);
+  padding: var(--s3) 0; border-bottom: 1px solid var(--line); font-size: 15px;
+}
+.req-line:last-child { border-bottom: none; }
+.req-line .k { color: var(--muted); white-space: nowrap; }
+.req-line .v { font-weight: 500; text-align: right; word-break: break-word; }
+
+/* ============================================================
+   ГЛАВНАЯ — лаунчер
+   ============================================================ */
+.home { padding-top: var(--s1); }
+
+/* Шапка с вордмарком: логотип слева, колокольчик справа */
+.home-head {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 48px; margin-bottom: var(--s2);
+}
+.wordmark {
+  font-size: 22px; font-weight: 700; letter-spacing: -1px; color: var(--red);
+}
+.head-act {
+  width: 40px; height: 40px; margin-right: calc(var(--s2) * -1);
+  display: flex; align-items: center; justify-content: center; color: var(--ink);
+}
+
+/* Поиск */
+.search-bar {
+  display: flex; align-items: center; gap: var(--s3);
+  background: var(--inset); border-radius: var(--r); padding: var(--s3) var(--s4);
+  color: var(--muted); font-size: 15px; margin-bottom: var(--s4);
+}
+.search-bar .sb-ph { flex: 1; }
+.search-bar .sb-actions { display: flex; align-items: center; gap: var(--s3); color: var(--ink-2); }
+
+/* Серая полоса-разделитель между блоками — на всю ширину оболочки */
+.band {
+  height: var(--s2); background: var(--inset);
+  margin: var(--s5) calc(var(--gutter) * -1);
+}
+
+/* Баннер Magnum */
+.magnum-banner {
+  display: flex; gap: var(--s2); align-items: stretch;
+  background: linear-gradient(105deg, #F6F3A8 0%, #EAF2B4 55%, #DDEDC0 100%);
+  border-radius: var(--r-lg); padding: var(--s3); min-height: 136px; overflow: hidden;
+}
+.mb-left { flex: 0 0 44%; display: flex; flex-direction: column; justify-content: center; }
+.mb-logo { font-weight: 700; font-size: 21px; letter-spacing: -0.5px; color: #C21807; }
+.mb-title { font-weight: 700; font-size: 13px; color: #8E1A62; letter-spacing: 0.3px; margin-top: 2px; }
+.mb-off { font-weight: 700; font-size: 30px; color: #A81466; letter-spacing: -1px; margin-top: 2px; }
+.mb-tiles {
+  flex: 1; display: grid; grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr; gap: var(--s1);
+}
+.mb-tile {
+  border-radius: var(--r-sm); padding: 5px 6px; min-width: 0;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.mb-cat {
+  font-size: 9px; font-weight: 600; color: rgba(0, 0, 0, 0.55);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mb-chip {
+  align-self: flex-start; background: var(--surface); border-radius: 5px;
+  font-size: 10px; font-weight: 700; color: #C21807; padding: 1px 5px;
+}
+
+/* Сетка сервисов 4x2 */
+.grid8 {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: var(--s4) var(--s1); margin-top: var(--s4);
+}
+.grid-tile {
+  display: flex; flex-direction: column; align-items: center; gap: var(--s2);
+  padding: 0; color: var(--ink);
+}
+.gt-icon {
+  position: relative; width: 56px; height: 56px; border-radius: var(--r-lg);
+  color: var(--red); display: flex; align-items: center; justify-content: center;
+  transition: background 0.12s;
+}
+.grid-tile:active .gt-icon { background: var(--red-tint); }
+.gt-label {
+  font-size: 13px; font-weight: 400; color: var(--ink);
+  letter-spacing: -0.1px; text-align: center; line-height: 1.2;
+}
+.gt-badge {
+  position: absolute; top: -2px; right: -10px;
+  background: #FFC508; color: var(--ink); font-size: 10px; font-weight: 700;
+  border-radius: var(--r-sm); padding: 2px 5px; letter-spacing: 0.3px;
+  border: 2px solid var(--surface);
+}
+.magnum-m {
+  width: 44px; height: 44px; border-radius: var(--r); background: #E0223C; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 28px; font-family: Georgia, serif; line-height: 1;
+}
+
+/* Быстрые продукты, 2 колонки */
+.shortcuts { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s5) var(--s3); }
+/* min-width:0 обязателен: иначе grid-элемент не сжимается и .sc-name вылезает за экран */
+.shortcut {
+  display: flex; align-items: center; gap: var(--s3);
+  text-align: left; padding: 0; min-width: 0;
+}
+.sc-badge {
+  flex: 0 0 52px; height: 52px; border-radius: var(--r);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px; letter-spacing: -0.2px;
+}
+.sc-meta { min-width: 0; display: flex; flex-direction: column; }
+/* Переносим, а не обрезаем: в «Рассрочка 0-0-24» многоточие съедало бы саму суть */
+.sc-name { font-weight: 500; font-size: 15px; letter-spacing: -0.2px; line-height: 1.2; }
+.sc-sub {
+  font-size: 12px; color: var(--muted); margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ============================================================
+   МОЙ БАНК
+   ============================================================ */
+.hero-balance {
+  font-size: 32px; font-weight: 700; letter-spacing: -0.8px;
+  font-variant-numeric: tabular-nums; margin-bottom: var(--s4);
+}
 
 .kcard {
-  border-radius: var(--radius); padding: 18px 18px 16px; color: var(--gold-ink);
+  border-radius: var(--r-lg); padding: var(--s4); color: var(--gold-ink);
   position: relative; overflow: hidden; min-height: 132px;
   display: flex; flex-direction: column; justify-content: space-between;
-  box-shadow: 0 8px 22px rgba(214, 168, 40, 0.28);
+  box-shadow: var(--lift);
 }
 .kcard.gold { background: linear-gradient(135deg, #FCD860 0%, #F2B63F 55%, #E39B2E 100%); }
-.kcard.red { background: linear-gradient(135deg, #FF6A4D 0%, #F14635 60%, #D2372A 100%); color: #fff; box-shadow: 0 8px 22px rgba(214,55,42,0.28); }
-.kcard.dark { background: linear-gradient(135deg, #3A3D42 0%, #26282C 100%); color: #fff; box-shadow: 0 8px 22px rgba(20,22,24,0.28); }
+.kcard.red { background: linear-gradient(135deg, #FF6A4D 0%, #F14635 60%, #D2372A 100%); color: #fff; }
+.kcard.dark { background: linear-gradient(135deg, #3A3D42 0%, #26282C 100%); color: #fff; }
 .kcard .kc-top { display: flex; align-items: center; justify-content: space-between; }
-.kcard .kc-brand { font-weight: 800; font-size: 16px; letter-spacing: -0.2px; }
-.kcard .kc-sys { font-size: 12px; font-weight: 700; opacity: 0.8; }
-.kcard .kc-balance { font-size: 27px; font-weight: 800; letter-spacing: -0.5px; }
-.kcard .kc-number { font-size: 13px; letter-spacing: 1.5px; opacity: 0.85; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.kcard .kc-brand { font-weight: 600; font-size: 16px; letter-spacing: -0.2px; }
+.kcard .kc-sys { font-size: 12px; font-weight: 600; opacity: 0.8; }
+.kcard .kc-balance {
+  font-size: 26px; font-weight: 700; letter-spacing: -0.5px; font-variant-numeric: tabular-nums;
+}
+.kcard .kc-number {
+  font-size: 13px; letter-spacing: 1.5px; opacity: 0.85; margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
 .kcard .kc-blocked {
-  position: absolute; inset: 0; background: rgba(20,20,20,0.42); color: #fff;
-  display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; letter-spacing: 0.5px;
+  position: absolute; inset: 0; background: rgba(20, 20, 20, 0.42); color: #fff;
+  display: flex; align-items: center; justify-content: center; gap: var(--s2);
+  font-weight: 600; letter-spacing: 0.5px;
 }
 
 .cards-scroll {
-  display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
-  margin: 0 -16px; padding: 2px 16px 8px;
+  display: flex; gap: var(--s3); overflow-x: auto; scroll-snap-type: x mandatory;
+  margin: 0 calc(var(--gutter) * -1); padding: var(--s1) var(--gutter) var(--s3);
 }
 .cards-scroll::-webkit-scrollbar { display: none; }
 .cards-scroll > * { flex: 0 0 82%; scroll-snap-align: center; }
 
-/* ---------- Quick actions ---------- */
-.quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 16px; }
-.quick button { display: flex; flex-direction: column; align-items: center; gap: 7px; color: var(--ink); font-size: 11.5px; font-weight: 600; }
+/* Быстрые действия */
+.quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s2); margin-top: var(--s3); }
+.quick button {
+  display: flex; flex-direction: column; align-items: center; gap: var(--s2);
+  color: var(--ink); font-size: 12px; font-weight: 400; line-height: 1.2; text-align: center;
+}
 .quick .qi {
-  width: 54px; height: 54px; border-radius: 18px; background: var(--surface); box-shadow: var(--shadow);
-  display: flex; align-items: center; justify-content: center; color: var(--red);
+  width: 52px; height: 52px; border-radius: var(--r-lg);
+  background: var(--red-tint); color: var(--red);
+  display: flex; align-items: center; justify-content: center;
 }
 
-/* ---------- Product / list rows ---------- */
-.rows { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-.rows.pad { padding: 4px 16px; }
-.rowi { display: flex; align-items: center; gap: 13px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+/* Списки-строки: хайрлайны без карточной обёртки и теней */
+.rows { background: var(--surface); }
+.rowi {
+  display: flex; align-items: center; gap: var(--s3);
+  padding: var(--s3) 0; border-bottom: 1px solid var(--line);
+}
 .rowi:last-child { border-bottom: none; }
-.rowi .ic { width: 42px; height: 42px; border-radius: 13px; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+.rowi .ic {
+  width: 40px; height: 40px; border-radius: var(--r);
+  display: flex; align-items: center; justify-content: center; flex: 0 0 auto;
+}
 .rowi .meta { flex: 1; min-width: 0; }
-.rowi .meta .l1 { font-weight: 600; letter-spacing: -0.1px; }
-.rowi .meta .l2 { font-size: 12.5px; color: var(--muted); margin-top: 1px; }
-.rowi .amt { font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.rowi .meta .l1 { font-weight: 500; font-size: 15px; letter-spacing: -0.1px; }
+.rowi .meta .l2 { font-size: 13px; color: var(--muted); margin-top: 1px; }
+.rowi .amt { font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .rowi .amt.pos { color: var(--green); }
-.rowi .fee { font-weight: 700; font-size: 13.5px; }
-.chev { color: #C7C9CE; display: flex; }
 
-/* ---------- Budget ---------- */
-.budget-row { margin-bottom: 14px; }
+/* Бюджет и анализ расходов */
+.budget-row { margin-bottom: var(--s3); }
 .budget-row:last-child { margin-bottom: 0; }
-.budget-row .br-top { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 7px; }
-.budget-row .br-top .cat { display: flex; align-items: center; gap: 8px; }
-.dot { width: 10px; height: 10px; border-radius: 3px; }
-.bar { height: 8px; border-radius: 6px; background: #EEF0F2; overflow: hidden; }
-.bar > span { display: block; height: 100%; border-radius: 6px; }
-.donut-wrap { display: flex; align-items: center; gap: 18px; }
+.budget-row .br-top {
+  display: flex; justify-content: space-between; font-size: 13px; margin-bottom: var(--s2);
+}
+.budget-row .br-top .cat { display: flex; align-items: center; gap: var(--s2); }
+.bar { height: 8px; border-radius: var(--r-pill); background: var(--inset); overflow: hidden; }
+.bar > span { display: block; height: 100%; border-radius: var(--r-pill); }
+.donut-wrap { display: flex; align-items: center; gap: var(--s4); }
 .legend { flex: 1; }
-.legend .lg { display: flex; align-items: center; gap: 8px; font-size: 13px; margin: 5px 0; }
+.legend .lg { display: flex; align-items: center; gap: var(--s2); font-size: 13px; margin: 5px 0; }
 
-/* ---------- eGov badge / gov ---------- */
-.egov-badge {
-  display: inline-flex; align-items: center; gap: 6px; background: #EAF2FF; color: #2B7DE9;
-  font-weight: 700; font-size: 12px; padding: 6px 11px; border-radius: 20px;
+/* Переключатель */
+.toggle {
+  position: relative; width: 48px; height: 28px; border-radius: var(--r-pill);
+  background: #E2E4E8; transition: 0.2s; flex: 0 0 auto;
 }
-.doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.doc-card {
-  border-radius: var(--radius-sm); padding: 15px; color: #fff; min-height: 104px;
-  display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow);
+.toggle.on { background: var(--green); }
+.toggle::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px;
+  border-radius: 50%; background: #fff; transition: 0.2s; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
-.doc-card .dc-top { display: flex; justify-content: space-between; align-items: flex-start; }
-.doc-card .dc-status { font-size: 10.5px; background: rgba(255,255,255,0.24); padding: 3px 8px; border-radius: 20px; }
+.toggle.on::after { left: 23px; }
 
-/* ---------- Forms / requisites ---------- */
-.field { margin-bottom: 12px; }
-.field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
-.field input, .field select, .field textarea {
-  width: 100%; padding: 13px 14px; border-radius: var(--radius-sm);
-  border: 1.5px solid var(--line); background: #FAFBFC; outline: none; color: var(--ink); transition: 0.15s;
-}
-.field input:focus, .field textarea:focus { border-color: var(--red); background: #fff; }
-
-.btn { width: 100%; padding: 15px; border-radius: var(--radius-sm); font-weight: 700; font-size: 15px; background: var(--red); color: #fff; transition: 0.12s; }
-.btn:active { background: var(--red-press); }
-.btn:disabled { opacity: 0.45; }
-.btn.secondary { background: #FDE9E7; color: var(--red); }
-.btn.ghost { background: #F2F3F5; color: var(--ink); }
-.btn.small { width: auto; padding: 9px 15px; font-size: 13px; border-radius: 11px; display: inline-flex; align-items: center; gap: 6px; }
-
-.req-line { display: flex; justify-content: space-between; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
-.req-line:last-child { border-bottom: none; }
-.req-line .k { color: var(--muted); white-space: nowrap; }
-.req-line .v { font-weight: 600; text-align: right; word-break: break-word; }
-.pill { display: inline-block; font-size: 11px; padding: 3px 9px; border-radius: 20px; background: #F2F3F5; color: var(--muted); font-weight: 600; }
-.muted { color: var(--muted); }
-.mt8 { margin-top: 8px; } .mt12 { margin-top: 12px; } .mt16 { margin-top: 16px; }
-
-/* ---------- Bottom nav (Kaspi-style, center QR) ---------- */
+/* ============================================================
+   НИЖНЯЯ НАВИГАЦИЯ — сплошная белая, как в приложении
+   ============================================================ */
 .bottom-nav {
   position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
   width: 100%; max-width: var(--maxw);
   height: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
-  background: rgba(255,255,255,0.94); backdrop-filter: blur(12px);
-  border-top: 1px solid var(--line); display: flex; align-items: flex-start; z-index: 30;
+  background: var(--surface); border-top: 1px solid var(--line);
+  display: flex; align-items: flex-start; z-index: 30;
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .bottom-nav button {
-  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 4px; color: #9A9DA3; font-size: 12px; font-weight: 500; height: var(--nav-h); flex-shrink: 0;
+  flex: 1; flex-shrink: 0; height: var(--nav-h);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--s1); color: var(--muted); font-size: 10px; font-weight: 500; line-height: 1;
 }
 .bottom-nav button.active { color: var(--red); }
 
-/* ---------- Sheet ---------- */
-.overlay { position: fixed; inset: 0; background: rgba(16,18,20,0.45); display: flex; align-items: flex-end; justify-content: center; z-index: 60; }
+/* ============================================================
+   НИЖНЯЯ ШТОРКА
+   ============================================================ */
+.overlay {
+  position: fixed; inset: 0; background: rgba(16, 18, 20, 0.45);
+  display: flex; align-items: flex-end; justify-content: center; z-index: 60;
+}
 .sheet {
-  width: 100%; max-width: var(--maxw); background: #fff; border-radius: 24px 24px 0 0;
-  padding: 8px 18px calc(22px + env(safe-area-inset-bottom)); animation: slideUp 0.24s cubic-bezier(0.2,0.8,0.2,1);
+  width: 100%; max-width: var(--maxw); background: var(--surface);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  padding: var(--s2) var(--gutter) calc(var(--s5) + env(safe-area-inset-bottom));
+  animation: slideUp 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
   max-height: 90vh; overflow-y: auto;
 }
-.sheet::before { content: ''; display: block; width: 40px; height: 4px; border-radius: 4px; background: #E2E4E8; margin: 8px auto 12px; }
+.sheet::before {
+  content: ""; display: block; width: 40px; height: 4px; border-radius: var(--r-pill);
+  background: #E2E4E8; margin: var(--s2) auto var(--s3);
+}
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.sheet .sheet-title { font-size: 18px; font-weight: 700; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
-.sheet .close { font-size: 24px; color: var(--muted); line-height: 1; padding: 0 4px; }
+.sheet .sheet-title {
+  font-size: 18px; font-weight: 700; margin-bottom: var(--s4);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.sheet .close { font-size: 24px; color: var(--muted); line-height: 1; padding: 0 var(--s1); }
 
-.qr-box { display: flex; justify-content: center; padding: 8px 0 6px; }
-.qr-box img { width: 210px; height: 210px; border-radius: 14px; border: 1px solid var(--line); }
+/* ============================================================
+   QR
+   ============================================================ */
+.qr-box { display: flex; justify-content: center; padding: var(--s2) 0; }
+.qr-box img {
+  width: 210px; height: 210px; border-radius: var(--r-lg); border: 1px solid var(--line);
+}
+.qr-screen { display: flex; flex-direction: column; align-items: center; padding-top: var(--s5); }
+.qr-frame {
+  width: 240px; height: 240px; border-radius: var(--r-xl); border: 2px solid var(--red);
+  padding: var(--s3); display: flex; align-items: center; justify-content: center;
+}
+.qr-frame img { width: 100%; height: 100%; }
+.qr-cap { margin-top: var(--s4); color: var(--muted); text-align: center; }
+.qr-screen .btn { max-width: 260px; }
 
-.toggle { position: relative; width: 48px; height: 28px; border-radius: 20px; background: #E2E4E8; transition: 0.2s; flex: 0 0 auto; }
-.toggle.on { background: var(--green); }
-.toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.25); }
-.toggle.on::after { left: 23px; }
-.hint { font-size: 12px; color: var(--muted); text-align: center; }
+/* ============================================================
+   ГОСУСЛУГИ
+   ============================================================ */
+.gov-page { padding-top: var(--s1); }
 
-
-/* ---------- Desktop: sidebar ---------- */
-@media (min-width: 900px) {
-  :root { --maxw: 1040px; }
-  .shell { max-width: 1040px; box-shadow: var(--shadow); background: var(--surface); }
-  .with-sidebar { display: grid; grid-template-columns: 232px 1fr; }
-  .sidebar { border-right: 1px solid var(--line); padding: 22px 12px; min-height: 100vh; position: sticky; top: 0; align-self: start; }
-  .sidebar .s-logo { font-size: 25px; font-weight: 800; color: var(--red); letter-spacing: -1px; padding: 6px 12px 20px; }
-  .sidebar button { width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; color: var(--ink); font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-  .sidebar button.active { background: #FDE9E7; color: var(--red); }
-  .bottom-nav { display: none; }
-  .content { padding: 16px 30px 44px; max-width: 640px; }
-  .cards-scroll > * { flex: 0 0 300px; }
-  .doc-grid { grid-template-columns: repeat(3, 1fr); }
+/* Сегмент-контрол: серая дорожка, белый бегунок. Общий для .gov-tabs и .segmented */
+.gov-tabs, .segmented {
+  display: flex; width: 100%; flex-shrink: 0;
+  background: var(--inset); border-radius: var(--r); padding: 3px; margin-bottom: var(--s4);
 }
-@media (max-width: 899px) { .sidebar { display: none; } .with-sidebar { display: block; } }
-
-/* ================= Kaspi-accurate additions ================= */
-.shell { border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
-
-/* Top bar refinements */
-.topbar { padding: 12px 14px 8px; min-height: 56px; }
-.topbar-title { flex: 1; text-align: center; font-size: 17px; font-weight: 700; letter-spacing: -0.2px; }
-.brand { display: flex; align-items: center; }
-.kaspi-logo { width: 36px; height: 36px; border-radius: 50%; background: var(--red); color: #fff; display: flex; align-items: center; justify-content: center; }
-.back-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--ink); }
-
-/* ---- Home launcher ---- */
-.home { padding-top: 4px; }
-/* ---- Поиск (как в приложении) ---- */
-.search-bar {
-  display: flex; align-items: center; gap: 10px;
-  background: #F1F2F4; border-radius: 10px; padding: 13px 14px;
-  color: var(--muted); font-size: 16px; margin: 4px 0 14px;
+.gov-tabs button, .segmented button {
+  flex: 1; padding: var(--s2) var(--s2); border-radius: var(--r-sm);
+  font-weight: 500; font-size: 14px; color: var(--ink-2); transition: 0.15s;
 }
-.search-bar .sb-ph { flex: 1; }
-.search-bar .sb-actions { display: flex; align-items: center; gap: 14px; color: #6E7076; }
-
-/* ---- Большой баннер Magnum ---- */
-.magnum-banner {
-  display: flex; gap: 10px; align-items: stretch;
-  background: linear-gradient(105deg, #F6F3A8 0%, #EAF2B4 55%, #DDEDC0 100%);
-  border-radius: 12px; padding: 13px; min-height: 136px; overflow: hidden;
+.gov-tabs button.on, .segmented button.on {
+  background: var(--surface); color: var(--ink); font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
-.mb-left { flex: 0 0 44%; display: flex; flex-direction: column; justify-content: center; }
-.mb-logo { font-weight: 800; font-size: 21px; letter-spacing: -0.5px; color: #C21807; }
-.mb-title { font-weight: 800; font-size: 13.5px; color: #8E1A62; letter-spacing: 0.3px; margin-top: 2px; }
-.mb-off { font-weight: 800; font-size: 30px; color: #A81466; letter-spacing: -1px; margin-top: 2px; }
-.mb-tiles { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 6px; }
-.mb-tile { border-radius: 9px; padding: 5px 6px; display: flex; flex-direction: column; justify-content: space-between; min-width: 0; }
-.mb-cat { font-size: 8.5px; font-weight: 700; color: rgba(0,0,0,0.55); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mb-chip { align-self: flex-start; background: #fff; border-radius: 5px; font-size: 10px; font-weight: 800; color: #C21807; padding: 1px 5px; }
-
-.grid8 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px 4px; margin-top: 10px; }
-.grid-tile { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 2px; color: var(--ink); }
-.gt-icon { position: relative; width: 60px; height: 60px; border-radius: 12px; color: var(--red); display: flex; align-items: center; justify-content: center; }
-.grid-tile:active .gt-icon { background: #FDECEA; }
-.gt-label { font-size: 16px; font-weight: 500; color: #1F2124; letter-spacing: -0.2px; }
-.gt-badge {
-  position: absolute; top: -4px; right: -12px;
-  background: #FFC508; color: #1F2124; font-size: 11px; font-weight: 800;
-  border-radius: 6px; padding: 2.5px 6px; letter-spacing: 0.3px; border: 2px solid #fff;
-}
-.magnum-m {
-  width: 46px; height: 46px; border-radius: 11px; background: #E0223C; color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 29px; font-family: Georgia, serif; line-height: 1;
-}
-
-/* ---- Быстрые продукты (2 колонки) ---- */
-.shortcuts {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 20px 10px;
-  margin: 16px -16px 0; padding: 20px 16px 0;
-  border-top: 1px solid #E8E9EB;
-}
-.shortcut { display: flex; align-items: center; gap: 12px; text-align: left; padding: 0; }
-.sc-badge {
-  flex: 0 0 54px; height: 54px; border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 14.5px; letter-spacing: -0.2px;
-}
-.sc-meta { min-width: 0; display: flex; flex-direction: column; }
-.sc-name { font-weight: 600; font-size: 16px; letter-spacing: -0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sc-sub { font-size: 12.5px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-/* ---- Спиннер загрузки (eGov) ---- */
-.spinner {
-  width: 30px; height: 30px; border-radius: 50%;
-  border: 3px solid #E9EAEC; border-top-color: var(--red);
-  animation: spin 0.8s linear infinite; margin: 26px auto 0;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2s; } }
-.egov-loadcap { text-align: center; color: var(--muted); font-size: 13.5px; margin-top: 12px; }
-
-.merchant { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding: 12px 14px; border-radius: 16px; box-shadow: var(--shadow); }
-.merchant-logo { width: 42px; height: 42px; border-radius: 50%; background: var(--red); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; }
-.merchant .meta { flex: 1; }
-.merchant .l1 { font-weight: 700; }
-.merchant .l2 { font-size: 12px; color: var(--muted); }
-
-.product-scroll { display: flex; gap: 12px; overflow-x: auto; margin: 0 -16px; padding: 2px 16px 6px; scroll-snap-type: x mandatory; }
-.product-scroll::-webkit-scrollbar { display: none; }
-.product-card { flex: 0 0 62%; scroll-snap-align: start; border-radius: 16px; padding: 16px; min-height: 96px; box-shadow: var(--shadow); display: flex; flex-direction: column; justify-content: space-between; }
-.product-card.white { background: #fff; border: 1px solid var(--line); }
-.product-card.gold { background: linear-gradient(135deg, #FCD860, #EDAE3A); }
-.prod-badge { align-self: flex-start; background: var(--red); color: #fff; font-weight: 800; font-size: 12px; padding: 4px 9px; border-radius: 7px; letter-spacing: 0.5px; }
-.prod-logo { font-size: 22px; }
-.prod-name { font-weight: 700; margin-top: 10px; }
-.prod-sub { font-size: 12px; color: rgba(0,0,0,0.55); }
-
-.suggest { border-radius: 16px; box-shadow: var(--shadow); padding: 4px 14px; }
-.suggest-item { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); font-weight: 600; }
-.suggest-item:last-child { border-bottom: none; }
-.suggest-item span:nth-child(2) { flex: 1; }
-.si-dot { width: 34px; height: 34px; border-radius: 10px; background: var(--inset); }
-
-/* ---- eGov splash ---- */
-.egov-splash { position: fixed; inset: 0; max-width: var(--maxw); left: 50%; transform: translateX(-50%); background: #fff; display: flex; flex-direction: column; z-index: 40; }
-.egov-splash::before { content: ''; height: 2px; background: var(--red); width: 100%; }
-.egov-center { flex: 1; display: flex; align-items: center; justify-content: center; }
-.egov-logos { display: flex; align-items: center; gap: 18px; }
-.egov-logo { width: 92px; height: 92px; border-radius: 50%; border: 1px solid #E4E6E9; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #2B7DE9; font-weight: 500; }
-.egov-logo b { font-weight: 800; }
-.egov-plus { font-size: 26px; color: #C7C9CE; }
-.kaspi-mark { width: 92px; height: 92px; border-radius: 50%; background: var(--red); color: #fff; display: flex; align-items: center; justify-content: center; }
-.egov-foot { text-align: center; color: var(--muted); font-size: 12px; padding: 0 0 28px; line-height: 1.5; }
-
-/* ---- Document detail: segmented tabs + underline form ---- */
-.doc-screen { min-height: 60vh; display: flex; flex-direction: column; }
-.doc-screen.has-pdf {
-  height: calc(100dvh - env(safe-area-inset-top, 0px) - 56px - 20px);
-  max-height: calc(100dvh - env(safe-area-inset-top, 0px) - 56px - 20px);
-  min-height: 0; overflow: hidden;
-}
-.doc-head { display: flex; align-items: center; justify-content: space-between; padding: 2px 0 14px; }
-.doc-back { display: flex; color: var(--ink); }
-.doc-title { font-weight: 700; font-size: 16px; }
-.segmented { display: flex; background: var(--inset); border-radius: 10px; padding: 2px; margin-bottom: 14px; width: 100%; flex-shrink: 0; }
-.segmented button { flex: 1; padding: 8px 6px; border-radius: 8px; font-weight: 600; font-size: 13px; color: var(--muted); }
-.segmented button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-.doc-body { padding-bottom: 10px; display: flex; flex-direction: column; flex: 1; min-height: 0; }
-.doc-body.has-pdf { padding-bottom: 0; overflow: hidden; }
-/* Outlined-поле: подпись сидит на рамке (как в видео) */
-.outl { position: relative; margin-bottom: 18px; }
-.outl label {
-  position: absolute; top: -7px; left: 12px; background: #fff; padding: 0 5px;
-  font-size: 11.5px; color: #4A4D52; z-index: 1;
-}
-.outl input {
-  width: 100%; border: 1.5px solid #C9CBD0; border-radius: 10px;
-  padding: 13px 12px; font-size: 16px; outline: none; background: #fff; color: var(--ink);
-}
-.outl input:focus { border-color: var(--ink); }
-
-/* Дата как в видео: подпись + значение текстом, редактируется по тапу */
-.dateline { margin-bottom: 18px; }
-.dateline label { display: block; font-size: 14.5px; color: var(--ink); font-weight: 600; }
-.dateline input {
-  border: none; outline: none; background: transparent; padding: 2px 0 0;
-  font-size: 15.5px; color: var(--ink); width: 100%;
-}
-.dateline input::placeholder { color: #6E7076; }
-
-/* Просмотр реквизитов: подпись/значение + копирование */
-.req-view-row { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; }
-.req-view-row .rv-meta { flex: 1; min-width: 0; }
-.req-view-row .rv-k { font-size: 12.5px; color: var(--muted); }
-.req-view-row .rv-v { font-size: 16px; margin-top: 2px; word-break: break-word; }
-.req-view-row .rv-copy { color: #B9BBc0; padding: 6px; margin-top: 4px; border-radius: 8px; }
-.req-view-row .rv-copy:active { background: var(--inset); color: var(--ink); }
-.req-view-row .rv-copy.done { color: var(--green); }
-
-.btn-blue {
-  width: 100%; padding: 14px; border-radius: 14px; font-weight: 600; font-size: 15.5px;
-  background: #fff; color: #2B7DE9; border: 1.5px solid #D7DCE3;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.btn-blue:active { background: #F3F7FD; }
-.doc-foot { position: sticky; bottom: 12px; padding-top: 14px; background: linear-gradient(#ffffff00, #fff 35%); }
-.filepick { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
-.filepick .choose { background: var(--inset); border: 1px solid #DADCE0; border-radius: 8px; padding: 7px 12px; font-size: 13px; color: #2B7DE9; }
-.filepick .fname { color: var(--muted); font-size: 13px; word-break: break-all; }
-.filepick input { display: none; }
-.doc-preview {
-  border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
-  background: var(--inset); margin-bottom: 14px; min-height: 180px;
-}
-.doc-preview.only { margin-bottom: 16px; }
-.doc-preview img { display: block; width: 100%; max-height: 420px; object-fit: contain; background: #fff; }
-.doc-preview.pdf {
-  position: relative; flex: 1 1 auto; min-height: 0; height: auto;
-  background: #F4F5F7; margin: 0 -16px 12px; border: none; border-radius: 0; overflow: hidden;
-}
-.pdf-viewer {
-  position: absolute; inset: 0; overflow: auto; -webkit-overflow-scrolling: touch;
-  background: #F4F5F7;
-}
-.pdf-viewer-pages { min-height: 100%; }
-.pdf-viewer .pdf-page,
-.pdf-viewer canvas.pdf-page {
-  display: block; width: 100%; height: auto; background: #fff;
-  margin: 0 0 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-}
-.pdf-viewer .pdf-page:last-child,
-.pdf-viewer canvas.pdf-page:last-child { margin-bottom: 0; }
-.pdf-viewer-status {
-  min-height: 180px; display: flex; flex-direction: column; align-items: center;
-  justify-content: center; gap: 10px; color: var(--muted); font-size: 14px;
-}
-.doc-upload {
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  padding: 36px 16px; border: 1.5px dashed #C9CBD0; border-radius: 16px;
-  background: var(--inset); color: var(--ink); margin-bottom: 8px; position: relative;
-}
-.doc-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-.doc-upload .l1 { font-weight: 700; margin-top: 8px; }
-.doc-upload .l2 { font-size: 13px; color: var(--muted); }
-.doc-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; flex-shrink: 0; }
-.btn-doc {
-  width: 100%; padding: 14px 16px; border-radius: 14px; font-weight: 500; font-size: 15px;
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-}
-.btn-doc.primary { background: #2B7DE9; color: #fff; border: none; }
-.btn-doc.primary:active { background: #1F6AD0; }
-.btn-doc.secondary { background: #fff; color: #2B7DE9; border: 1.5px solid #2B7DE9; }
-.btn-doc.secondary:active { background: #F3F7FD; }
-
-.present-doc { text-align: center; padding-bottom: 8px; }
-.present-hint { font-size: 13px; color: var(--ink); margin-bottom: 8px; font-weight: 400; }
-.present-doc .qr-box { padding: 0 0 2px; }
-.present-doc .qr-box img { width: 128px; height: 128px; border-radius: 10px; }
-.present-or { font-size: 13px; color: var(--ink); margin-top: 10px; font-weight: 400; }
-.present-code {
-  margin-top: 2px; font-size: 22px; font-weight: 700; letter-spacing: 0.5px;
-  font-variant-numeric: tabular-nums; color: var(--ink);
-}
-.doc-file-card {
-  display: flex; align-items: center; gap: 12px; padding: 14px;
-  border: 1px solid var(--line); border-radius: 14px; margin-bottom: 14px; background: #fff;
-}
-.doc-file-card.muted-card { background: var(--inset); }
-.doc-file-card .l1 { font-weight: 600; word-break: break-all; }
-.doc-file-card .l2 { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
-.btn-black:disabled { opacity: 0.4; }
-.btn-black { width: 100%; padding: 15px; border-radius: 14px; font-weight: 700; font-size: 15px; background: #1B1C1E; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; }
-.btn-black:active { background: #000; }
-
-/* ---- Госуслуги (как в приложении Kaspi) ---- */
-.gov-page { padding-top: 2px; }
-.gov-tabs {
-  display: flex; background: #F1F2F4; border-radius: 12px; padding: 3px; margin-bottom: 14px;
-}
-.gov-tabs button {
-  flex: 1; padding: 10px 8px; border-radius: 10px; font-weight: 600; font-size: 14.5px; color: #6E7076;
-}
-.gov-tabs button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 
 .gov-search {
-  display: flex; align-items: center; gap: 10px;
-  background: #F1F2F4; border-radius: 12px; padding: 12px 14px; color: var(--muted); margin-bottom: 16px;
+  display: flex; align-items: center; gap: var(--s3);
+  background: var(--inset); border-radius: var(--r); padding: var(--s3) var(--s4);
+  color: var(--muted); margin-bottom: var(--s4);
 }
 .gov-search input {
-  flex: 1; border: none; outline: none; background: transparent; font-size: 15.5px; color: var(--ink);
+  flex: 1; border: none; outline: none; background: transparent; font-size: 15px; color: var(--ink);
 }
-.gov-search input::placeholder { color: #9A9DA3; }
+.gov-search input::placeholder { color: var(--muted); }
 
 .gov-docs-scroll {
-  display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
-  margin: 0 -16px; padding: 0 16px 4px; -webkit-overflow-scrolling: touch;
+  display: flex; gap: var(--s2); overflow-x: auto; scroll-snap-type: x mandatory;
+  margin: 0 calc(var(--gutter) * -1); padding: 0 var(--gutter) var(--s1);
+  /* без scroll-padding снап с align:start съедает padding-left и первая карточка липнет к краю */
+  scroll-padding-left: var(--gutter);
+  -webkit-overflow-scrolling: touch;
 }
 .gov-docs-scroll::-webkit-scrollbar { display: none; }
 .gov-doc-card {
-  flex: 0 0 132px; scroll-snap-align: start; position: relative; overflow: hidden;
-  height: 148px; border-radius: 16px; padding: 14px 12px;
+  flex: 0 0 132px; scroll-snap-align: start; height: 148px;
+  border-radius: var(--r-lg); padding: var(--s3);
   display: flex; flex-direction: column; justify-content: space-between;
-  text-align: left; box-shadow: var(--shadow);
+  text-align: left; overflow: hidden;
 }
-.gdc-icon { display: flex; position: relative; z-index: 1; }
-.gdc-thumb {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.92;
-}
-.gov-doc-card.has-thumb::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 55%;
-  background: linear-gradient(transparent, rgba(0,0,0,0.7)); z-index: 0; pointer-events: none;
-}
-.gdc-title {
-  font-size: 13px; font-weight: 700; line-height: 1.25; letter-spacing: -0.2px;
-  position: relative; z-index: 1;
-}
+.gdc-icon { display: flex; }
+.gdc-title { font-size: 13px; font-weight: 600; line-height: 1.25; letter-spacing: -0.2px; }
 
 .gov-all-docs {
-  display: flex; align-items: center; justify-content: center; gap: 4px;
-  width: 100%; margin-top: 12px; padding: 8px; font-weight: 600; font-size: 15px; color: var(--ink);
-}
-.gov-linkback {
-  display: inline-flex; align-items: center; gap: 4px; color: var(--muted); font-weight: 600; font-size: 14px;
+  display: flex; align-items: center; justify-content: center; gap: var(--s1);
+  width: 100%; margin-top: var(--s3); padding: var(--s2);
+  font-weight: 500; font-size: 15px; color: var(--ink);
 }
 
 .gov-cats {
-  display: flex; gap: 4px; overflow-x: auto; margin: 18px -16px 0; padding: 0 16px 2px;
+  display: flex; gap: var(--s1); overflow-x: auto;
+  margin: var(--s4) calc(var(--gutter) * -1) 0; padding: 0 var(--gutter);
 }
 .gov-cats::-webkit-scrollbar { display: none; }
 .gov-cat {
-  flex: 0 0 auto; min-width: 72px; display: flex; flex-direction: column; align-items: center; gap: 6px;
-  padding: 4px 6px 8px; color: var(--ink);
+  flex: 0 0 auto; min-width: 72px; padding: 0 var(--s1) var(--s2);
+  display: flex; flex-direction: column; align-items: center; gap: var(--s2);
+  color: var(--ink); border-bottom: 2px solid transparent;
 }
 .gov-cat .gc-ic {
-  width: 52px; height: 52px; border-radius: 50%; background: #F4F5F7;
+  width: 52px; height: 52px; border-radius: 50%; background: var(--inset);
   display: flex; align-items: center; justify-content: center;
 }
-.gov-cat .gc-label { font-size: 12px; font-weight: 600; white-space: nowrap; }
+.gov-cat .gc-label { font-size: 12px; font-weight: 500; white-space: nowrap; }
+.gov-cat.on { border-bottom-color: var(--red); }
 .gov-cat.on .gc-label { color: var(--red); }
-.gov-cat.on { border-bottom: 2px solid var(--red); border-radius: 0; }
 
-.gov-list { margin-top: 4px; }
+.gov-list { margin-top: var(--s1); }
 .gov-row {
-  width: 100%; display: flex; align-items: center; gap: 14px;
-  padding: 14px 0; border-bottom: 1px solid var(--line); text-align: left; color: var(--ink);
+  width: 100%; display: flex; align-items: center; gap: var(--s3);
+  padding: var(--s3) 0; border-bottom: 1px solid var(--line);
+  text-align: left; color: var(--ink);
 }
 .gov-row:last-child { border-bottom: none; }
 .gr-ic { flex: 0 0 auto; display: flex; }
 .gr-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.gr-title { font-weight: 600; font-size: 15.5px; letter-spacing: -0.2px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.gr-sub { font-size: 12.5px; color: var(--muted); line-height: 1.3; }
+.gr-title {
+  font-weight: 500; font-size: 15px; letter-spacing: -0.2px;
+  display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap;
+}
+.gr-sub { font-size: 13px; color: var(--muted); line-height: 1.3; }
 .gr-new {
   display: inline-block; background: var(--red); color: #fff;
-  font-size: 10px; font-weight: 800; letter-spacing: 0.4px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
   padding: 2px 6px; border-radius: 5px; line-height: 1.2;
 }
 
 .gov-empty {
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  padding: 56px 20px 40px;
+  display: flex; flex-direction: column; align-items: center; gap: var(--s3);
+  padding: var(--s6) var(--s5);
 }
 .gov-empty-ic {
-  width: 72px; height: 72px; border-radius: 22px; background: var(--inset);
+  width: 72px; height: 72px; border-radius: var(--r-xl); background: var(--inset);
   color: var(--muted); display: flex; align-items: center; justify-content: center;
 }
 
-/* ---- QR screen ---- */
-.qr-screen { display: flex; flex-direction: column; align-items: center; padding-top: 24px; }
-.qr-frame { width: 240px; height: 240px; border-radius: 20px; border: 2px solid var(--red); padding: 12px; display: flex; align-items: center; justify-content: center; }
-.qr-frame img { width: 100%; height: 100%; }
-.qr-cap { margin-top: 18px; color: var(--muted); text-align: center; }
-.qr-screen .btn { max-width: 260px; }
+/* ---------- Заставка eGov + Kaspi ---------- */
+.egov-splash {
+  position: fixed; inset: 0; max-width: var(--maxw); left: 50%; transform: translateX(-50%);
+  background: var(--surface); display: flex; flex-direction: column; z-index: 40;
+}
+.egov-splash::before { content: ""; height: 2px; background: var(--red); width: 100%; }
+.egov-center { flex: 1; display: flex; align-items: center; justify-content: center; }
+.egov-logos { display: flex; align-items: center; gap: var(--s4); }
+.egov-logo {
+  width: 92px; height: 92px; border-radius: 50%; border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 400; color: var(--blue);
+}
+.egov-logo b { font-weight: 700; }
+.egov-plus { font-size: 26px; color: #C7C9CE; }
+.kaspi-mark {
+  width: 92px; height: 92px; border-radius: 50%; background: var(--red); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.egov-foot {
+  text-align: center; color: var(--muted); font-size: 12px;
+  padding-bottom: var(--s5); line-height: 1.5;
+}
+.egov-loadcap { text-align: center; color: var(--muted); font-size: 13px; margin-top: var(--s3); }
 
-/* ---- Stub screens ---- */
-.stub { display: flex; flex-direction: column; align-items: center; gap: 12px; padding-top: 56px; }
-.stub-ic { width: 76px; height: 76px; border-radius: 24px; background: var(--inset); color: var(--red); display: flex; align-items: center; justify-content: center; }
+.spinner {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 3px solid var(--inset); border-top-color: var(--red);
+  animation: spin 0.8s linear infinite; margin: var(--s5) auto 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2s; } }
+
+/* ============================================================
+   ДОКУМЕНТ: вкладки «Документ» / «Реквизиты»
+   ============================================================ */
+.doc-screen { min-height: 60vh; display: flex; flex-direction: column; }
+.doc-screen.has-pdf {
+  height: calc(100dvh - env(safe-area-inset-top, 0px) - 56px - var(--s5));
+  max-height: calc(100dvh - env(safe-area-inset-top, 0px) - 56px - var(--s5));
+  min-height: 0; overflow: hidden;
+}
+.doc-body { display: flex; flex-direction: column; flex: 1; min-height: 0; padding-bottom: var(--s2); }
+.doc-body.has-pdf { padding-bottom: 0; overflow: hidden; }
+
+/* Поле с подписью на рамке */
+.outl { position: relative; margin-bottom: var(--s4); }
+.outl label {
+  position: absolute; top: -7px; left: var(--s3); background: var(--surface);
+  padding: 0 5px; font-size: 12px; color: var(--ink-2); z-index: 1;
+}
+.outl input {
+  width: 100%; min-height: 52px; padding: var(--s3); font-size: 16px;
+  border: 1px solid #C9CBD0; border-radius: var(--r);
+  outline: none; background: var(--surface); color: var(--ink);
+}
+.outl input:focus { border-color: var(--ink); }
+
+/* Дата: подпись + значение, редактируется по тапу */
+.dateline { margin-bottom: var(--s4); }
+.dateline label { display: block; font-size: 14px; color: var(--ink); font-weight: 600; }
+.dateline input {
+  border: none; outline: none; background: transparent; padding: 2px 0 0;
+  font-size: 15px; color: var(--ink); width: 100%;
+}
+.dateline input::placeholder { color: var(--ink-2); }
+
+/* Просмотр реквизитов */
+.req-view-row { display: flex; align-items: flex-start; gap: var(--s3); padding: var(--s2) 0; }
+.req-view-row .rv-meta { flex: 1; min-width: 0; }
+.req-view-row .rv-k { font-size: 13px; color: var(--muted); }
+.req-view-row .rv-v { font-size: 16px; margin-top: 2px; word-break: break-word; }
+.req-view-row .rv-copy {
+  color: var(--muted); padding: 6px; margin-top: var(--s1); border-radius: var(--r-sm);
+}
+.req-view-row .rv-copy:active { background: var(--inset); color: var(--ink); }
+.req-view-row .rv-copy.done { color: var(--green); }
+
+.doc-foot { position: sticky; bottom: var(--s3); padding-top: var(--s3); background: linear-gradient(#ffffff00, #fff 35%); }
+
+/* Кнопки экрана документа — та же система, что и .btn */
+.btn-doc, .btn-blue, .btn-black {
+  width: 100%; min-height: 52px; padding: 0 var(--s4); border-radius: var(--r);
+  font-weight: 600; font-size: 15px;
+  display: flex; align-items: center; justify-content: center; gap: var(--s2);
+  transition: background 0.12s;
+}
+.btn-doc.primary { background: var(--red); color: #fff; }
+.btn-doc.primary:active { background: var(--red-press); }
+.btn-doc.secondary, .btn-blue { background: var(--inset); color: var(--ink); }
+.btn-doc.secondary:active, .btn-blue:active { background: #E7E9EB; }
+.btn-black { background: #1B1C1E; color: #fff; font-weight: 700; }
+.btn-black:active { background: #000; }
+.btn-black:disabled { opacity: 0.4; }
+
+.doc-actions { display: flex; flex-direction: column; gap: var(--s2); margin-top: var(--s1); flex-shrink: 0; }
+
+/* Предъявление документа */
+.present-doc { text-align: center; padding-bottom: var(--s2); }
+.present-hint { font-size: 13px; color: var(--ink); margin-bottom: var(--s2); }
+.present-doc .qr-box { padding: 0; }
+.present-doc .qr-box img { width: 128px; height: 128px; border-radius: var(--r-sm); }
+.present-or { font-size: 13px; color: var(--ink); margin-top: var(--s2); }
+.present-code {
+  margin-top: 2px; font-size: 22px; font-weight: 700; letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums; color: var(--ink);
+}
+
+/* Файл документа */
+.doc-file-card {
+  display: flex; align-items: center; gap: var(--s3); padding: var(--s3);
+  border: 1px solid var(--line); border-radius: var(--r-lg);
+  margin-bottom: var(--s3); background: var(--surface);
+}
+.doc-file-card.muted-card { background: var(--inset); }
+.doc-file-card .l1 { font-weight: 500; word-break: break-all; }
+.doc-file-card .l2 { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+.doc-upload {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: var(--s1);
+  padding: var(--s6) var(--s4); border: 1px dashed #C9CBD0; border-radius: var(--r-xl);
+  background: var(--inset); color: var(--ink); margin-bottom: var(--s2);
+}
+.doc-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.doc-upload .l1 { font-weight: 600; margin-top: var(--s2); }
+.doc-upload .l2 { font-size: 13px; color: var(--muted); }
+
+.doc-preview {
+  border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden;
+  background: var(--inset); margin-bottom: var(--s3); min-height: 180px;
+}
+.doc-preview img { display: block; width: 100%; max-height: 420px; object-fit: contain; background: var(--surface); }
+.doc-preview.pdf {
+  position: relative; flex: 1 1 auto; min-height: 0; height: auto;
+  background: var(--inset); margin: 0 calc(var(--gutter) * -1) var(--s3);
+  border: none; border-radius: 0; overflow: hidden;
+}
+
+.pdf-viewer {
+  position: absolute; inset: 0; overflow: auto;
+  -webkit-overflow-scrolling: touch; background: var(--inset);
+}
+.pdf-viewer-pages { min-height: 100%; }
+.pdf-viewer .pdf-page,
+.pdf-viewer canvas.pdf-page {
+  display: block; width: 100%; height: auto; background: var(--surface);
+  margin-bottom: var(--s2); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+.pdf-viewer .pdf-page:last-child,
+.pdf-viewer canvas.pdf-page:last-child { margin-bottom: 0; }
+.pdf-viewer-status {
+  min-height: 180px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: var(--s2);
+  color: var(--muted); font-size: 14px;
+}
+
+/* ============================================================
+   ЗАГЛУШКИ
+   ============================================================ */
+.stub { display: flex; flex-direction: column; align-items: center; gap: var(--s3); padding-top: var(--s6); }
+.stub-ic {
+  width: 76px; height: 76px; border-radius: var(--r-xl); background: var(--inset);
+  color: var(--red); display: flex; align-items: center; justify-content: center;
+}
 .stub-title { font-size: 20px; font-weight: 700; }
+
+/* ============================================================
+   ДЕСКТОП: боковое меню вместо нижней навигации
+   ============================================================ */
+@media (min-width: 900px) {
+  :root { --maxw: 1040px; --gutter: 30px; }
+  .shell { max-width: 1040px; }
+  .with-sidebar { display: grid; grid-template-columns: 232px 1fr; }
+  .sidebar {
+    border-right: 1px solid var(--line); padding: var(--s5) var(--s3);
+    min-height: 100vh; position: sticky; top: 0; align-self: start;
+  }
+  .sidebar .s-logo {
+    font-size: 25px; font-weight: 700; color: var(--red);
+    letter-spacing: -1px; padding: var(--s2) var(--s3) var(--s5);
+  }
+  .sidebar button {
+    width: 100%; display: flex; align-items: center; gap: var(--s3);
+    padding: var(--s3) var(--s4); border-radius: var(--r);
+    color: var(--ink); font-size: 15px; font-weight: 500; margin-bottom: var(--s1);
+  }
+  .sidebar button.active { background: var(--red-tint); color: var(--red); font-weight: 600; }
+  .bottom-nav { display: none; }
+  .content { padding: var(--s4) var(--gutter) var(--s6); max-width: 640px; }
+  .cards-scroll > * { flex: 0 0 300px; }
+  .home-head { display: none; }
+}
+@media (max-width: 899px) {
+  .sidebar { display: none; }
+  .with-sidebar { display: block; }
+}

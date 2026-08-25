@@ -39,7 +39,7 @@ function ReqForm({ initial, onSave, onCancel }) {
         <label>Назначение платежа</label>
         <textarea rows={2} value={f.purpose} onChange={set('purpose')} placeholder="Необязательно" />
       </div>
-      <button className="btn" disabled={!valid} style={{ opacity: valid ? 1 : 0.5 }}
+      <button className="btn" disabled={!valid}
         onClick={() => onSave(f)}>Сохранить</button>
       <button className="btn ghost mt8" onClick={onCancel}>Отмена</button>
     </>
@@ -88,11 +88,11 @@ export default function Requisites({ requisites, setRequisites }) {
 
   return (
     <div>
-      <div className="row-between" style={{ marginTop: 8 }}>
+      <div className="row-between mt8">
         <div className="section-title" style={{ margin: 0 }}>Реквизиты</div>
-        <button className="btn secondary small" onClick={() => setEditing({ ...empty })}>＋ Добавить</button>
+        <button className="btn tinted small" onClick={() => setEditing({ ...empty })}>＋ Добавить</button>
       </div>
-      <div className="muted" style={{ fontSize: 13, margin: '4px 2px 12px' }}>
+      <div className="muted" style={{ fontSize: 13, margin: '4px 0 12px' }}>
         Заполняйте и сохраняйте реквизиты для переводов
       </div>
 
@@ -113,7 +113,7 @@ export default function Requisites({ requisites, setRequisites }) {
             <div className="req-line"><span className="k">Банк</span><span className="v">{r.bank || '—'}</span></div>
             {r.purpose && <div className="req-line"><span className="k">Назначение</span><span className="v">{r.purpose}</span></div>}
           </div>
-          <div style={{ display: 'flex', gap: 8, marginTop: 14, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
             <button className="btn ghost small" onClick={() => copyAll(r)}>
               {copied === r.id ? <><Icon name="check" size={15} /> Скопировано</> : <><Icon name="copy" size={15} /> Копировать</>}
             </button>

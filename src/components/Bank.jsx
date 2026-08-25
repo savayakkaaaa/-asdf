@@ -28,7 +28,7 @@ function Donut({ data }) {
   const R = 42, C = 2 * Math.PI * R
   return (
     <svg width="112" height="112" viewBox="0 0 112 112">
-      <circle cx="56" cy="56" r={R} fill="none" stroke="#EEF0F2" strokeWidth="13" />
+      <circle cx="56" cy="56" r={R} fill="none" stroke="#F2F3F5" strokeWidth="13" />
       {data.map((d, i) => {
         const frac = d.value / total
         const dash = frac * C
@@ -41,7 +41,7 @@ function Donut({ data }) {
         return el
       })}
       <text x="56" y="52" textAnchor="middle" fontSize="10" fill="#9A9DA3">Траты</text>
-      <text x="56" y="69" textAnchor="middle" fontSize="15" fontWeight="800" fill="#1F2124">{fmt(total / 1000)}к ₸</text>
+      <text x="56" y="69" textAnchor="middle" fontSize="15" fontWeight="700" fill="#1F2124">{fmt(total / 1000)}к ₸</text>
     </svg>
   )
 }
@@ -121,7 +121,7 @@ export default function Bank({ accounts, transactions, updateAccount }) {
       </div>
 
       <div className="section-title">История операций</div>
-      <div className="rows pad">
+      <div className="rows">
         {txList.map((t) => {
           const m = catMeta(t.category)
           return (
@@ -156,7 +156,7 @@ function CardManage({ acc, onClose, onSave }) {
   const [limit, setLimit] = useState(acc.limitPerDay)
   return (
     <Sheet title={acc.name} onClose={onClose}>
-      <div className={'kcard ' + acc.variant} style={{ marginBottom: 18 }}>
+      <div className={'kcard ' + acc.variant} style={{ marginBottom: 16 }}>
         <div className="kc-top"><span className="kc-brand">{acc.name}</span><span className="kc-sys">{acc.system}</span></div>
         <div>
           <div className="kc-balance">{fmt(acc.balance)} ₸</div>
@@ -167,7 +167,7 @@ function CardManage({ acc, onClose, onSave }) {
       <div className="row-between" style={{ padding: '8px 0' }}>
         <div>
           <div style={{ fontWeight: 600 }}>Блокировка карты</div>
-          <div className="muted" style={{ fontSize: 12.5 }}>Мгновенно заморозить операции</div>
+          <div className="muted" style={{ fontSize: 13 }}>Мгновенно заморозить операции</div>
         </div>
         <button className={'toggle' + (acc.blocked ? ' on' : '')} onClick={() => onSave({ blocked: !acc.blocked })} aria-label="Блокировка" />
       </div>

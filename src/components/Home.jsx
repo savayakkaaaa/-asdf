@@ -4,6 +4,12 @@ import { homeGrid, magnumTiles, productShortcuts } from '../data.js'
 export default function Home({ onNavigate }) {
   return (
     <div className="home">
+      {/* Шапка: вордмарк слева, уведомления справа (на десктопе скрыта — там сайдбар) */}
+      <header className="home-head">
+        <span className="wordmark">Kaspi.kz</span>
+        <button className="head-act" aria-label="Уведомления"><Icon name="bell" size={22} /></button>
+      </header>
+
       {/* Поиск: лупа слева, камера и корзина справа */}
       <div className="search-bar" role="search">
         <Icon name="search" size={19} />
@@ -45,6 +51,9 @@ export default function Home({ onNavigate }) {
           </button>
         ))}
       </div>
+
+      {/* Серая полоса — так приложение делит главную на блоки */}
+      <div className="band" />
 
       {/* Быстрые продукты: 2 колонки */}
       <div className="shortcuts">

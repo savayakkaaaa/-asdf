@@ -338,7 +338,7 @@ export default function Gov({ documents, addDocument, updateDocument, onHeaderOv
   if (allDocs) {
     return (
       <div className="gov-page">
-        <div className="rows pad" style={{ marginTop: 8 }}>
+        <div className="rows mt8">
           {documents.map((d) => (
             <div className="rowi" key={d.id} onClick={() => openDoc(d.id)}>
               <span className="ic" style={{ background: d.color, color: d.accent || '#fff' }}><Icon name={d.icon} size={20} /></span>
@@ -347,7 +347,7 @@ export default function Gov({ documents, addDocument, updateDocument, onHeaderOv
             </div>
           ))}
         </div>
-        <button type="button" className="btn secondary mt16" onClick={() => setAddOpen(true)}>＋ Добавить документ</button>
+        <button type="button" className="btn tinted mt16" onClick={() => setAddOpen(true)}>＋ Добавить документ</button>
         {addOpen && (
           <Sheet title="Новый документ" onClose={() => setAddOpen(false)}>
             <div className="field">
@@ -448,7 +448,7 @@ export default function Gov({ documents, addDocument, updateDocument, onHeaderOv
       {service && (
         <Sheet title={service.title} onClose={() => setService(null)}>
           <div className="rowi" style={{ borderBottom: 'none' }}>
-            <span className="ic" style={{ background: '#FDECEA', color: service.color }}><Icon name={service.icon} size={20} /></span>
+            <span className="ic" style={{ background: 'var(--red-tint)', color: service.color }}><Icon name={service.icon} size={20} /></span>
             <div className="meta"><div className="l1">{service.title}</div>{service.subtitle && <div className="l2">{service.subtitle}</div>}</div>
           </div>
           <div className="req-line mt12">
