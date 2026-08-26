@@ -23,8 +23,11 @@ const TITLES = {
   shop: 'Магазин', travel: 'Kaspi Travel', ads: 'Объявления', magnum: 'Magnum', jobs: 'Работа',
 }
 // Экраны, которые в приложении лежат на сером Ds.Back.Base, а не на белом:
-// у kaspi_services_page_fragment это прямо прописано в лейауте.
+// у kaspi_services_page_fragment это прямо прописано в лейауте. У Госуслуг
+// серый только на самом списке — заставка eGov и экран документа белые,
+// а по непустому headerOverride как раз видно, что открыт подэкран.
 const greyPages = new Set(['services', 'gov'])
+const isGrey = (view, headerOverride) => greyPages.has(view) && !(view === 'gov' && headerOverride)
 
 export default function App() {
   const [view, setView] = useState('home')
@@ -86,7 +89,11 @@ export default function App() {
               </header>
             )}
 
-            <main className={'content' + (isBottom ? '' : ' no-nav') + (greyPages.has(view) ? ' grey' : '')}>
+            <main
+              className={'content' + (isBottom ? '' : ' no-nav')
+                + (isGrey(view, headerOverride) ? ' grey' : '')
+                + (headerOverride?.fill ? ' fill' : '')}
+            >
               {view === 'home' && <Home onNavigate={setView} />}
               {view === 'bank' && <Bank accounts={accounts} transactions={transactions} updateAccount={updateAccount} />}
               {view === 'gov' && (

@@ -311,6 +311,8 @@ export default function Gov({ documents, addDocument, updateDocument, onHeaderOv
       onHeaderOverride({
         title: doc?.title || 'Документ',
         onBack: () => setDetail(null),
+        // экран документа должен занять всю доступную высоту: кнопки живут внизу
+        fill: true,
       })
     } else if (allDocs) {
       onHeaderOverride({
