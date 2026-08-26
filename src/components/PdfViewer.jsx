@@ -1,17 +1,116 @@
-import { useEffect, useRef, useState } from 'react'
-import * as pdfjs from 'pdfjs-dist'
-import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import pdfjs from '../pdf.js'
 
-pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker
+const MIN_ZOOM = 1
+const MAX_ZOOM = 4
+const DOUBLE_TAP_ZOOM = 2.5
+// Рисуем с запасом разрешения, чтобы при увеличении не мылило.
+// Зум после этого — чистый CSS, без перерисовки canvas.
+const QUALITY = 2
 
-/** Рендер PDF в canvas — работает на iOS/Android, в отличие от iframe. */
+const clampZoom = (z) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z))
+const touchDist = (a, b) => Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY)
+
+/** Рендер PDF в canvas — работает на iOS/Android, в отличие от iframe.
+ *  Масштабирование: щипок двумя пальцами, двойной тап, Ctrl+колесо. */
 export default function PdfViewer({ url }) {
   const hostRef = useRef(null)
   const pagesRef = useRef(null)
   const [status, setStatus] = useState('loading') // loading | ready | error
+  const [zoom, setZoom] = useState(MIN_ZOOM)
+
+  // Точка, вокруг которой нужно удержать содержимое после смены зума
+  const anchorRef = useRef(null)
+  const zoomRef = useRef(MIN_ZOOM)
+  zoomRef.current = zoom
+
+  /** Меняет зум, удерживая под пальцем ту же точку документа. */
+  const zoomTo = useCallback((next, clientX, clientY) => {
+    const host = hostRef.current
+    const target = clampZoom(next)
+    if (!host || target === zoomRef.current) return
+    anchorRef.current = { clientX, clientY, from: zoomRef.current, to: target }
+    setZoom(target)
+  }, [])
+
+  // Пересчёт прокрутки выполняем до отрисовки кадра, иначе картинка дёргается
+  useLayoutEffect(() => {
+    const host = hostRef.current
+    const a = anchorRef.current
+    anchorRef.current = null
+    if (!host || !a) return
+    const rect = host.getBoundingClientRect()
+    const offsetX = a.clientX - rect.left
+    const offsetY = a.clientY - rect.top
+    const k = a.to / a.from
+    host.scrollLeft = (host.scrollLeft + offsetX) * k - offsetX
+    host.scrollTop = (host.scrollTop + offsetY) * k - offsetY
+  }, [zoom])
+
+  // Жесты. Слушатели вешаем вручную: touchmove и wheel нужны неpassive,
+  // иначе preventDefault не сработает и страницу утащит браузерный зум.
+  useEffect(() => {
+    const host = hostRef.current
+    if (!host) return undefined
+
+    let pinch = null // { dist, zoom }
+    let lastTap = 0
+
+    const onTouchStart = (e) => {
+      if (e.touches.length === 2) {
+        pinch = { dist: touchDist(e.touches[0], e.touches[1]), zoom: zoomRef.current }
+        return
+      }
+      if (e.touches.length !== 1) return
+      const now = Date.now()
+      if (now - lastTap < 300) {
+        const t = e.touches[0]
+        zoomTo(zoomRef.current > MIN_ZOOM ? MIN_ZOOM : DOUBLE_TAP_ZOOM, t.clientX, t.clientY)
+        lastTap = 0
+      } else {
+        lastTap = now
+      }
+    }
+
+    const onTouchMove = (e) => {
+      if (!pinch || e.touches.length !== 2) return
+      e.preventDefault()
+      const [a, b] = [e.touches[0], e.touches[1]]
+      const dist = touchDist(a, b)
+      if (!pinch.dist) return
+      zoomTo(
+        pinch.zoom * (dist / pinch.dist),
+        (a.clientX + b.clientX) / 2,
+        (a.clientY + b.clientY) / 2,
+      )
+    }
+
+    const onTouchEnd = (e) => {
+      if (e.touches.length < 2) pinch = null
+    }
+
+    const onWheel = (e) => {
+      if (!e.ctrlKey) return // обычная прокрутка колесом не трогается
+      e.preventDefault()
+      zoomTo(zoomRef.current * (e.deltaY < 0 ? 1.12 : 1 / 1.12), e.clientX, e.clientY)
+    }
+
+    host.addEventListener('touchstart', onTouchStart, { passive: true })
+    host.addEventListener('touchmove', onTouchMove, { passive: false })
+    host.addEventListener('touchend', onTouchEnd, { passive: true })
+    host.addEventListener('touchcancel', onTouchEnd, { passive: true })
+    host.addEventListener('wheel', onWheel, { passive: false })
+    return () => {
+      host.removeEventListener('touchstart', onTouchStart)
+      host.removeEventListener('touchmove', onTouchMove)
+      host.removeEventListener('touchend', onTouchEnd)
+      host.removeEventListener('touchcancel', onTouchEnd)
+      host.removeEventListener('wheel', onWheel)
+    }
+  }, [zoomTo])
 
   useEffect(() => {
-    if (!url) return
+    if (!url) return undefined
     let cancelled = false
     let pdfDoc = null
     let ro = null
@@ -31,7 +130,7 @@ export default function PdfViewer({ url }) {
         if (cancelled) return
         const page = await doc.getPage(i)
         const base = page.getViewport({ scale: 1 })
-        const scale = (width / base.width) * dpr
+        const scale = (width / base.width) * dpr * QUALITY
         const viewport = page.getViewport({ scale })
         const canvas = document.createElement('canvas')
         canvas.className = 'pdf-page'
@@ -49,6 +148,7 @@ export default function PdfViewer({ url }) {
 
     const start = async () => {
       setStatus('loading')
+      setZoom(MIN_ZOOM)
       clearPages()
       try {
         pdfDoc = await pdfjs.getDocument({ url, withCredentials: false }).promise
@@ -72,6 +172,8 @@ export default function PdfViewer({ url }) {
           let t = 0
           ro = new ResizeObserver(() => {
             clearTimeout(t)
+            // Перерисовываем только под смену ширины экрана. Зум ширину
+            // хоста не меняет, так что лишних перерисовок не будет.
             t = setTimeout(() => { if (!cancelled) paint() }, 180)
           })
           ro.observe(hostRef.current)
@@ -91,22 +193,37 @@ export default function PdfViewer({ url }) {
     }
   }, [url])
 
+  const resetZoom = () => {
+    const rect = hostRef.current?.getBoundingClientRect()
+    if (!rect) return
+    zoomTo(MIN_ZOOM, rect.left + rect.width / 2, rect.top + rect.height / 2)
+  }
+
   return (
-    <div className="pdf-viewer" ref={hostRef}>
-      {status === 'loading' && (
-        <div className="pdf-viewer-status">
-          <div className="spinner" style={{ margin: 0 }} />
-          <div>Открываем документ…</div>
-        </div>
+    // Оболочка нужна, чтобы кнопка сброса висела поверх и не уезжала с прокруткой
+    <div className="pdf-viewer-shell">
+      <div className="pdf-viewer" ref={hostRef}>
+        {status === 'loading' && (
+          <div className="pdf-viewer-status">
+            <div className="spinner" style={{ margin: 0 }} />
+            <div>Открываем документ…</div>
+          </div>
+        )}
+        {status === 'error' && (
+          <div className="pdf-viewer-status muted">Не удалось открыть PDF</div>
+        )}
+        <div
+          className="pdf-viewer-pages"
+          ref={pagesRef}
+          hidden={status !== 'ready'}
+          style={{ width: `${zoom * 100}%` }}
+        />
+      </div>
+      {status === 'ready' && zoom > MIN_ZOOM && (
+        <button type="button" className="pdf-zoom-reset" onClick={resetZoom}>
+          ×{zoom.toFixed(1)} · сбросить
+        </button>
       )}
-      {status === 'error' && (
-        <div className="pdf-viewer-status muted">Не удалось открыть PDF</div>
-      )}
-      <div
-        className="pdf-viewer-pages"
-        ref={pagesRef}
-        hidden={status !== 'ready'}
-      />
     </div>
   )
 }

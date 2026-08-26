@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Sheet from './Sheet.jsx'
 import Icon from './Icon.jsx'
 import PdfViewer from './PdfViewer.jsx'
+import GovDocCard from './GovDocCard.jsx'
 import {
   fmt, isImageFile, isPdfFile, isPdfData, compressImageFile,
   stashDocBlob, loadDocBlob, makeQR,
@@ -404,10 +405,7 @@ export default function Gov({ documents, addDocument, updateDocument, onHeaderOv
 
           <div className="gov-docs-scroll">
             {carousel.map((d) => (
-              <button type="button" className="gov-doc-card" key={d.id} onClick={() => openDoc(d.id)}>
-                <span className="gdc-icon" style={{ color: d.color }}><Icon name={d.fileKind === 'pdf' || /\.pdf$/i.test(d.file || '') ? 'doc' : d.icon} size={34} stroke={1.6} /></span>
-                <span className="gdc-title">{d.title}{d.file ? ' · файл' : ''}</span>
-              </button>
+              <GovDocCard key={d.id} doc={d} onOpen={openDoc} />
             ))}
           </div>
           <button type="button" className="gov-all-docs" onClick={() => setAllDocs(true)}>
