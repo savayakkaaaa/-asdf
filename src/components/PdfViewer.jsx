@@ -193,37 +193,23 @@ export default function PdfViewer({ url }) {
     }
   }, [url])
 
-  const resetZoom = () => {
-    const rect = hostRef.current?.getBoundingClientRect()
-    if (!rect) return
-    zoomTo(MIN_ZOOM, rect.left + rect.width / 2, rect.top + rect.height / 2)
-  }
-
   return (
-    // Оболочка нужна, чтобы кнопка сброса висела поверх и не уезжала с прокруткой
-    <div className="pdf-viewer-shell">
-      <div className="pdf-viewer" ref={hostRef}>
-        {status === 'loading' && (
-          <div className="pdf-viewer-status">
-            <div className="spinner" style={{ margin: 0 }} />
-            <div>Открываем документ…</div>
-          </div>
-        )}
-        {status === 'error' && (
-          <div className="pdf-viewer-status muted">Не удалось открыть PDF</div>
-        )}
-        <div
-          className="pdf-viewer-pages"
-          ref={pagesRef}
-          hidden={status !== 'ready'}
-          style={{ width: `${zoom * 100}%` }}
-        />
-      </div>
-      {status === 'ready' && zoom > MIN_ZOOM && (
-        <button type="button" className="pdf-zoom-reset" onClick={resetZoom}>
-          ×{zoom.toFixed(1)} · сбросить
-        </button>
+    <div className="pdf-viewer" ref={hostRef}>
+      {status === 'loading' && (
+        <div className="pdf-viewer-status">
+          <div className="spinner" style={{ margin: 0 }} />
+          <div>Открываем документ…</div>
+        </div>
       )}
+      {status === 'error' && (
+        <div className="pdf-viewer-status muted">Не удалось открыть PDF</div>
+      )}
+      <div
+        className="pdf-viewer-pages"
+        ref={pagesRef}
+        hidden={status !== 'ready'}
+        style={{ width: `${zoom * 100}%` }}
+      />
     </div>
   )
 }

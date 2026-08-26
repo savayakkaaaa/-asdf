@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Sheet from './Sheet.jsx'
 import Icon from './Icon.jsx'
 import PdfViewer from './PdfViewer.jsx'
-import GovDocCard from './GovDocCard.jsx'
+import DocArt from './DocArt.jsx'
 import {
   fmt, isImageFile, isPdfFile, isPdfData, compressImageFile,
   stashDocBlob, loadDocBlob, makeQR,
@@ -39,6 +39,12 @@ const REQ_FIELDS = [
   { k: 'expires', label: 'Срок действия', kind: 'date' },
 ]
 
+/** Маска даты: из введённых цифр собирает дд.мм.гггг по мере набора. */
+const maskDate = (v) => {
+  const d = String(v).replace(/\D/g, '').slice(0, 8)
+  return [d.slice(0, 2), d.slice(2, 4), d.slice(4, 8)].filter(Boolean).join('.')
+}
+
 function DocDetail({ doc, onClose, onSave }) {
   const [tab, setTab] = useState(doc.file ? 'doc' : 'req')
   const [file, setFile] = useState(doc.file || '')
@@ -53,6 +59,7 @@ function DocDetail({ doc, onClose, onSave }) {
   const [qr, setQr] = useState('')
   const [speakCode, setSpeakCode] = useState('')
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value })
+  const setDate = (k) => (e) => setF({ ...f, [k]: maskDate(e.target.value) })
 
   const hasDoc = Boolean(viewUrl)
 
@@ -233,19 +240,21 @@ function DocDetail({ doc, onClose, onSave }) {
         </div>
       ) : editing ? (
         <div className="doc-body">
-          {REQ_FIELDS.map(({ k, label, kind, numeric }) =>
-            kind === 'date' ? (
-              <div className="dateline" key={k}>
-                <label>{label}</label>
-                <input value={f[k]} onChange={set(k)} placeholder="dd/mm/yyyy" inputMode="numeric" />
-              </div>
-            ) : (
+          {REQ_FIELDS.map(({ k, label, kind, numeric }) => {
+            const isDate = kind === 'date'
+            return (
               <div className="outl" key={k}>
                 <label>{label}</label>
-                <input value={f[k]} onChange={set(k)} inputMode={numeric ? 'numeric' : undefined} />
+                <input
+                  value={f[k]}
+                  onChange={isDate ? setDate(k) : set(k)}
+                  inputMode={isDate || numeric ? 'numeric' : undefined}
+                  placeholder={isDate ? 'дд.мм.гггг' : undefined}
+                  maxLength={isDate ? 10 : undefined}
+                />
               </div>
             )
-          )}
+          })}
           <button type="button" className="btn-black mt16" onClick={saveReq}>Сохранить <span style={{ fontSize: 17 }}>→</span></button>
         </div>
       ) : (
@@ -405,7 +414,10 @@ export default function Gov({ documents, addDocument, updateDocument, onHeaderOv
 
           <div className="gov-docs-scroll">
             {carousel.map((d) => (
-              <GovDocCard key={d.id} doc={d} onOpen={openDoc} />
+              <button type="button" className="gov-doc-card" key={d.id} onClick={() => openDoc(d.id)}>
+                <DocArt icon={d.icon} color={d.color} />
+                <span className="gdc-title">{d.title}</span>
+              </button>
             ))}
           </div>
           <button type="button" className="gov-all-docs" onClick={() => setAllDocs(true)}>
