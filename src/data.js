@@ -85,12 +85,13 @@ export const initialDocuments = [
   { id: 'd4', title: 'Водительское удостоверение', subtitle: 'Категория B', icon: 'car', status: 'Действителен', color: '#F14635', added: '2026-05-01' },
 ]
 
+// Цвета — токены дизайн-системы: Ds.Brand.Kaspi, Ds.Action.Success, Ds.Brand.Gov.
 export const govCategories = [
   { id: 'popular', label: 'Популярные', icon: 'megaphone', color: '#F14635' },
-  { id: 'certs', label: 'Справки', icon: 'doccheck', color: '#33B36B' },
+  { id: 'certs', label: 'Справки', icon: 'doccheck', color: '#00AB56' },
   { id: 'auto', label: 'Авто', icon: 'car', color: '#F14635' },
-  { id: 'home', label: 'Жилье', icon: 'home', color: '#2B7DE9' },
-  { id: 'family', label: 'Семья', icon: 'stroller', color: '#2B7DE9' },
+  { id: 'home', label: 'Жилье', icon: 'home', color: '#00ABC2' },
+  { id: 'family', label: 'Семья', icon: 'stroller', color: '#00ABC2' },
 ]
 
 export const govServices = [
@@ -98,11 +99,11 @@ export const govServices = [
   { id: 'g2', title: 'Переоформление автомобиля', subtitle: '', fee: 0, icon: 'car', color: '#F14635', cat: 'popular', cats: ['popular', 'auto'] },
   { id: 'g3', title: 'Проверка прописки', subtitle: '', fee: 0, icon: 'homesearch', color: '#F14635', cat: 'popular', cats: ['popular', 'home'], badge: 'NEW' },
   { id: 'g4', title: 'Прописка', subtitle: '', fee: 0, icon: 'home', color: '#F14635', cat: 'popular', cats: ['popular', 'home'] },
-  { id: 'g5', title: 'Справка о несудимости', subtitle: 'Готовность: 15 минут', fee: 0, icon: 'doccheck', color: '#33B36B', cat: 'certs' },
-  { id: 'g6', title: 'Адресная справка', subtitle: 'Готовность: мгновенно', fee: 0, icon: 'doc', color: '#33B36B', cat: 'certs' },
+  { id: 'g5', title: 'Справка о несудимости', subtitle: 'Готовность: 15 минут', fee: 0, icon: 'doccheck', color: '#00AB56', cat: 'certs' },
+  { id: 'g6', title: 'Адресная справка', subtitle: 'Готовность: мгновенно', fee: 0, icon: 'doc', color: '#00AB56', cat: 'certs' },
   { id: 'g7', title: 'Замена водительского удостоверения', subtitle: 'Госпошлина', fee: 12604, icon: 'car', color: '#F14635', cat: 'auto' },
-  { id: 'g8', title: 'Пособие на ребёнка', subtitle: 'Подача заявления', fee: 0, icon: 'baby', color: '#2B7DE9', cat: 'family' },
-  { id: 'g9', title: 'Свидетельство о браке', subtitle: 'Цифровая копия', fee: 0, icon: 'marriage', color: '#2B7DE9', cat: 'family' },
+  { id: 'g8', title: 'Пособие на ребёнка', subtitle: 'Подача заявления', fee: 0, icon: 'baby', color: '#00ABC2', cat: 'family' },
+  { id: 'g9', title: 'Свидетельство о браке', subtitle: 'Цифровая копия', fee: 0, icon: 'marriage', color: '#00ABC2', cat: 'family' },
 ]
 
 // Плитки лаунчера на главной (как в приложении Kaspi)

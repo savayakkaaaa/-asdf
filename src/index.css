@@ -1,15 +1,23 @@
 /* ============================================================
    Kaspi Web — дизайн-система
-   Токены: цвет · радиус · отступ · типографика · подъём.
+   Значения не придуманы: вытащены из resources.arsc приложения
+   kz.kaspi.mobile 5.133 — токены Ds.* (цвет, радиус, отступ, типографика).
    Правило: новых «магических» чисел не заводим — только токены.
    ============================================================ */
 :root {
   /* Бренд */
-  --red: #F14635;
-  --red-press: #D8382A;
-  --red-tint: #FDECEA;
-  --green: #33B36B;
-  /* Синий — цвет eGov: заставка и кнопки на экране документа */
+  --red: #F14635;           /* Ds.Brand.Kaspi, Ds.Active.Primary */
+  --red-press: #D42417;     /* Ds.Active.PrimaryPressed */
+  --red-tint: #FFE9E5;      /* Ds.Transparent.Red */
+  --green: #00AB56;         /* Ds.Action.Success */
+  --green-tint: #D6FADE;    /* Ds.Success.Back */
+  --gov: #00ABC2;           /* Ds.Brand.Gov — фирменный цвет раздела Госуслуг */
+  --link: #0075CA;          /* Ds.Action.Link */
+  --gold: #D5AE6C;          /* Ds.Brand.Gold */
+  --magnum: #F50F64;        /* Ds.Brand.Magnum */
+  --bonus: #58A000;         /* Ds.Brand.Bonus */
+  --bonus-tint: #DEF8CF;    /* Ds.Brand.BonusLight */
+  /* Синий — цвет eGov: это бланк документа, а не палитра Kaspi */
   --blue: #2B7DE9;
   --blue-press: #1F6AD0;
   --blue-line: #C9DCF7;
@@ -19,30 +27,58 @@
   --gold-ink: #3A2A05;
 
   /* Поверхности */
-  --bg: #FFFFFF;
+  --bg: #FFFFFF;            /* Ds.Back.Layer1 */
   --surface: #FFFFFF;
-  --inset: #F2F3F5;         /* серые поля, дорожки сегментов, полосы-разделители */
-  --line: #EBECEE;          /* хайрлайн */
+  --inset: #F2F2F2;         /* Ds.Back.Base — серые поля и полосы между блоками */
+  --line: #F2F2F2;          /* Ds.Element.BorderLight — разделитель ячеек */
+  --border: #C2C2C2;        /* Ds.Element.BorderDark */
+  --msg-bg: #F4F5F7;        /* Ds.Message.Base */
+  --msg-in: #E3E8F0;        /* Ds.Message.Bubblefrom */
 
-  /* Текст */
-  --ink: #1F2124;
-  --ink-2: #6E7076;
-  --muted: #9A9DA3;
+  /* Текст и иконки */
+  --ink: #1F1F1F;           /* Ds.Text.Main */
+  --ink-2: #757575;         /* Ds.Text.Secondary */
+  --muted: #969696;         /* Ds.Text.Additional */
+  --icon: #757575;          /* Ds.Icon.Main */
+  --icon-light: #C2C2C2;    /* Ds.Icon.Light */
 
-  /* Радиусы: 8 · 12 · 16 · 20 · пилюля */
-  --r-sm: 8px;
-  --r: 12px;
-  --r-lg: 16px;
-  --r-xl: 20px;
-  --r-pill: 999px;
+  /* Радиусы — Ds.Corners.* */
+  --r-xs: 4px;              /* 200 */
+  --r-sm: 8px;              /* 300 */
+  --r: 12px;                /* 400 */
+  --r-lg: 16px;             /* 500 */
+  --r-xl: 20px;             /* 550 */
+  --r-2xl: 24px;            /* 600 */
+  --r-pill: 9999px;         /* Rounded */
 
-  /* Отступы */
-  --s1: 4px;
-  --s2: 8px;
-  --s3: 12px;
-  --s4: 16px;
-  --s5: 24px;
-  --s6: 32px;
+  /* Отступы — Ds.Spacing.* */
+  --s0: 2px;                /* 300 */
+  --s1: 4px;                /* 350 */
+  --s2: 8px;                /* 400 */
+  --s3: 12px;               /* 450 */
+  --s4: 16px;               /* 500 */
+  --s45: 20px;              /* 550 */
+  --s5: 24px;               /* 600 */
+  --s6: 32px;               /* 650 */
+  --s7: 40px;               /* 700 */
+
+  /* Размеры иконок — Ds.Icons.IconBox.* (они же суффиксы в именах ic_ds_*) */
+  --ic-300: 12px;
+  --ic-400: 16px;
+  --ic-500: 24px;
+  --ic-700: 40px;
+  --ic-900: 72px;
+
+  /* Типографика — Ds.Typography.*, шрифт Roboto Flex */
+  --t-300: 12px;   --t-300-lh: 16px;   /* Caption.500, Body.300 */
+  --t-400: 14px;   --t-400-lh: 18px;   /* Body.400 — основной размер интерфейса */
+  --t-500: 16px;   --t-500-lh: 20px;   /* Body.500 */
+  --t-700: 20px;   --t-700-lh: 24px;   /* Body.700 */
+  --t-800: 24px;   --t-800-lh: 28px;   /* Heading.200Accent */
+  --t-900: 40px;   --t-900-lh: 48px;   /* Heading.500 */
+  --w-soft: 500;   /* …Soft */
+  --w-accent: 600; /* …Accent */
+  --w-heavy: 700;  /* …Heavy */
 
   /* Подъём: только карты счетов и нижняя шторка. Всё остальное — хайрлайн. */
   --lift: 0 4px 14px rgba(20, 22, 24, 0.10);
@@ -55,12 +91,12 @@
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; padding: 0; }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Roboto, Arial, sans-serif;
+  font-family: 'Roboto Flex', Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
   background: var(--bg);
   color: var(--ink);
-  font-size: 16px;
+  font-size: var(--t-500);
+  line-height: var(--t-500-lh);
   font-weight: 400;
-  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
 }
 button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
@@ -96,7 +132,7 @@ svg { display: block; }
 
 /* ---------- Типографика ---------- */
 .section-title {
-  font-size: 19px; font-weight: 700; letter-spacing: -0.3px;
+  font-size: var(--t-700); line-height: var(--t-700-lh); font-weight: var(--w-accent);
   margin: var(--s5) 0 var(--s3);
 }
 .section-title.small {
@@ -104,9 +140,9 @@ svg { display: block; }
   letter-spacing: 0; margin-bottom: var(--s1);
 }
 .muted { color: var(--muted); }
-.hint { font-size: 13px; color: var(--muted); text-align: center; }
+.hint { font-size: var(--t-300); line-height: var(--t-300-lh); color: var(--muted); text-align: center; }
 .row-between { display: flex; align-items: center; justify-content: space-between; }
-.chev { color: #C7C9CE; display: flex; }
+.chev { color: var(--icon-light); display: flex; flex: 0 0 auto; }
 .dot { width: 10px; height: 10px; border-radius: 3px; }
 .pill {
   display: inline-block; font-size: 12px; font-weight: 500;
@@ -169,7 +205,7 @@ svg { display: block; }
 .search-bar {
   display: flex; align-items: center; gap: var(--s3);
   background: var(--inset); border-radius: var(--r); padding: var(--s3) var(--s4);
-  color: var(--muted); font-size: 15px; margin-bottom: var(--s4);
+  color: var(--muted); font-size: var(--t-500); line-height: var(--t-500-lh); margin-bottom: var(--s4);
 }
 .search-bar .sb-ph { flex: 1; }
 .search-bar .sb-actions { display: flex; align-items: center; gap: var(--s3); color: var(--ink-2); }
@@ -212,28 +248,32 @@ svg { display: block; }
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: var(--s4) var(--s1); margin-top: var(--s4);
 }
+/* Метрики из main_menu_item_widget2: иконка 36dp в круге 64dp,
+   подпись Body.400 с отступом 4dp, бейдж 25×14dp. */
 .grid-tile {
-  display: flex; flex-direction: column; align-items: center; gap: var(--s2);
+  display: flex; flex-direction: column; align-items: center;
   padding: 0; color: var(--ink);
 }
 .gt-icon {
-  position: relative; width: 56px; height: 56px; border-radius: var(--r-lg);
+  position: relative; width: 64px; height: 64px; border-radius: var(--r-pill);
   color: var(--red); display: flex; align-items: center; justify-content: center;
   transition: background 0.12s;
 }
 .grid-tile:active .gt-icon { background: var(--red-tint); }
 .gt-label {
-  font-size: 13px; font-weight: 400; color: var(--ink);
-  letter-spacing: -0.1px; text-align: center; line-height: 1.2;
+  margin-top: var(--s1);
+  font-size: var(--t-400); line-height: var(--t-400-lh); font-weight: 400;
+  color: var(--ink); text-align: center;
 }
 .gt-badge {
-  position: absolute; top: -2px; right: -10px;
-  background: #FFC508; color: var(--ink); font-size: 10px; font-weight: 700;
-  border-radius: var(--r-sm); padding: 2px 5px; letter-spacing: 0.3px;
-  border: 2px solid var(--surface);
+  position: absolute; top: 2px; right: 2px;
+  min-width: 25px; height: 15px; padding: 0 var(--s1);
+  background: #FFC508; color: var(--ink);
+  font-size: 10px; line-height: 15px; font-weight: var(--w-heavy); text-align: center;
+  border-radius: var(--r-xs); letter-spacing: 0.2px;
 }
 .magnum-m {
-  width: 44px; height: 44px; border-radius: var(--r); background: #E0223C; color: #fff;
+  width: 44px; height: 44px; border-radius: var(--r); background: var(--magnum); color: #fff;
   display: flex; align-items: center; justify-content: center;
   font-weight: 700; font-size: 28px; font-family: Georgia, serif; line-height: 1;
 }
@@ -252,10 +292,11 @@ svg { display: block; }
 }
 .sc-meta { min-width: 0; display: flex; flex-direction: column; }
 /* Переносим, а не обрезаем: в «Рассрочка 0-0-24» многоточие съедало бы саму суть */
-.sc-name { font-weight: 500; font-size: 15px; letter-spacing: -0.2px; line-height: 1.2; }
+.sc-name { font-weight: var(--w-soft); font-size: var(--t-500); line-height: var(--t-500-lh); }
+/* Подпись переносим на вторую строку: «Рассрочка до 500 000 ₸» в одну не влезает,
+   а многоточие съедало бы сумму. */
 .sc-sub {
-  font-size: 12px; color: var(--muted); margin-top: 2px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: var(--t-300); line-height: var(--t-300-lh); color: var(--muted); margin-top: var(--s0);
 }
 
 /* ============================================================
@@ -468,7 +509,7 @@ svg { display: block; }
 .gov-all-docs {
   display: flex; align-items: center; justify-content: space-between;
   width: 100%; margin-top: var(--s3); padding: var(--s2) 0;
-  font-weight: 500; font-size: 15px; color: var(--blue);
+  font-weight: var(--w-soft); font-size: var(--t-500); line-height: var(--t-500-lh); color: var(--link);
 }
 
 .gov-cats {
@@ -485,13 +526,13 @@ svg { display: block; }
   width: 52px; height: 52px; border-radius: var(--r-lg); background: var(--inset);
   display: flex; align-items: center; justify-content: center;
 }
-.gov-cat .gc-label { font-size: 12px; font-weight: 500; white-space: nowrap; }
+.gov-cat .gc-label { font-size: var(--t-300); line-height: var(--t-300-lh); font-weight: var(--w-soft); white-space: nowrap; }
 .gov-cat.on { border-bottom-color: var(--red); }
 .gov-cat.on .gc-label { color: var(--red); }
 
 .gov-list { margin-top: var(--s1); }
 .gov-row {
-  width: 100%; display: flex; align-items: center; gap: var(--s3);
+  width: 100%; min-height: 56px; display: flex; align-items: center; gap: var(--s4);
   padding: var(--s3) 0; border-bottom: 1px solid var(--line);
   text-align: left; color: var(--ink);
 }
@@ -499,10 +540,10 @@ svg { display: block; }
 .gr-ic { flex: 0 0 auto; display: flex; }
 .gr-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .gr-title {
-  font-weight: 500; font-size: 15px; letter-spacing: -0.2px;
+  font-weight: 400; font-size: var(--t-500); line-height: var(--t-500-lh);
   display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap;
 }
-.gr-sub { font-size: 13px; color: var(--muted); line-height: 1.3; }
+.gr-sub { font-size: var(--t-400); line-height: var(--t-400-lh); color: var(--ink-2); }
 .gr-new {
   display: inline-block; background: var(--red); color: #fff;
   font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
@@ -708,5 +749,105 @@ svg { display: block; }
 }
 @media (max-width: 899px) {
   .sidebar { display: none; }
-  .with-sidebar { display: block; }
+  /* Колонка должна растягиваться, иначе серый фон экрана обрывается по контенту */
+  .with-sidebar { display: flex; flex-direction: column; flex: 1; }
+  .with-sidebar > div { flex: 1; display: flex; flex-direction: column; }
 }
+
+/* ============================================================
+   Ячейки дизайн-системы Kaspi
+   Метрики не подобраны на глаз, а взяты из resources.arsc:
+   иконка 24 (Ds.Icons.IconBox.500), отступы 16/12 (Ds.Spacing.500/450),
+   скругление секции 16 (Ds.Corners.500), разделитель Ds.Element.BorderLight,
+   заголовок ячейки Ds.Typography.Body.500 (16/20).
+   ============================================================ */
+.content.grey { background: var(--inset); }
+
+.ds-section { margin-top: var(--s5); }
+.ds-section-title {
+  margin: 0 0 var(--s2);
+  padding: 0 var(--s1);
+  font-size: var(--t-500);
+  line-height: var(--t-500-lh);
+  font-weight: var(--w-accent);
+  color: var(--ink);
+}
+.ds-section-title.flush { margin: var(--s5) 0 var(--s2); }
+
+.ds-cells { background: var(--surface); border-radius: var(--r-lg); overflow: hidden; }
+
+.ds-cell {
+  position: relative;
+  display: flex; align-items: center; gap: var(--s4);
+  width: 100%; min-height: 56px; padding: var(--s3) var(--s4);
+  text-align: left;
+}
+/* Разделитель начинается после иконки — так он нарисован в приложении */
+.ds-cell + .ds-cell::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  left: calc(var(--s4) * 2 + var(--ic-500));
+  height: 1px; background: var(--line);
+}
+.ds-cell:active { background: var(--inset); }
+.dc-icon { flex: 0 0 var(--ic-500); color: var(--icon); display: flex; }
+.dc-title { flex: 1; font-size: var(--t-500); line-height: var(--t-500-lh); }
+.ds-cell.danger .dc-icon, .ds-cell.danger .dc-title { color: var(--red); }
+
+/* ---------- Шапка профиля на «Сервисах» ---------- */
+.profile-card {
+  display: flex; align-items: center; gap: var(--s3);
+  background: var(--surface); border-radius: var(--r-lg);
+  padding: var(--s3) var(--s4); margin-top: var(--s2); width: 100%; text-align: left;
+}
+.pc-avatar { flex: 0 0 auto; color: var(--icon-light); display: flex; }
+.pc-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--s0); }
+.pc-name { font-size: var(--t-700); line-height: var(--t-700-lh); font-weight: var(--w-accent); }
+.pc-sub { font-size: var(--t-400); line-height: var(--t-400-lh); color: var(--ink-2); }
+
+/* ---------- Сообщения ---------- */
+.pin-row {
+  display: flex; align-items: center; gap: var(--s3); width: 100%; text-align: left;
+  background: var(--msg-bg); border-radius: var(--r); padding: var(--s3) var(--s4);
+  margin-top: var(--s2);
+}
+.pr-ic { flex: 0 0 auto; color: var(--icon); display: flex; }
+.pr-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.pr-title { font-size: var(--t-400); line-height: var(--t-400-lh); font-weight: var(--w-soft); }
+.pr-sub { font-size: var(--t-300); line-height: var(--t-300-lh); color: var(--ink-2); }
+
+.chat-cell {
+  position: relative;
+  display: flex; align-items: center; gap: var(--s3);
+  width: 100%; padding: var(--s3) 0; text-align: left;
+}
+.chat-cell + .chat-cell::before {
+  content: '';
+  position: absolute; top: 0; right: 0; left: calc(48px + var(--s3));
+  height: 1px; background: var(--line);
+}
+.cc-avatar {
+  flex: 0 0 48px; height: 48px; border-radius: var(--r-pill);
+  background: var(--inset); color: var(--ink-2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--t-500); font-weight: var(--w-soft);
+}
+/* У логотипа Kaspi свой красный квадрат — подложка под ним не нужна */
+.cc-avatar.brand { background: none; }
+.cc-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--s0); }
+.cc-top, .cc-bottom { display: flex; align-items: center; gap: var(--s2); }
+.cc-name {
+  flex: 1; min-width: 0; font-size: var(--t-500); line-height: var(--t-500-lh);
+  font-weight: var(--w-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.cc-time { font-size: var(--t-300); line-height: var(--t-300-lh); color: var(--muted); flex: 0 0 auto; }
+.cc-last {
+  flex: 1; min-width: 0; font-size: var(--t-400); line-height: var(--t-400-lh); color: var(--ink-2);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.cc-badge {
+  flex: 0 0 auto; min-width: 20px; height: 20px; padding: 0 6px; border-radius: var(--r-pill);
+  background: var(--red); color: #fff;
+  font-size: var(--t-300); line-height: 20px; font-weight: var(--w-soft); text-align: center;
+}
+.cc-read { color: var(--link); display: flex; flex: 0 0 auto; }

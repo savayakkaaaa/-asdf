@@ -20,6 +20,9 @@ const TITLES = {
   bank: 'Мой Банк', gov: 'Госуслуги', payments: 'Платежи', transfers: 'Переводы',
   shop: 'Магазин', travel: 'Kaspi Travel', ads: 'Объявления', magnum: 'Magnum', jobs: 'Работа',
 }
+// Экраны, которые в приложении лежат на сером Ds.Back.Base, а не на белом:
+// у kaspi_services_page_fragment это прямо прописано в лейауте.
+const greyPages = new Set(['services', 'gov'])
 
 export default function App() {
   const [view, setView] = useState('home')
@@ -81,7 +84,7 @@ export default function App() {
               </header>
             )}
 
-            <main className={'content' + (isBottom ? '' : ' no-nav')}>
+            <main className={'content' + (isBottom ? '' : ' no-nav') + (greyPages.has(view) ? ' grey' : '')}>
               {view === 'home' && <Home onNavigate={setView} />}
               {view === 'bank' && <Bank accounts={accounts} transactions={transactions} updateAccount={updateAccount} />}
               {view === 'gov' && (
@@ -95,7 +98,7 @@ export default function App() {
               {view === 'transfers' && <Transfers requisites={requisites} setRequisites={setRequisites} />}
               {view === 'payments' && <Payments onQR={() => setView('qr')} />}
               {view === 'qr' && <QRScreen />}
-              {view === 'messages' && <Stub icon="chat" title="Сообщения" text="Здесь появятся чаты с продавцами и поддержкой Kaspi." />}
+              {view === 'messages' && <Messages />}
               {view === 'services' && <Services onNavigate={setView} />}
               {view === 'shop' && <Stub icon="cart" title="Магазин" text="Каталог товаров в рассрочку 0-0-24 (демо)." />}
               {view === 'travel' && <Stub icon="plane" title="Kaspi Travel" text="Авиабилеты, ЖД и отели (демо)." />}
@@ -172,28 +175,115 @@ function QRScreen() {
   )
 }
 
-function Services({ onNavigate }) {
-  const rows = [
-    { icon: 'user', label: 'Профиль', k: null }, { icon: 'gov', label: 'Госуслуги', k: 'gov' },
-    { icon: 'plane', label: 'Kaspi Travel', k: 'travel' }, { icon: 'ads', label: 'Объявления', k: 'ads' },
-    { icon: 'shield', label: 'Безопасность', k: null }, { icon: 'bell', label: 'Уведомления', k: null },
+// Экран «Сообщения»: закреплённые заказы сверху, ниже — переписки.
+// Заголовки взяты из строк приложения: messenger_messages_pins и
+// messenger_messages_history. Сами чаты, разумеется, выдуманные.
+function Messages() {
+  const chats = [
+    { id: 'c1', name: 'Kaspi Магазин', brand: true, last: 'Заказ 1024-7788 передан в доставку', time: '14:32', unread: 2 },
+    { id: 'c2', name: 'Поддержка Kaspi', brand: true, last: 'Спасибо за обращение — вопрос решён.', time: 'Вчера' },
+    { id: 'c3', name: 'Sulpak', last: 'Товар готов к выдаче в Kaspi Postomat', time: '24 авг' },
+    { id: 'c4', name: 'Алия К.', last: 'Добрый день! Товар ещё в наличии?', time: '22 авг' },
   ]
   return (
     <div>
-      <div className="card mt8">
-        <div className="req-line"><span className="k">Имя</span><span className="v">{demoUser.name}</span></div>
-        <div className="req-line"><span className="k">Телефон</span><span className="v">{demoUser.phone}</span></div>
-        <div className="req-line"><span className="k">ИИН</span><span className="v">{demoUser.iin}</span></div>
-      </div>
-      <div className="rows mt12">
-        {rows.map((r) => (
-          <div className="rowi" key={r.label} onClick={() => r.k && onNavigate(r.k)}>
-            <span className="ic" style={{ background: '#F4F5F7', color: 'var(--ink)' }}><Icon name={r.icon} size={20} /></span>
-            <div className="meta"><div className="l1">{r.label}</div></div>
-            <span className="chev"><Icon name="chevron" size={18} /></span>
-          </div>
+      <button className="pin-row">
+        <span className="pr-ic"><Icon name="pinned_500" size={24} /></span>
+        <span className="pr-meta">
+          <span className="pr-title">Активные заказы</span>
+          <span className="pr-sub">2 заказа в пути</span>
+        </span>
+        <span className="chev"><Icon name="chevron" size={16} /></span>
+      </button>
+
+      <h2 className="ds-section-title flush">История сообщений</h2>
+      <div className="ds-cells">
+        {chats.map((c) => (
+          <button className="chat-cell" key={c.id}>
+            <span className={'cc-avatar' + (c.brand ? ' brand' : '')}>
+              {c.brand ? <Icon name="kaspi_logo" size={48} /> : c.name.slice(0, 1)}
+            </span>
+            <span className="cc-meta">
+              <span className="cc-top">
+                <span className="cc-name">{c.name}</span>
+                <span className="cc-time">{c.time}</span>
+              </span>
+              <span className="cc-bottom">
+                <span className="cc-last">{c.last}</span>
+                {c.unread
+                  ? <span className="cc-badge">{c.unread}</span>
+                  : <span className="cc-read"><Icon name="message_read_400" size={16} /></span>}
+              </span>
+            </span>
+          </button>
         ))}
       </div>
+      <div className="hint mt16">Демо: переписка не работает.</div>
+    </div>
+  )
+}
+
+// Экран «Сервисы». В приложении он лежит на сером Ds.Back.Base
+// (kaspi_services_page_fragment: background=@color/Ds.Back.Base), а пункты
+// собраны в белые секции из ячеек дизайн-системы. Названия — строки из apk.
+function Services({ onNavigate }) {
+  const groups = [
+    {
+      title: 'Основное',                                        // settings_main
+      rows: [
+        { icon: 'gov', label: 'Госуслуги', k: 'gov' },           // kaspi_publicservices_menu
+        { icon: 'market_500', label: 'Магазин', k: 'shop' },     // kaspi_shop_menu
+        { icon: 'plane', label: 'Travel', k: 'travel' },         // kaspi_travel_menu
+        { icon: 'ads', label: 'Объявления', k: 'ads' },
+        { icon: 'work', label: 'Работа', k: 'jobs' },
+        { icon: 'ksp_gift_400', label: 'Акции' },                // kaspi_promo_menu
+        { icon: 'kaspi_guide_logo_500', label: 'Гид' },          // kaspi_guide_menu
+      ],
+    },
+    {
+      title: 'Настройки',                                       // call_settings
+      rows: [
+        { icon: 'bell', label: 'Уведомления' },                  // notifications_title
+        { icon: 'shield', label: 'Безопасность' },               // settings_securtiy
+        { icon: 'login_500', label: 'Вход в приложение' },       // settings_sign_in
+        { icon: 'dark_mode_24', label: 'Тема приложения' },      // settings_appearance_title
+        { icon: 'oauth_globe', label: 'Язык приложения' },       // application_language
+      ],
+    },
+  ]
+  return (
+    <div className="page-grey">
+      <div className="profile-card">
+        <span className="pc-avatar"><Icon name="avatar_placeholder_900" size={56} /></span>
+        <span className="pc-meta">
+          <span className="pc-name">{demoUser.name}</span>
+          <span className="pc-sub">{demoUser.phone}</span>
+        </span>
+        <span className="chev"><Icon name="chevron" size={16} /></span>
+      </div>
+
+      {groups.map((g) => (
+        <section className="ds-section" key={g.title}>
+          <h2 className="ds-section-title">{g.title}</h2>
+          <div className="ds-cells">
+            {g.rows.map((r) => (
+              <button className="ds-cell" key={r.label} onClick={() => r.k && onNavigate(r.k)}>
+                <span className="dc-icon"><Icon name={r.icon} size={24} /></span>
+                <span className="dc-title">{r.label}</span>
+                <span className="chev"><Icon name="chevron" size={16} /></span>
+              </button>
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <div className="ds-cells mt16">
+        <button className="ds-cell danger">
+          <span className="dc-icon"><Icon name="logout_500" size={24} /></span>
+          <span className="dc-title">Выйти</span>
+        </button>
+      </div>
+
       <div className="hint mt16">Учебный демо-прототип · Версия 1.0</div>
     </div>
   )

@@ -74,6 +74,11 @@ export default function Icon({ name, size = 22, stroke = 1.8, className = '', st
         fillRule={p.e ? 'evenodd' : undefined}
         clipRule={p.e ? 'evenodd' : undefined}
         fillOpacity={p.o}
+        stroke={p.s}
+        strokeWidth={p.sw}
+        strokeLinecap={p.sc}
+        strokeLinejoin={p.sj}
+        strokeOpacity={p.so}
         transform={p.t}
       />
     ))
