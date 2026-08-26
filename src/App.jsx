@@ -10,11 +10,13 @@ import {
   demoUser, initialAccounts, initialTransactions, initialDocuments, initialRequisites, homeGrid,
 } from './data.js'
 
+// Иконки нижней панели берём напрямую из ic_nav_tab_* — это ровно тот набор,
+// которым приложение рисует свои вкладки. Подписи — строки bn_*_label оттуда же.
 const BOTTOM = [
-  { key: 'home', label: 'Главная', icon: 'home' },
-  { key: 'qr', label: 'Kaspi QR', icon: 'qr' },
-  { key: 'messages', label: 'Сообщения', icon: 'chat' },
-  { key: 'services', label: 'Сервисы', icon: 'menu' },
+  { key: 'home', label: 'Главная', icon: 'nav_tab_1' },
+  { key: 'qr', label: 'Kaspi QR', icon: 'nav_tab_2' },
+  { key: 'messages', label: 'Сообщения', icon: 'nav_tab_3' },
+  { key: 'services', label: 'Сервисы', icon: 'nav_tab_4' },
 ]
 const TITLES = {
   bank: 'Мой Банк', gov: 'Госуслуги', payments: 'Платежи', transfers: 'Переводы',
@@ -113,7 +115,7 @@ export default function App() {
           <nav className="bottom-nav">
             {BOTTOM.map((n) => (
               <button key={n.key} className={view === n.key ? 'active' : ''} onClick={() => setView(n.key)}>
-                <Icon name={n.icon} size={24} stroke={view === n.key ? 2 : 1.7} /> {n.label}
+                <Icon name={n.icon} size={24} /> {n.label}
               </button>
             ))}
           </nav>
@@ -292,7 +294,7 @@ function Services({ onNavigate }) {
 function Stub({ icon, title, text }) {
   return (
     <div className="stub">
-      <span className="stub-ic"><Icon name={icon} size={34} stroke={1.6} /></span>
+      <span className="stub-ic"><Icon name={icon} size={34} /></span>
       <div className="stub-title">{title}</div>
       <div className="muted" style={{ textAlign: 'center', maxWidth: 260 }}>{text}</div>
     </div>

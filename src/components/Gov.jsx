@@ -18,7 +18,7 @@ function EgovSplash() {
           <div className="egov-logos">
             <span className="egov-logo">e<b>Gov</b></span>
             <span className="egov-plus">+</span>
-            <span className="kaspi-mark"><Icon name="user" size={30} stroke={2} /></span>
+            <span className="kaspi-mark"><Icon name="user" size={30} /></span>
           </div>
           <div className="spinner" />
           <div className="egov-loadcap">Загружаем документ…</div>
@@ -428,7 +428,7 @@ export default function Gov({ documents, addDocument, updateDocument, onHeaderOv
           <div className="gov-cats">
             {govCategories.map((c) => (
               <button type="button" key={c.id} className={'gov-cat' + (cat === c.id ? ' on' : '')} onClick={() => setCat(c.id)}>
-                <span className="gc-ic" style={{ color: c.color }}><Icon name={c.icon} size={26} stroke={1.7} /></span>
+                <span className="gc-ic" style={{ color: c.color }}><Icon name={c.icon} size={26} /></span>
                 <span className="gc-label">{c.label}</span>
               </button>
             ))}
@@ -441,7 +441,7 @@ export default function Gov({ documents, addDocument, updateDocument, onHeaderOv
             {filtered.length === 0 && <div className="hint mt16">Ничего не найдено</div>}
             {filtered.map((s) => (
               <button type="button" className="gov-row" key={s.id} onClick={() => setService(s)}>
-                <span className="gr-ic" style={{ color: s.color }}><Icon name={s.icon} size={24} stroke={1.7} /></span>
+                <span className="gr-ic" style={{ color: s.color }}><Icon name={s.icon} size={24} /></span>
                 <span className="gr-meta">
                   <span className="gr-title">
                     {s.title}

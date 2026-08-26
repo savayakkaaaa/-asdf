@@ -273,9 +273,9 @@ svg { display: block; }
   border-radius: var(--r-xs); letter-spacing: 0.2px;
 }
 .magnum-m {
-  width: 44px; height: 44px; border-radius: var(--r); background: var(--magnum); color: #fff;
+  width: var(--ic-700); height: var(--ic-700); border-radius: var(--r); background: var(--magnum); color: #fff;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 28px; font-family: Georgia, serif; line-height: 1;
+  font-weight: 700; font-size: 26px; font-family: Georgia, serif; line-height: 1;
 }
 
 /* Быстрые продукты, 2 колонки */
