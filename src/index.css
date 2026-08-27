@@ -729,7 +729,9 @@ svg { display: block; }
   /* забираем щипок себе: иначе жест перехватит браузер и зума документа не будет */
   touch-action: pan-x pan-y;
 }
-.pdf-viewer-pages { min-height: 100%; }
+/* transform-origin 0 0 — чтобы во время щипка scale рос от левого-верхнего угла,
+   как считает математика фокуса в PdfViewer. */
+.pdf-viewer-pages { min-height: 100%; transform-origin: 0 0; }
 
 .pdf-viewer .pdf-page,
 .pdf-viewer canvas.pdf-page {
