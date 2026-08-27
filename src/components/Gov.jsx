@@ -279,7 +279,6 @@ function DocDetail({ doc, onClose, onSave }) {
               </button>
             </div>
           ))}
-          <button type="button" className="btn ghost small mt12" onClick={() => setEditing(true)}>Изменить</button>
           <div className="doc-foot">
             <button type="button" className="btn-blue" onClick={() => {
               const text = REQ_FIELDS.filter(({ k }) => f[k]).map(({ k, label }) => `${label}: ${f[k]}`).join('\n')

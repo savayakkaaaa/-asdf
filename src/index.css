@@ -643,7 +643,13 @@ svg { display: block; }
 .req-view-row .rv-copy:active { background: var(--inset); color: var(--ink); }
 .req-view-row .rv-copy.done { color: var(--green); }
 
-.doc-foot { position: sticky; bottom: var(--s3); padding-top: var(--s3); background: linear-gradient(#ffffff00, #fff 35%); }
+/* «Отправить реквизиты» прижата к низу экрана и остаётся там при прокрутке —
+   margin-top: auto держит её внизу и когда реквизитов мало. */
+.doc-foot {
+  position: sticky; bottom: 0; z-index: 15;
+  margin: auto calc(var(--gutter) * -1) 0; padding: var(--s3) var(--gutter) calc(var(--s3) + env(safe-area-inset-bottom, 0px));
+  background: var(--surface);
+}
 
 /* Кнопки экрана документа — та же система, что и .btn */
 .btn-doc, .btn-blue, .btn-black {
