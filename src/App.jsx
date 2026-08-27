@@ -66,7 +66,11 @@ export default function App() {
         <div className="with-sidebar">
           {/* Desktop sidebar */}
           <nav className="sidebar">
-            <div className="s-logo">Kaspi.kz</div>
+            {/* Настоящий логотип: красный знак + шрифтовое написание из apk */}
+            <div className="s-logo">
+              <Icon name="kaspi_logo" size={30} />
+              <Icon name="kaspi_kz_900" size={80} />
+            </div>
             <button className={view === 'home' ? 'active' : ''} onClick={() => setView('home')}><Icon name="home" size={20} /> Главная</button>
             {homeGrid.map((g) => (
               <button key={g.key} className={view === g.key ? 'active' : ''} onClick={() => setView(g.key)}><Icon name={g.icon} size={20} /> {g.label}</button>

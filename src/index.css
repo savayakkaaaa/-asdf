@@ -760,8 +760,8 @@ svg { display: block; }
     min-height: 100vh; position: sticky; top: 0; align-self: start;
   }
   .sidebar .s-logo {
-    font-size: 25px; font-weight: 700; color: var(--red);
-    letter-spacing: -1px; padding: var(--s2) var(--s3) var(--s5);
+    display: flex; align-items: center; gap: var(--s2);
+    color: var(--ink); padding: var(--s2) var(--s3) var(--s5);
   }
   .sidebar button {
     width: 100%; display: flex; align-items: center; gap: var(--s3);
