@@ -32,7 +32,7 @@ const ALIAS = {
   image: ['gallery_500'],
   lock: ['lock_500'],
   marriage: ['rings_500'],
-  megaphone: ['fire_500'],
+  megaphone: ['megaphone_500'],
   menu: ['nav_tab_4'],
   more: ['more_500'],
   passport: ['passport_500'],
