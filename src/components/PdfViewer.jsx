@@ -44,7 +44,12 @@ export default function PdfViewer({ url }) {
     const offsetY = a.clientY - rect.top
     const k = a.to / a.from
     host.scrollLeft = (host.scrollLeft + offsetX) * k - offsetX
-    host.scrollTop = (host.scrollTop + offsetY) * k - offsetY
+    // По вертикали просмотрщик не прокручивается — он растёт вместе с листом,
+    // листается вся страница. Верх просмотрщика от зума не двигается, поэтому
+    // точка под пальцем уезжает ровно на offsetY * (k - 1): на столько и
+    // подкручиваем страницу, чтобы она осталась на месте.
+    const scroller = document.scrollingElement || document.documentElement
+    scroller.scrollTop += offsetY * (k - 1)
   }, [zoom])
 
   // Жесты. Слушатели вешаем вручную: touchmove и wheel нужны неpassive,
@@ -170,10 +175,15 @@ export default function PdfViewer({ url }) {
 
         if (typeof ResizeObserver !== 'undefined' && hostRef.current) {
           let t = 0
+          // Следим только за шириной. Высота просмотрщика теперь задаётся самим
+          // документом, поэтому на неё реагировать нельзя: отрисовка меняла бы
+          // высоту, та дёргала бы наблюдателя, и он запускал бы отрисовку заново.
+          let lastWidth = hostRef.current.clientWidth
           ro = new ResizeObserver(() => {
+            const w = hostRef.current?.clientWidth || 0
+            if (!w || w === lastWidth) return
+            lastWidth = w
             clearTimeout(t)
-            // Перерисовываем только под смену ширины экрана. Зум ширину
-            // хоста не меняет, так что лишних перерисовок не будет.
             t = setTimeout(() => { if (!cancelled) paint() }, 180)
           })
           ro.observe(hostRef.current)
