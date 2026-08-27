@@ -280,6 +280,7 @@ function DocDetail({ doc, onClose, onSave }) {
             </div>
           ))}
           <div className="doc-foot">
+            <button type="button" className="btn-doc secondary" onClick={() => setEditing(true)}>Изменить</button>
             <button type="button" className="btn-blue" onClick={() => {
               const text = REQ_FIELDS.filter(({ k }) => f[k]).map(({ k, label }) => `${label}: ${f[k]}`).join('\n')
               if (navigator.share) navigator.share({ title: doc.title, text }).catch(() => {})
