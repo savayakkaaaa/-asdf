@@ -82,7 +82,7 @@ export const initialDocuments = [
   { id: 'd1', title: 'Удостоверение личности', subtitle: 'ИИН 000000000000', icon: 'id', status: 'Действителен', color: '#2FA36B', added: '2026-05-01' },
   { id: 'd2', title: 'Паспорт гражданина РК', subtitle: 'Серия N 0000000', icon: 'passport', status: 'Действителен', color: '#00A3C4', added: '2026-05-01' },
   { id: 'd3', title: 'Социальный кошелёк', subtitle: 'Цифровая карта', icon: 'wallet', status: 'Действителен', color: '#E8A317', added: '2026-06-10' },
-  { id: 'd4', title: 'Водительское удостоверение', subtitle: 'Категория B', icon: 'car', status: 'Действителен', color: '#F14635', added: '2026-05-01' },
+  { id: 'd4', title: 'Водительское удостоверение', subtitle: 'Категория B', icon: 'drivers_license_500', status: 'Действителен', color: '#F14635', added: '2026-05-01' },
 ]
 
 // Цвета — токены дизайн-системы: Ds.Brand.Kaspi, Ds.Action.Success, Ds.Brand.Gov.
