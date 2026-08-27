@@ -74,7 +74,7 @@ export default function App() {
             <button className={view === 'services' ? 'active' : ''} onClick={() => setView('services')}><Icon name="menu" size={20} /> Сервисы</button>
           </nav>
 
-          <div>
+          <div className={'screen' + (headerOverride?.fill ? ' fill' : '')}>
             {showBack && !headerOverride?.hidden && (
               <header className="topbar">
                 <button

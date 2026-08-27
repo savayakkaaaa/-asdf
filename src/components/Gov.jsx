@@ -181,9 +181,13 @@ function DocDetail({ doc, onClose, onSave }) {
 
   return (
     <div className={'doc-screen' + (fillPdf ? ' has-pdf' : '')}>
-      <div className="segmented">
-        <button type="button" className={tab === 'doc' ? 'on' : ''} onClick={() => setTab('doc')}>Документ</button>
-        <button type="button" className={tab === 'req' ? 'on' : ''} onClick={() => setTab('req')}>Реквизиты</button>
+      {/* Отдельная обёртка нужна как белая подложка: полоса вкладок липнет
+          под шапкой, и увеличенный документ не должен под неё просвечивать. */}
+      <div className="doc-head">
+        <div className="segmented">
+          <button type="button" className={tab === 'doc' ? 'on' : ''} onClick={() => setTab('doc')}>Документ</button>
+          <button type="button" className={tab === 'req' ? 'on' : ''} onClick={() => setTab('req')}>Реквизиты</button>
+        </div>
       </div>
 
       {tab === 'doc' ? (
