@@ -90,7 +90,7 @@ export const govCategories = [
   { id: 'popular', label: 'Популярные', icon: 'megaphone', color: '#F14635' },
   { id: 'certs', label: 'Справки', icon: 'doccheck', color: '#00AB56' },
   { id: 'auto', label: 'Авто', icon: 'car', color: '#F14635' },
-  { id: 'home', label: 'Жилье', icon: 'home', color: '#00ABC2' },
+  { id: 'home', label: 'Жилье', icon: 'building_500', color: '#00ABC2' },
   { id: 'family', label: 'Семья', icon: 'stroller', color: '#00ABC2' },
 ]
 
